@@ -1,0 +1,34 @@
+material project/Earth
+{
+	technique
+	{
+		pass
+		{
+			##ambient 0.588235 0.588235 0.588235 1
+			##diffuse 0.588235 0.588235 0.588235 1
+			##fog_override true
+			##scene_blend alpha_blend
+			texture_unit
+			{
+				env_map spherical
+				##tex_address_mode clamp
+				texture Earth.jpg
+			}
+		}
+	}
+}
+
+material project/CompanionCube
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{		
+				texture CompanionCube.jpg
+			}
+		}
+	}
+}
+
