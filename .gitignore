@@ -57,6 +57,9 @@ local.properties
 # Ignoring Debug Files
 Debug
 
+#Ignoring Release Files
+Release
+
 # Ignore Ogre config/log
 ogre.cfg
 Ogre.log
