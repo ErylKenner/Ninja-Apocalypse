@@ -1,0 +1,17 @@
+#Includes
+"${workspace_loc:/${ProjName}/inc}"
+/usr/local/include/OGRE
+"${workspace_loc:/${ProjName}/inc/Aspects}"
+"${workspace_loc:/${ProjName}/inc/Managers}"
+/usr/local/include/OGRE/Overlay
+/usr/include/ois
+
+#Libraries
+OgreMain
+OgreOverlay
+boost_system
+OIS
+
+#Library search path
+/usr/local/lib
+/usr/lib/x86_64-linux-gnu
