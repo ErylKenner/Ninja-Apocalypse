@@ -63,6 +63,8 @@ void GameMgr::LoadLevel(){
     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sailboat, Ogre::Vector3(600, surfaceHeight, -600));
     engine->entityMgr->currentEntity = ent->entityId;
     ent->isSelected = true;
+
+    MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::PlayerType, Ogre::Vector3(0, surfaceHeight, -400)));
 }
 
 void GameMgr::Stop(){

@@ -43,6 +43,7 @@ private:
     void UpdateShipDesiredAttributes(float dt);
     void UpdateSelection(float dt);
     void UpdateCamera(float dt);
+    void UpdatePlayer(float dt);
 
     float shipAngleIncrement = 45;
     float shipSpeedIncrement = 10;
