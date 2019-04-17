@@ -49,7 +49,7 @@ private:
     float shipAltitudeIncrement = 10;
     float cameraSpeed = 400;
     float cameraRotationSpeed = 30;
-    float selectionDistanceThreshold = 100;
+    float selectionDistanceThreshold = 30;
 };
 
 #endif /* INC_INPUTMGR_H_ */

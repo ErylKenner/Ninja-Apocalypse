@@ -67,7 +67,7 @@ DDG51Entity381::DDG51Entity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr) :
 }
 
 void DDG51Entity381::InitAspects(){
-    aspects.push_back(new OrientedPhysics3D(this, 100, 50, 200));
+    aspects.push_back(new OrientedPhysics3D(this, 100, 180, 200));
     aspects.push_back(new Renderable(this));
     aspects.push_back(new UnitAI(this));
 }
@@ -81,7 +81,7 @@ CVN681Entity381::CVN681Entity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr) :
 }
 
 void CVN681Entity381::InitAspects(){
-    aspects.push_back(new OrientedPhysics3D(this, 100, 50, 200));
+    aspects.push_back(new OrientedPhysics3D(this, 100, 180, 200));
     aspects.push_back(new Renderable(this));
     aspects.push_back(new UnitAI(this));
 }
@@ -95,7 +95,7 @@ SailboatEntity381::SailboatEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMg
 }
 
 void SailboatEntity381::InitAspects(){
-    aspects.push_back(new OrientedPhysics3D(this, 100, 50, 200));
+    aspects.push_back(new OrientedPhysics3D(this, 100, 180, 200));
     aspects.push_back(new Renderable(this));
     aspects.push_back(new UnitAI(this));
 }
@@ -109,7 +109,7 @@ AlienEntity381::AlienEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr) :
 }
 
 void AlienEntity381::InitAspects(){
-    aspects.push_back(new OrientedPhysics3D(this, 100, 50, 200));
+    aspects.push_back(new OrientedPhysics3D(this, 100, 180, 200));
     aspects.push_back(new Renderable(this));
     aspects.push_back(new UnitAI(this));
 }
@@ -123,7 +123,7 @@ CigaretteEntity381::CigaretteEntity381(int id, Ogre::Vector3 pos, EntityMgr *ent
 }
 
 void CigaretteEntity381::InitAspects(){
-    aspects.push_back(new OrientedPhysics3D(this, 100, 50, 200));
+    aspects.push_back(new OrientedPhysics3D(this, 100, 180, 200));
     aspects.push_back(new Renderable(this));
     aspects.push_back(new UnitAI(this));
 }
@@ -137,7 +137,7 @@ BansheeEntity381::BansheeEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr)
 }
 
 void BansheeEntity381::InitAspects(){
-    aspects.push_back(new OrientedPhysics3D(this, 100, 50, 200));
+    aspects.push_back(new OrientedPhysics3D(this, 100, 180, 200));
     aspects.push_back(new Renderable(this));
     aspects.push_back(new UnitAI(this));
 }

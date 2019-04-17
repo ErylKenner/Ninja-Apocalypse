@@ -40,7 +40,7 @@ public:
     virtual void Finish() override;
 
     Ogre::Vector3 targetLocation;
-    float moveDistanceThreshold = 5;
+    float moveDistanceThreshold = 30;
 };
 
 class Intercept : public Command{
@@ -54,7 +54,7 @@ public:
     virtual void Finish() override;
 
     Entity381 *targetObject;
-    float moveDistanceThreshold = 15;
+    float moveDistanceThreshold = 130;
 };
 
 #endif /* COMMAND_H_ */

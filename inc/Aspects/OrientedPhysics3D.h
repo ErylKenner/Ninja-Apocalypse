@@ -30,6 +30,7 @@ public:
     float altitude;
 private:
     void UpdateOrientation(float dt);
+    void UpdateSpeed(float dt);
 };
 
 #endif /* INC_ASPECTS_ORIENTEDPHYSICS3D_H_ */
