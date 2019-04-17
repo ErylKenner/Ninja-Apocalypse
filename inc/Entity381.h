@@ -16,8 +16,6 @@ class EntityMgr;
 
 class Entity381{
 public:
-    Entity381(int id, std::string mesh, Ogre::Vector3 pos, EntityMgr *entMgr, float accel, float tr, float maxSp, float cr);
-    Entity381(int id, std::string mesh, Ogre::Vector3 pos, EntityMgr *entMgr, float accel, float tr, float maxSp);
     Entity381(int id, std::string mesh, Ogre::Vector3 pos, EntityMgr *entMgr);
     virtual ~Entity381();
     void Tick(float dt);
@@ -37,25 +35,12 @@ public:
     int entityId;
     std::string meshName;
     Ogre::Vector3 position;
-    Ogre::Vector3 velocity;
     Ogre::SceneNode *ogreSceneNode;
     Ogre::Entity *ogreEntity;
     std::vector<Aspect*> aspects;
     bool isSelected;
 
-    float desiredSpeed;
-    float desiredHeading;
-    float desiredAltitude;
-
     EntityMgr *entityMgr;
-
-    float speed;
-    float heading;
-    float altitude;
-    const float acceleration;
-    const float turningRate;
-    const float climbRate;
-    const float maxSpeed;
 
 private:
 protected:

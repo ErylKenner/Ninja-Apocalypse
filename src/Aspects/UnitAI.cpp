@@ -25,14 +25,17 @@ void UnitAI::Tick(float dt){
 
 void UnitAI::SetCommand(Command *c){
     while(!commands.empty()){
+        commands.front()->Finish();
         delete commands.front();
         commands.pop_front();
     }
     commands.push_front(c);
+    c->Init();
 }
 
 void UnitAI::AddCommand(Command *c){
     commands.push_back(c);
+    c->Init();
 }
 
 int UnitAI::NumCommands() const{

@@ -14,6 +14,7 @@
 #include "GameMgr.h"
 
 #include "UnitAI.h"
+#include "OrientedPhysics3D.h"
 
 class Command;
 class Intercept;
@@ -142,28 +143,31 @@ void InputMgr::UpdateShipDesiredAttributes(float dt){
     bool pgDown = mKeyboard->isKeyDown(OIS::KC_PGDOWN);
 
     Entity381 *cur = engine->entityMgr->entities[engine->entityMgr->currentEntity];
-    if(left && !leftArrow_DownLastFrame){
-        cur->desiredHeading -= shipAngleIncrement;
-    }
-    if(right && !rightArrow_DownLastFrame){
-        cur->desiredHeading += shipAngleIncrement;
-    }
-    if(up && !upArrow_DownLastFrame){
-        cur->desiredSpeed += shipSpeedIncrement;
-    }
-    if(down && !downArrow_DownLastFrame){
-        cur->desiredSpeed -= shipSpeedIncrement;
-    }
-    if(pgDown && !pgDown_DownLastFrame){
-        cur->desiredAltitude -= shipAltitudeIncrement;
-    }
-    if(pgUp && !pgUp_DownLastFrame){
-        cur->desiredAltitude += shipAltitudeIncrement;
-    }
+    OrientedPhysics3D *physics = cur->GetAspect<OrientedPhysics3D>();
+    if(physics != NULL){
+        if(left && !leftArrow_DownLastFrame){
+            physics->desiredHeading -= shipAngleIncrement;
+        }
+        if(right && !rightArrow_DownLastFrame){
+            physics->desiredHeading += shipAngleIncrement;
+        }
+        if(up && !upArrow_DownLastFrame){
+            physics->desiredSpeed += shipSpeedIncrement;
+        }
+        if(down && !downArrow_DownLastFrame){
+            physics->desiredSpeed -= shipSpeedIncrement;
+        }
+        if(pgDown && !pgDown_DownLastFrame){
+            physics->desiredAltitude -= shipAltitudeIncrement;
+        }
+        if(pgUp && !pgUp_DownLastFrame){
+            physics->desiredAltitude += shipAltitudeIncrement;
+        }
 
-//Disable movement
-    if(mKeyboard->isKeyDown(OIS::KC_SPACE)){
-        engine->entityMgr->entities[engine->entityMgr->currentEntity]->desiredSpeed = 0;
+        //Disable movement
+        if(mKeyboard->isKeyDown(OIS::KC_SPACE)){
+            physics->desiredSpeed = 0;
+        }
     }
 
     leftArrow_DownLastFrame = left;
@@ -265,7 +269,6 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
                     unitAI->SetCommand(new Intercept(cur, best));
                 } else{
                     if(mKeyboard->isKeyDown(OIS::KC_LSHIFT)){
-
                         unitAI->AddCommand(new MoveTo(cur, intersect));
                     } else{
                         unitAI->SetCommand(new MoveTo(cur, intersect));

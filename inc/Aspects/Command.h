@@ -10,6 +10,7 @@
 
 class Entity381;
 class UnitAI;
+class OrientedPhysics3D;
 
 class Command{
 public:
@@ -22,7 +23,10 @@ public:
     virtual void Finish() = 0;
 
     Entity381 *entity;
+protected:
     UnitAI *unitAI;
+    OrientedPhysics3D *orientedPhysics3D;
+private:
 };
 
 class MoveTo : public Command{
