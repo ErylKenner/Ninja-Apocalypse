@@ -23,7 +23,7 @@ public:
 
 	float walkAnimSpeed = 1.5;
 
-	Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, EntityMgr *entMgr);
+	Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engine *eng);
     ~Player();
     virtual void InitAspects();
 

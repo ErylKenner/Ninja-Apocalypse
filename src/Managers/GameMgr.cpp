@@ -11,7 +11,7 @@
 #include "EntityMgr.h"
 
 GameMgr::GameMgr(Engine *eng) :
-        Mgr(eng){
+        Mgr(eng), MainPlayer(0){
 
 }
 
@@ -62,7 +62,7 @@ void GameMgr::LoadLevel(){
     ent->isSelected = true;
 	*/
 
-    MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::PlayerType, Ogre::Vector3(0, surfaceHeight, -400)));
+    MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::PlayerType, Ogre::Vector3(0, surfaceHeight + 50, -400)));
 }
 
 void GameMgr::Stop(){

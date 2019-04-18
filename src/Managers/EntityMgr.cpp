@@ -33,17 +33,17 @@ Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector
     Entity381 *newEntity;
     switch(type) {
         case EntityType::Sphere:
-            newEntity = new SphereEntity381(id, pos, this);
+            newEntity = new SphereEntity381(id, pos, engine);
             entities.push_back(newEntity);
             return newEntity;
             break;
         case EntityType::Cube:
-            newEntity = new CubeEntity381(id, pos, this);
+            newEntity = new CubeEntity381(id, pos, engine);
             entities.push_back(newEntity);
             return newEntity;
             break;
         case EntityType::PlayerType:
-            newEntity = new Player(400, engine->gfxMgr->mCameraNode, id, pos, this);
+            newEntity = new Player(400, engine->gfxMgr->mCameraNode, id, pos, engine);
             entities.push_back(newEntity);
             return newEntity;
             break;

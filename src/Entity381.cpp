@@ -19,16 +19,16 @@ void Entity381::Tick(float dt){
     }
 }
 
-Entity381::Entity381(int id, std::string mesh, Ogre::Vector3 pos, EntityMgr *entMgr) :
+Entity381::Entity381(int id, std::string mesh, Ogre::Vector3 pos, Engine * eng) :
         entityId(id),
         meshName(mesh),
         position(pos),
-        entityMgr(entMgr){
+        engine(eng){
     isSelected = false;
 
-    ogreEntity = entityMgr->engine->gfxMgr->mSceneMgr->createEntity(meshName);
+    ogreEntity = engine->gfxMgr->mSceneMgr->createEntity(meshName);
     ogreEntity->setCastShadows(true);
-    ogreSceneNode = entMgr->engine->gfxMgr->mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    ogreSceneNode = engine->gfxMgr->mSceneMgr->getRootSceneNode()->createChildSceneNode();
     ogreSceneNode->attachObject(ogreEntity);
     ogreSceneNode->setPosition(position);
 }
@@ -36,8 +36,8 @@ Entity381::Entity381(int id, std::string mesh, Ogre::Vector3 pos, EntityMgr *ent
 Entity381::~Entity381(){
 }
 
-SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr) :
-        Entity381(id, "sphere.mesh", pos, entMgr){
+SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, Engine * eng) :
+        Entity381(id, "sphere.mesh", pos, eng){
     InitAspects();
 }
 
@@ -49,8 +49,8 @@ void SphereEntity381::InitAspects(){
 SphereEntity381::~SphereEntity381(){
 }
 
-CubeEntity381::CubeEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr) :
-        Entity381(id, "cube.mesh", pos, entMgr){
+CubeEntity381::CubeEntity381(int id, Ogre::Vector3 pos, Engine * eng) :
+        Entity381(id, "cube.mesh", pos, eng){
     InitAspects();
 }
 
