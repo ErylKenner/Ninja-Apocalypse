@@ -114,9 +114,8 @@ void InputMgr::UpdatePlayer(float dt) {
 		movement.z += 1;
 	}
 
-	if (movement != Vector3::ZERO) {
-		player->Move(movement, dt);
-	}
+	// movement == zero, will tell the player to go back to idle animation
+	player->Move(movement, dt);
 
 }
 
@@ -322,9 +321,9 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
 				++i) {
 			Entity381 *cur = engine->entityMgr->entities[i];
 			Ogre::Vector3 pos = cur->position;
-			float distance = (pos - intersect).crossProduct(
-					pos - cameraPos).length()
-					/ (intersect - cameraPos).length();
+			float distance =
+					(pos - intersect).crossProduct(pos - cameraPos).length()
+							/ (intersect - cameraPos).length();
 			if ((distance < shortestDistance || shortestDistance == -1)
 					&& distance <= selectionDistanceThreshold) {
 				shortestDistance = distance;

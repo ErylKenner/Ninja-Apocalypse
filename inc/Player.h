@@ -9,12 +9,14 @@
 #define INC_PLAYER_H_
 
 #include "Entity381.h"
+#include "OgreAnimationState.h"
 
 using Ogre::Vector3;
 
 class Player : public Entity381 {
 
 public:
+	Ogre::AnimationState * animState;
 	float Speed;
 
 	Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, EntityMgr *entMgr);
