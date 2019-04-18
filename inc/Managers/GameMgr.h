@@ -9,6 +9,7 @@
 
 
 #include "Mgr.h"
+#include "Player.h"
 
 class GameMgr : public Mgr{
 public:
@@ -21,6 +22,7 @@ public:
     void Stop();
 
     float surfaceHeight = -100;
+    Player * MainPlayer;
 protected:
 private:
 };

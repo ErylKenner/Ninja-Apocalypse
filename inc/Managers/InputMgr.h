@@ -43,13 +43,16 @@ private:
     void UpdateShipDesiredAttributes(float dt);
     void UpdateSelection(float dt);
     void UpdateCamera(float dt);
+    void UpdatePlayer(float dt);
+
+    std::pair<bool,Ogre::Vector3> GetClickedPosition(const OIS::MouseEvent& me);
 
     float shipAngleIncrement = 45;
     float shipSpeedIncrement = 10;
     float shipAltitudeIncrement = 10;
     float cameraSpeed = 400;
     float cameraRotationSpeed = 30;
-    float selectionDistanceThreshold = 100;
+    float selectionDistanceThreshold = 30;
 };
 
 #endif /* INC_INPUTMGR_H_ */

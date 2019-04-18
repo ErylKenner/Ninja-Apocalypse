@@ -10,13 +10,14 @@
 #include <vector>
 #include "Ogre.h"
 #include "Aspect.h"
+#include "Engine.h"
 
 class UnitAI;
 class EntityMgr;
 
 class Entity381{
 public:
-    Entity381(int id, std::string mesh, Ogre::Vector3 pos, EntityMgr *entMgr);
+    Entity381(int id, std::string mesh, Ogre::Vector3 pos, Engine *eng);
     virtual ~Entity381();
     void Tick(float dt);
 
@@ -40,7 +41,7 @@ public:
     std::vector<Aspect*> aspects;
     bool isSelected;
 
-    EntityMgr *entityMgr;
+    Engine *engine;
 
 private:
 protected:
@@ -49,7 +50,7 @@ protected:
 
 class SphereEntity381 : public Entity381{
 public:
-    SphereEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr);
+    SphereEntity381(int id, Ogre::Vector3 pos, Engine * eng);
     ~SphereEntity381();
     virtual void InitAspects();
 private:
@@ -57,56 +58,8 @@ private:
 
 class CubeEntity381 : public Entity381{
 public:
-    CubeEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr);
+    CubeEntity381(int id, Ogre::Vector3 pos, Engine * eng);
     ~CubeEntity381();
-    virtual void InitAspects();
-private:
-};
-
-class DDG51Entity381 : public Entity381{
-public:
-    DDG51Entity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr);
-    ~DDG51Entity381();
-    virtual void InitAspects();
-private:
-};
-
-class CVN681Entity381 : public Entity381{
-public:
-    CVN681Entity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr);
-    ~CVN681Entity381();
-    virtual void InitAspects();
-private:
-};
-
-class AlienEntity381 : public Entity381{
-public:
-    AlienEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr);
-    ~AlienEntity381();
-    virtual void InitAspects();
-private:
-};
-
-class CigaretteEntity381 : public Entity381{
-public:
-    CigaretteEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr);
-    ~CigaretteEntity381();
-    virtual void InitAspects();
-private:
-};
-
-class SailboatEntity381 : public Entity381{
-public:
-    SailboatEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr);
-    ~SailboatEntity381();
-    virtual void InitAspects();
-private:
-};
-
-class BansheeEntity381 : public Entity381{
-public:
-    BansheeEntity381(int id, Ogre::Vector3 pos, EntityMgr *entMgr);
-    ~BansheeEntity381();
     virtual void InitAspects();
 private:
 };
