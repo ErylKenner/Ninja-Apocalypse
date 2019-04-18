@@ -5,6 +5,7 @@
 "${workspace_loc:/${ProjName}/inc/Managers}"
 /usr/local/include/OGRE/Overlay
 /usr/include/ois
+"${workspace_loc:/${ProjName}/inc/Aspects/Collider}"
 
 #Libraries
 OgreMain
