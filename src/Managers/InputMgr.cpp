@@ -60,7 +60,7 @@ void InputMgr::Init() {
 	mInputMgr = OIS::InputManager::createInputSystem(pl);
 
 	mKeyboard = static_cast<OIS::Keyboard*>(mInputMgr->createInputObject(
-			OIS::OISKeyboard, false));
+			OIS::OISKeyboard, true));
 	mKeyboard->setEventCallback(this);
 	mMouse = static_cast<OIS::Mouse*>(mInputMgr->createInputObject(
 			OIS::OISMouse, true));
@@ -361,6 +361,10 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
 }
 
 bool InputMgr::keyPressed(const OIS::KeyEvent& ke) {
+	switch(ke.key) {
+	default:
+		break;
+	}
 	return true;
 }
 
