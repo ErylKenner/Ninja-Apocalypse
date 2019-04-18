@@ -12,8 +12,8 @@
 #include "Animation.h"
 
 Player::Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos,
-		EntityMgr *entMgr) :
-		Entity381(id, "ninja.mesh", pos, entMgr), Speed(speed) {
+		Engine * eng) :
+		Entity381(id, "ninja.mesh", pos, eng), Speed(speed) {
 
 	aspects.push_back(new Renderable(this));
 	aspects.push_back(new Health(this));
