@@ -39,21 +39,18 @@ void GameMgr::LoadLevel(){
     Ogre::Entity *groundEntity = engine->gfxMgr->mSceneMgr->createEntity("ground");
     Ogre::SceneNode *groundNode = engine->gfxMgr->mSceneMgr->getRootSceneNode()->createChildSceneNode("GroundNode");
     groundNode->attachObject(groundEntity);
-    groundEntity->setMaterialName("OceanCg");
-    groundEntity->setCastShadows(false);
+    Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName("Examples/Rockwall");
+    material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(8, 8);
 
-    //Point light
-    Ogre::Light *pointLight = engine->gfxMgr->mSceneMgr->createLight("PointLight");
-    pointLight->setType(Ogre::Light::LT_POINT);
-    pointLight->setDiffuseColour(Ogre::ColourValue(0, 0, 0));
-    pointLight->setSpecularColour(Ogre::ColourValue(0, 0, 0));
-    pointLight->setPosition(250, 150, 250);
+    groundEntity->setMaterial(material);
+    groundEntity->setCastShadows(false);
 
     engine->gfxMgr->mSceneMgr->setAmbientLight(Ogre::ColourValue(.5, .5, .5));
 
     Ogre::Light* light = engine->gfxMgr->mSceneMgr->createLight("MainLight");
-    light->setPosition(20, 80, 50);
+    light->setPosition(20, 8000, 50);
 
+    /*
     Entity381 *ent;
     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Banshee, Ogre::Vector3(0, surfaceHeight, -300));
     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::DDG51, Ogre::Vector3(-600, surfaceHeight, -600));
@@ -63,6 +60,9 @@ void GameMgr::LoadLevel(){
     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sailboat, Ogre::Vector3(600, surfaceHeight, -600));
     engine->entityMgr->currentEntity = ent->entityId;
     ent->isSelected = true;
+	*/
+
+    MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::PlayerType, Ogre::Vector3(0, surfaceHeight, -400)));
 }
 
 void GameMgr::Stop(){
