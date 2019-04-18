@@ -17,7 +17,7 @@ class Player : public Entity381 {
 public:
 	float Speed;
 
-	Player(float speed, int id, Vector3 pos, EntityMgr *entMgr);
+	Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, EntityMgr *entMgr);
     ~Player();
     virtual void InitAspects();
 

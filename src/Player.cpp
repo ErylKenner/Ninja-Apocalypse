@@ -8,9 +8,11 @@
 #include "Player.h"
 #include "Renderable.h"
 #include "Health.h"
+#include "CameraTether.h"
 
-Player::Player(float speed, int id, Vector3 pos, EntityMgr *entMgr) : Entity381(id, "ninja.mesh", pos,entMgr), Speed(speed) {
+Player::Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, EntityMgr *entMgr) : Entity381(id, "ninja.mesh", pos,entMgr), Speed(speed){
 	Player::InitAspects();
+	aspects.push_back(new CameraTether(this, 1000, camera));
 }
 Player::~Player() {
 }
@@ -26,6 +28,6 @@ void Player::LookAt(Vector3 pos) {
 void Player::Move(Vector3 direction, float dt) {
 	direction.normalise();
 	position += Speed * direction * dt;
-	std::cout << direction << std::endl;
+	//std::cout << direction << std::endl;
 }
 

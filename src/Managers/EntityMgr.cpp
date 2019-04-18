@@ -5,6 +5,8 @@
 
 #include "EntityMgr.h"
 #include "Player.h"
+#include "Engine.h"
+#include "GfxMgr.h"
 
 EntityMgr::EntityMgr(Engine *eng) :
 		Mgr(eng), currentEntity(0) {
@@ -61,7 +63,7 @@ Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type,
 		entities.push_back(newEntity);
 		return newEntity;
 	} else if (type == EntityType::PlayerType) {
-		Entity381 *newEntity = new Player(400, id, pos, this);
+		Entity381 *newEntity = new Player(400, engine->gfxMgr->mCameraNode, id, pos, this);
 		entities.push_back(newEntity);
 		return newEntity;
 	} else {

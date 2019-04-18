@@ -66,8 +66,12 @@ void InputMgr::Init() {
 			OIS::OISMouse, true));
 	mMouse->setEventCallback(this);
 
-	pl.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
-	pl.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
+	pl.insert(
+			std::make_pair(std::string("x11_mouse_grab"),
+					std::string("false")));
+	pl.insert(
+			std::make_pair(std::string("x11_keyboard_grab"),
+					std::string("false")));
 
 	windowResized(engine->gfxMgr->mWindow);
 	Ogre::WindowEventUtilities::addWindowEventListener(engine->gfxMgr->mWindow,
@@ -87,9 +91,9 @@ void InputMgr::Tick(float dt) {
 	}
 
 	UpdatePlayer(dt);
-	UpdateCamera(dt);
-	UpdateShipDesiredAttributes(dt);
-	UpdateSelection(dt);
+	//UpdateCamera(dt);
+	//UpdateShipDesiredAttributes(dt);
+	//UpdateSelection(dt);
 }
 
 void InputMgr::UpdatePlayer(float dt) {
@@ -97,20 +101,20 @@ void InputMgr::UpdatePlayer(float dt) {
 
 	// uses yghj
 	Vector3 movement = Vector3::ZERO;
-	if (mKeyboard->isKeyDown(OIS::KC_G)) {
+	if (mKeyboard->isKeyDown(OIS::KC_A)) {
 		movement.x -= 1;
 	}
-	if (mKeyboard->isKeyDown(OIS::KC_J)) {
+	if (mKeyboard->isKeyDown(OIS::KC_D)) {
 		movement.x += 1;
 	}
-	if (mKeyboard->isKeyDown(OIS::KC_Y)) {
+	if (mKeyboard->isKeyDown(OIS::KC_W)) {
 		movement.z -= 1;
 	}
-	if (mKeyboard->isKeyDown(OIS::KC_H)) {
+	if (mKeyboard->isKeyDown(OIS::KC_S)) {
 		movement.z += 1;
 	}
 
-	if(movement != Vector3::ZERO) {
+	if (movement != Vector3::ZERO) {
 		player->Move(movement, dt);
 	}
 
@@ -271,15 +275,8 @@ void InputMgr::windowClosed(Ogre::RenderWindow* rw) {
 	}
 }
 
-bool InputMgr::mouseMoved(const OIS::MouseEvent& me) {
-	return true;
-}
-
-bool InputMgr::mouseReleased(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
-	return true;
-}
-
-bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
+std::pair<bool, Ogre::Vector3> InputMgr::GetClickedPosition(
+		const OIS::MouseEvent& me) {
 	Ogre::Viewport* vp = engine->gfxMgr->mViewport;
 	Ogre::Real x = me.state.X.abs / Ogre::Real(vp->getActualWidth());
 	Ogre::Real y = me.state.Y.abs / Ogre::Real(vp->getActualHeight());
@@ -294,7 +291,30 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
 
 	if (point.first) {
 		Ogre::Vector3 intersect = mouseRay.getPoint(point.second);
+		return std::pair<bool, Ogre::Vector3>(true, intersect);
+	} else {
+		return std::pair<bool, Ogre::Vector3>(false, Ogre::Vector3::ZERO);
+	}
+}
+
+bool InputMgr::mouseMoved(const OIS::MouseEvent& me) {
+	std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
+	if (intersection.first) {
+		engine->gameMgr->MainPlayer->LookAt(intersection.second);
+	}
+
+	return true;
+}
+
+bool InputMgr::mouseReleased(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
+	return true;
+}
+
+bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
+	std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
+	if (intersection.first) {
 		Ogre::Vector3 cameraPos = engine->gfxMgr->mCameraNode->getPosition();
+		Ogre::Vector3 intersect = intersection.second;
 
 		float shortestDistance = -1;
 		Entity381 *best = NULL;
@@ -302,9 +322,9 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
 				++i) {
 			Entity381 *cur = engine->entityMgr->entities[i];
 			Ogre::Vector3 pos = cur->position;
-			float distance =
-					(pos - intersect).crossProduct(pos - cameraPos).length()
-							/ (intersect - cameraPos).length();
+			float distance = (pos - intersect).crossProduct(
+					pos - cameraPos).length()
+					/ (intersect - cameraPos).length();
 			if ((distance < shortestDistance || shortestDistance == -1)
 					&& distance <= selectionDistanceThreshold) {
 				shortestDistance = distance;

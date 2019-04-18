@@ -45,6 +45,8 @@ private:
     void UpdateCamera(float dt);
     void UpdatePlayer(float dt);
 
+    std::pair<bool,Ogre::Vector3> GetClickedPosition(const OIS::MouseEvent& me);
+
     float shipAngleIncrement = 45;
     float shipSpeedIncrement = 10;
     float shipAltitudeIncrement = 10;
