@@ -10,6 +10,8 @@
 
 #include "Renderable.h"
 #include "UnitAI.h"
+#include "CircleCollider.h"
+#include "RectangleCollider.h"
 
 void Entity381::Tick(float dt){
     for(unsigned int i = 0; i < aspects.size(); ++i){
