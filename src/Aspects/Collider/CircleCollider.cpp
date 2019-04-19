@@ -24,7 +24,10 @@ CircleCollider::~CircleCollider(){
 bool CircleCollider::IsColliding(Collider *other) const{
     CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
     if(castToCircle != NULL){
-        return (entity381->position - castToCircle->entity381->position).length() <= radius + castToCircle->radius;
+        Ogre::Vector3 diff = entity381->position - castToCircle->entity381->position;
+        diff.y = 0;
+        float radiusTotal = radius + castToCircle->radius;
+        return diff.squaredLength() <= radiusTotal * radiusTotal;
     }
 
     RectangleCollider *castToRect = dynamic_cast<RectangleCollider *>(other);
@@ -58,7 +61,7 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
         //Fix entity's position for circle to circle collision
         Ogre::Vector3 diff = entity381->position - castToCircle->entity381->position;
         diff.y = 0;
-        entity381->position += (radius + castToCircle->radius - diff.length()) / diff.length() * diff;
+        entity381->position += ((radius + castToCircle->radius) / diff.length() - 1) * diff;
     }
 
     RectangleCollider *castToRect = dynamic_cast<RectangleCollider *>(other);

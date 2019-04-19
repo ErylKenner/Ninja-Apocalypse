@@ -26,7 +26,7 @@ void GameMgr::Init(){
 }
 
 void GameMgr::Tick(float dt){
-
+    //std::cout << "FPS: " << (int)(1 / dt);
 }
 
 void GameMgr::LoadLevel(){
@@ -48,7 +48,9 @@ void GameMgr::LoadLevel(){
     engine->gfxMgr->mSceneMgr->setAmbientLight(Ogre::ColourValue(.5, .5, .5));
 
     Ogre::Light* light = engine->gfxMgr->mSceneMgr->createLight("MainLight");
-    light->setPosition(20, 8000, 50);
+    light->setPosition(0, 8000, 0);
+
+    engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sphere, Ogre::Vector3(0, surfaceHeight, 0));
 
     MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::PlayerType,
             Ogre::Vector3(0, surfaceHeight, -400)));

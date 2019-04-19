@@ -10,9 +10,10 @@
 
 class Renderable : public Aspect{
 public:
-    Renderable(Entity381 *entity);
+    Renderable(Entity381 *entity, float angleOff = 0);
     ~Renderable();
     void Tick(float dt);
+    float AngleOffset;
 private:
 };
 
