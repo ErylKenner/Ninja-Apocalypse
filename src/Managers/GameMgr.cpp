@@ -13,6 +13,7 @@
 GameMgr::GameMgr(Engine *eng) :
         Mgr(eng),
         MainPlayer(0){
+    mPlane = Ogre::Plane(Ogre::Vector3::UNIT_Y, surfaceHeight);
 
 }
 
@@ -33,9 +34,7 @@ void GameMgr::LoadLevel(){
     engine->gfxMgr->mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
     engine->gfxMgr->mSceneMgr->setSkyBox(true, "Examples/MorningSkyBox");
 
-    //Ground plane
-    Ogre::Plane plane(Ogre::Vector3::UNIT_Y, surfaceHeight);
-    Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, plane, 100000, 100000,
+    Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, mPlane, 100000, 100000,
             10, 10, true, 1, 4000, 4000, Ogre::Vector3::UNIT_Z);
     Ogre::Entity *groundEntity = engine->gfxMgr->mSceneMgr->createEntity("ground");
     Ogre::SceneNode *groundNode = engine->gfxMgr->mSceneMgr->getRootSceneNode()->createChildSceneNode("GroundNode");
@@ -51,22 +50,8 @@ void GameMgr::LoadLevel(){
     Ogre::Light* light = engine->gfxMgr->mSceneMgr->createLight("MainLight");
     light->setPosition(20, 8000, 50);
 
-    engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sphere, Ogre::Vector3(-400, surfaceHeight + 50, -400));
-
-    /*
-     Entity381 *ent;
-     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Banshee, Ogre::Vector3(0, surfaceHeight, -300));
-     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::DDG51, Ogre::Vector3(-600, surfaceHeight, -600));
-     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::CVN68, Ogre::Vector3(-300, surfaceHeight, -600));
-     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Cigarette, Ogre::Vector3(0, surfaceHeight, -600));
-     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Alienship, Ogre::Vector3(300, surfaceHeight, -600));
-     ent = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sailboat, Ogre::Vector3(600, surfaceHeight, -600));
-     engine->entityMgr->currentEntity = ent->entityId;
-     ent->isSelected = true;
-     */
-
     MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::PlayerType,
-            Ogre::Vector3(0, surfaceHeight + 50, -400)));
+            Ogre::Vector3(0, surfaceHeight, -400)));
 }
 
 void GameMgr::Stop(){

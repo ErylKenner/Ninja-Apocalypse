@@ -282,11 +282,7 @@ std::pair<bool, Ogre::Vector3> InputMgr::GetClickedPosition(
 
 	Ogre::Ray mouseRay = engine->gfxMgr->mCamera->getCameraToViewportRay(x, y);
 
-	float groundHeight = engine->gameMgr->surfaceHeight;
-	Ogre::Plane ground(Ogre::Vector3(1, groundHeight, 0),
-			Ogre::Vector3(1, groundHeight, 1),
-			Ogre::Vector3(0, groundHeight, 1));
-	std::pair<bool, Ogre::Real> point = mouseRay.intersects(ground);
+	std::pair<bool, Ogre::Real> point = mouseRay.intersects(engine->gameMgr->mPlane);
 
 	if (point.first) {
 		Ogre::Vector3 intersect = mouseRay.getPoint(point.second);
@@ -360,8 +356,11 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id) {
 	return true;
 }
 
+#include "Enemy.h"
+
 bool InputMgr::keyPressed(const OIS::KeyEvent& ke) {
-	switch(ke.key) {
+
+	switch (ke.key) {
 	default:
 		break;
 	}
