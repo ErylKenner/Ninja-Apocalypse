@@ -15,7 +15,7 @@
 #include "Player.h"
 
 enum EntityType{
-    Sphere, Cube, PlayerType, EnemyType
+    Sphere, Rectangle, PlayerType, EnemyType
 };
 
 class EntityMgr : public Mgr{

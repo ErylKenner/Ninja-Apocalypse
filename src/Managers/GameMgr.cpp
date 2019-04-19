@@ -51,6 +51,9 @@ void GameMgr::LoadLevel(){
     light->setPosition(0, 8000, 0);
 
     engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sphere, Ogre::Vector3(0, surfaceHeight, 0));
+    Entity381* wall_1 = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle, Ogre::Vector3(600, surfaceHeight, 200));
+    wall_1->ogreSceneNode->resetOrientation();
+    wall_1->ogreSceneNode->yaw(Ogre::Degree(30));
 
     MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::PlayerType,
             Ogre::Vector3(0, surfaceHeight, -400)));

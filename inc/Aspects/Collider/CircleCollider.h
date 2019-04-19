@@ -10,7 +10,6 @@
 
 class CircleCollider : public Collider{
 public:
-    CircleCollider(Entity381 *entity);
     CircleCollider(Entity381 *entity, int rad);
     ~CircleCollider();
 
@@ -24,7 +23,6 @@ private:
 
 class MovableCircleCollider : public CircleCollider{
 public:
-    MovableCircleCollider(Entity381 *entity);
     MovableCircleCollider(Entity381 *entity, int rad);
     ~MovableCircleCollider();
 

@@ -7,11 +7,6 @@
 #include "RectangleCollider.h"
 #include <iostream>
 
-CircleCollider::CircleCollider(Entity381 *entity) :
-        Collider(entity),
-        radius(0){
-}
-
 CircleCollider::CircleCollider(Entity381 *entity, int rad) :
         Collider(entity),
         radius(rad){
@@ -42,10 +37,6 @@ void CircleCollider::OnCollision(Collider *other) const{
 }
 
 //--------------------------------------------------------------------
-
-MovableCircleCollider::MovableCircleCollider(Entity381 *entity) :
-        CircleCollider(entity){
-}
 
 MovableCircleCollider::MovableCircleCollider(Entity381 *entity, int rad) :
         CircleCollider(entity, rad){

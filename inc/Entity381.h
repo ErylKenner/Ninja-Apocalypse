@@ -36,6 +36,7 @@ public:
     int entityId;
     std::string meshName;
     Ogre::Vector3 position;
+    Ogre::Vector3 scale;
     Ogre::SceneNode *ogreSceneNode;
     Ogre::Entity *ogreEntity;
     std::vector<Aspect*> aspects;
@@ -50,18 +51,22 @@ protected:
 
 class SphereEntity381 : public Entity381{
 public:
-    SphereEntity381(int id, Ogre::Vector3 pos, Engine * eng);
+    SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng);
     ~SphereEntity381();
     virtual void InitAspects();
 private:
+    int radius;
 };
 
-class CubeEntity381 : public Entity381{
+class RectangleEntity381 : public Entity381{
 public:
-    CubeEntity381(int id, Ogre::Vector3 pos, Engine * eng);
-    ~CubeEntity381();
+    RectangleEntity381(int id, Ogre::Vector3 pos, int w, int l, int h, Engine * eng);
+    ~RectangleEntity381();
     virtual void InitAspects();
 private:
+    int width;
+    int length;
+    int height;
 };
 
 #endif /* INC_ENTITY381_H_ */

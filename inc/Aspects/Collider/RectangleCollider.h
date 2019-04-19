@@ -10,16 +10,14 @@
 
 class RectangleCollider : public Collider{
 public:
-    RectangleCollider(Entity381 *entity);
-    RectangleCollider(Entity381 *entity, int w, int h);
+    RectangleCollider(Entity381 *entity, int w, int l);
     ~RectangleCollider();
 
     virtual void OnCollision(Collider *other) const;
     virtual bool IsColliding(Collider *other) const;
-
-    int width;
-    int height;
 protected:
+    int width;
+    int length;
 private:
 };
 

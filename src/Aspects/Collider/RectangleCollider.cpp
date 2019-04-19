@@ -6,18 +6,10 @@
 #include "RectangleCollider.h"
 #include "CircleCollider.h"
 
-RectangleCollider::RectangleCollider(Entity381 *entity) :
-        Collider(entity),
-        width(0),
-        height(0){
-
-}
-
-RectangleCollider::RectangleCollider(Entity381 *entity, int w, int h) :
+RectangleCollider::RectangleCollider(Entity381 *entity, int w, int l) :
         Collider(entity),
         width(w),
-        height(h){
-
+        length(l){
 }
 
 RectangleCollider::~RectangleCollider(){
@@ -31,6 +23,9 @@ void RectangleCollider::OnCollision(Collider *other) const{
 bool RectangleCollider::IsColliding(Collider *other) const{
     CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
     if(castToCircle != NULL){
+
+
+        //std::cout << "Rect colliding";
         //Handle rectangle and circle collision detection
     }
 

@@ -36,7 +36,7 @@ void WaveMgr::Tick(float dt) {
 		// SpawnEnemy
 		SpawnEnemy();
 	}
-	//std::cout << "# enemies: " << spawnedEnemyList.size() << std::endl;
+	//std::cout << " # enemies: " << spawnedEnemyList.size() << std::endl;
 }
 void WaveMgr::LoadLevel() {
 }
