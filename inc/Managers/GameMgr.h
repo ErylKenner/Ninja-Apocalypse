@@ -21,6 +21,7 @@ public:
     void LoadLevel();
     void Stop();
 
+    Ogre::Plane mPlane;
     float surfaceHeight = -100;
     Player * MainPlayer;
 protected:
