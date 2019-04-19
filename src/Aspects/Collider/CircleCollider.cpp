@@ -33,7 +33,6 @@ bool CircleCollider::IsColliding(Collider *other) const{
 }
 
 void CircleCollider::OnCollision(Collider *other) const{
-
 }
 
 //--------------------------------------------------------------------
@@ -47,6 +46,7 @@ MovableCircleCollider::~MovableCircleCollider(){
 }
 
 void MovableCircleCollider::OnCollision(Collider *other) const{
+    CircleCollider::OnCollision(other);
     CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
     if(castToCircle != NULL){
         //Fix entity's position for circle to circle collision
