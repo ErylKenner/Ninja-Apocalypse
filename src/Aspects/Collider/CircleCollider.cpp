@@ -52,7 +52,8 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
         //Fix entity's position for circle to circle collision
         Ogre::Vector3 diff = entity381->position - castToCircle->entity381->position;
         diff.y = 0;
-        entity381->position += ((radius + castToCircle->radius) / diff.length() - 1) * diff;
+        entity381->position += ((radius + castToCircle->radius) / diff.length() - 1)
+                * diff;
     }
 
     RectangleCollider *castToRect = dynamic_cast<RectangleCollider *>(other);

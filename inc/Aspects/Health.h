@@ -23,5 +23,4 @@ public:
 	virtual void Tick(float dt);
 };
 
-
 #endif /* INC_ASPECTS_HEALTH_H_ */

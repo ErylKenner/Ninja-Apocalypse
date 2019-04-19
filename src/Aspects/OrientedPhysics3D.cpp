@@ -6,7 +6,8 @@
 #include "OrientedPhysics3D.h"
 #include "Entity381.h"
 
-OrientedPhysics3D::OrientedPhysics3D(Entity381 *entity, float accel, float turning, float maxSp) :
+OrientedPhysics3D::OrientedPhysics3D(Entity381 *entity, float accel, float turning,
+                                     float maxSp) :
         Aspect(entity),
         desiredSpeed(0),
         desiredHeading(entity->ogreSceneNode->getOrientation().getYaw().valueDegrees()),

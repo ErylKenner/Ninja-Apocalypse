@@ -14,15 +14,15 @@ class GfxMgr;
 class InputMgr;
 class WaveMgr;
 
-class Engine {
+class Engine{
 public:
     Engine();
     virtual ~Engine();
 
     EntityMgr *entityMgr;
-    GameMgr   *gameMgr;
-    GfxMgr    *gfxMgr;
-    InputMgr  *inputMgr;
+    GameMgr *gameMgr;
+    GfxMgr *gfxMgr;
+    InputMgr *inputMgr;
     WaveMgr * waveMgr;
 
     void Init();

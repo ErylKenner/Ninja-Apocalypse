@@ -71,7 +71,9 @@ void GfxMgr::Init(){
     mViewport = mWindow->addViewport(mCamera);
     mViewport->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
 
-    mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
+    mCamera->setAspectRatio(
+            Ogre::Real(mViewport->getActualWidth())
+                    / Ogre::Real(mViewport->getActualHeight()));
 
     mCameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
     mCameraNode->attachObject(mCamera);

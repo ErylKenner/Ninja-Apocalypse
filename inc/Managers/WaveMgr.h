@@ -12,35 +12,34 @@
 #include "Mgr.h"
 #include "Enemy.h"
 
-class WaveMgr : public Mgr {
+class WaveMgr : public Mgr{
 
 public:
 
-	int enemiesPerWave;
-	int enemiesRemaining;
-	int waveNumber;
-	float spawnDelay;
-	float timeElapsed;
+    int enemiesPerWave;
+    int enemiesRemaining;
+    int waveNumber;
+    float spawnDelay;
+    float timeElapsed;
 
-	std::vector<Enemy*> spawnedEnemyList;
+    std::vector<Enemy*> spawnedEnemyList;
 
-	WaveMgr(Engine *eng);
-	~WaveMgr();
+    WaveMgr(Engine *eng);
+    ~WaveMgr();
 
-	void Init();
-	void Tick(float dt);
-	void LoadLevel();
-	void Stop();
+    void Init();
+    void Tick(float dt);
+    void LoadLevel();
+    void Stop();
 
-	void SpawnEnemy();
-	void OnEnemyKilled(Enemy * enemy);
-	void NextWave();
-
+    void SpawnEnemy();
+    void OnEnemyKilled(Enemy * enemy);
+    void NextWave();
 
 private:
-	float timeSinceLastSpawn;
+    float timeSinceLastSpawn;
 
-	int deltaValue(int minimum, int radius);
+    int deltaValue(int minimum, int radius);
 };
 
 #endif /* INC_MANAGERS_WAVEMGR_H_ */

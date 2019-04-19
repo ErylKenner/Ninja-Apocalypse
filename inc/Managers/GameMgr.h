@@ -6,8 +6,6 @@
 #ifndef INC_GAMEMGR_H_
 #define INC_GAMEMGR_H_
 
-
-
 #include "Mgr.h"
 #include "Player.h"
 

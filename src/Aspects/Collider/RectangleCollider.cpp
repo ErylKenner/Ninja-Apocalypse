@@ -24,7 +24,6 @@ bool RectangleCollider::IsColliding(Collider *other) const{
     CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
     if(castToCircle != NULL){
 
-
         //std::cout << "Rect colliding";
         //Handle rectangle and circle collision detection
     }

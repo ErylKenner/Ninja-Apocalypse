@@ -23,13 +23,13 @@ void Command::GoTo(Ogre::Vector3 diff, float dt){
     float stoppingRadius = (orientedPhysics3D->maxSpeed * orientedPhysics3D->maxSpeed)
             / (2 * orientedPhysics3D->acceleration);
     //if(dist > stoppingRadius){
-        orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
+    orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
     /*} else if(unitAI != NULL && unitAI->NumCommands() > 1){
-        orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
-    } else{
-        orientedPhysics3D->desiredSpeed = Ogre::Math::Sqrt(
-                2 * dist * orientedPhysics3D->acceleration);
-    }*/
+     orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
+     } else{
+     orientedPhysics3D->desiredSpeed = Ogre::Math::Sqrt(
+     2 * dist * orientedPhysics3D->acceleration);
+     }*/
 }
 
 //-----------------------------------

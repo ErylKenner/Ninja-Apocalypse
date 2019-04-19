@@ -10,7 +10,7 @@
 
 class Engine;
 
-class Mgr {
+class Mgr{
 public:
     Mgr(Engine *engine);
     virtual ~Mgr();

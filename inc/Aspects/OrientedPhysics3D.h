@@ -9,7 +9,7 @@
 #include "Aspect.h"
 #include "OgreVector3.h"
 
-class OrientedPhysics3D : public Aspect {
+class OrientedPhysics3D : public Aspect{
 public:
     OrientedPhysics3D(Entity381 *entity, float accel, float turning, float maxSp);
     ~OrientedPhysics3D();
