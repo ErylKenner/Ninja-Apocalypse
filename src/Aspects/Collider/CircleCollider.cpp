@@ -5,6 +5,9 @@
 
 #include "CircleCollider.h"
 #include "RectangleCollider.h"
+#include "Health.h"
+#include "Enemy.h"
+#include "Player.h"
 #include <iostream>
 
 CircleCollider::CircleCollider(Entity381 *entity, int rad) :
@@ -60,5 +63,46 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
     if(castToRect != NULL){
         //Fix entity's position for circle to rectangle collision
     }
+}
+
+//--------------------------------------------------------------------
+
+PlayerMovableCircleCollider::PlayerMovableCircleCollider(Entity381 *entity, int rad) :
+        MovableCircleCollider(entity, rad){
+}
+
+PlayerMovableCircleCollider::~PlayerMovableCircleCollider(){
+
+}
+
+void PlayerMovableCircleCollider::OnCollision(Collider *other) const{
+    MovableCircleCollider::OnCollision(other);
+
+    EnemyMovableCircleCollider *castToEnemy = dynamic_cast<EnemyMovableCircleCollider *>(other);
+    if(castToEnemy != NULL){
+        Player *player = dynamic_cast<Player *>(entity381);
+        Enemy *enemy = dynamic_cast<Enemy *>(other->entity381);
+        if(player != NULL && enemy != NULL){
+            if(!player->GetAspect<Health>()->TakeDamage(enemy->hitDamage)){
+                player->OnDeath();
+            }
+            std::cout << "Player health: " << player->GetAspect<Health>()->CurrentHealth << std::endl;
+        }
+    }
+}
+
+//--------------------------------------------------------------------
+
+EnemyMovableCircleCollider::EnemyMovableCircleCollider(Entity381 *entity, int rad) :
+        MovableCircleCollider(entity, rad){
+}
+
+EnemyMovableCircleCollider::~EnemyMovableCircleCollider(){
+
+}
+
+void EnemyMovableCircleCollider::OnCollision(Collider *other) const{
+    MovableCircleCollider::OnCollision(other);
+
 }
 

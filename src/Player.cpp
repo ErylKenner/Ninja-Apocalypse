@@ -15,11 +15,11 @@
 Player::Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engine * eng) :
         Entity381(id, "ninja.mesh", pos, eng),
         Speed(speed){
-    aspects.push_back(new Health(this));
+    aspects.push_back(new Health(this, 100, 25));
     anim = new Animation(this);
     aspects.push_back(anim);
     aspects.push_back(new CameraTether(this, 1000, camera));
-    aspects.push_back(new MovableCircleCollider(this, 50));
+    aspects.push_back(new PlayerMovableCircleCollider(this, 50));
     aspects.push_back(new Renderable(this));
 }
 Player::~Player(){
@@ -45,6 +45,11 @@ void Player::Move(Vector3 direction, float dt){
         }
     }
 }
+
+void Player::OnDeath(){
+    engine->keepRunning = false;
+}
+
 /*
  void Player::OnCollisionCallback(Collider *other){
  std::cout << "Circle1 had " << (dynamic_cast<CircleCollider *>(other) == NULL ? "Rectangle1" : "Circle2") << " collide with it"

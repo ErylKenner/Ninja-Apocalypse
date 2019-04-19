@@ -18,6 +18,7 @@ public:
     virtual void InitAspects();
 
     void OnDeath();
+    int hitDamage;
 private:
     Animation * anim;
 };
