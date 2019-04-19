@@ -3,7 +3,6 @@
  * EMAIL: eryl.kenner@gmail.com
  */
 
-
 #ifndef INC_ASPECTS_COLLIDER_CIRCLECOLLIDER_H_
 #define INC_ASPECTS_COLLIDER_CIRCLECOLLIDER_H_
 
@@ -12,11 +11,24 @@
 class CircleCollider : public Collider{
 public:
     CircleCollider(Entity381 *entity);
+    CircleCollider(Entity381 *entity, int rad);
     ~CircleCollider();
-    void Tick(float dt);
-    bool IsColliding() const;
+
+    virtual void OnCollision(Collider *other) const;
+    virtual bool IsColliding(Collider *other) const;
+
+    int radius;
 protected:
 private:
+};
+
+class MovableCircleCollider : public CircleCollider{
+public:
+    MovableCircleCollider(Entity381 *entity);
+    MovableCircleCollider(Entity381 *entity, int rad);
+    ~MovableCircleCollider();
+
+    virtual void OnCollision(Collider *other) const;
 };
 
 #endif /* INC_ASPECTS_COLLIDER_CIRCLECOLLIDER_H_ */

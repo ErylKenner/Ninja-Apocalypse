@@ -42,8 +42,9 @@ SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, Engine * eng) :
 }
 
 void SphereEntity381::InitAspects(){
-    aspects.push_back(new Renderable(this));
     aspects.push_back(new UnitAI(this));
+    aspects.push_back(new CircleCollider(this, 100));
+    aspects.push_back(new Renderable(this));
 }
 
 SphereEntity381::~SphereEntity381(){
@@ -55,8 +56,9 @@ CubeEntity381::CubeEntity381(int id, Ogre::Vector3 pos, Engine * eng) :
 }
 
 void CubeEntity381::InitAspects(){
-    aspects.push_back(new Renderable(this));
     aspects.push_back(new UnitAI(this));
+    aspects.push_back(new RectangleCollider(this, 100, 100));
+    aspects.push_back(new Renderable(this));
 }
 
 CubeEntity381::~CubeEntity381(){

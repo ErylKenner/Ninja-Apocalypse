@@ -11,6 +11,7 @@
 #include "Entity381.h"
 #include "OgreAnimationState.h"
 #include "Animation.h"
+#include "Collider.h"
 
 using Ogre::Vector3;
 
@@ -32,6 +33,8 @@ public:
 
 private:
     Animation * anim;
+
+    //static void OnCollisionCallback(Collider *other);
 
 };
 

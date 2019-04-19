@@ -4,21 +4,66 @@
  */
 
 #include "CircleCollider.h"
+#include "RectangleCollider.h"
+#include <iostream>
 
 CircleCollider::CircleCollider(Entity381 *entity) :
-        Collider(entity){
+        Collider(entity),
+        radius(0){
+}
 
+CircleCollider::CircleCollider(Entity381 *entity, int rad) :
+        Collider(entity),
+        radius(rad){
 }
 
 CircleCollider::~CircleCollider(){
 
 }
 
-void CircleCollider::Tick(float dt){
+bool CircleCollider::IsColliding(Collider *other) const{
+    CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
+    if(castToCircle != NULL){
+        return (entity381->position - castToCircle->entity381->position).length() <= radius + castToCircle->radius;
+    }
+
+    RectangleCollider *castToRect = dynamic_cast<RectangleCollider *>(other);
+    if(castToRect != NULL){
+        //Handle circle and rectangle collision detection
+    }
+    return false;
+}
+
+void CircleCollider::OnCollision(Collider *other) const{
 
 }
 
-bool CircleCollider::IsColliding() const{
-    return false;
+//--------------------------------------------------------------------
+
+MovableCircleCollider::MovableCircleCollider(Entity381 *entity) :
+        CircleCollider(entity){
+}
+
+MovableCircleCollider::MovableCircleCollider(Entity381 *entity, int rad) :
+        CircleCollider(entity, rad){
+}
+
+MovableCircleCollider::~MovableCircleCollider(){
+
+}
+
+void MovableCircleCollider::OnCollision(Collider *other) const{
+    CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
+    if(castToCircle != NULL){
+        //Fix entity's position for circle to circle collision
+        Ogre::Vector3 diff = entity381->position - castToCircle->entity381->position;
+        diff.y = 0;
+        entity381->position += (radius + castToCircle->radius - diff.length()) / diff.length() * diff;
+    }
+
+    RectangleCollider *castToRect = dynamic_cast<RectangleCollider *>(other);
+    if(castToRect != NULL){
+        //Fix entity's position for circle to rectangle collision
+    }
 }
 

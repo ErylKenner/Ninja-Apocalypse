@@ -3,7 +3,6 @@
  * EMAIL: eryl.kenner@gmail.com
  */
 
-
 #ifndef INC_ASPECTS_COLLIDER_RECTANGLECOLLIDER_H_
 #define INC_ASPECTS_COLLIDER_RECTANGLECOLLIDER_H_
 
@@ -12,9 +11,14 @@
 class RectangleCollider : public Collider{
 public:
     RectangleCollider(Entity381 *entity);
+    RectangleCollider(Entity381 *entity, int w, int h);
     ~RectangleCollider();
-    void Tick(float dt);
-    bool IsColliding() const;
+
+    virtual void OnCollision(Collider *other) const;
+    virtual bool IsColliding(Collider *other) const;
+
+    int width;
+    int height;
 protected:
 private:
 };
