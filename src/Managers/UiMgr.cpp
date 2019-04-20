@@ -47,10 +47,6 @@ void UiMgr::LoadLevel() {
 			300, 200);
 	pbar->setProgress(100);
 
-	mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "MyButton", "<3 Garrett");
-
-	//mTrayMgr->hideCursor();
-
 }
 
 void UiMgr::Tick(float dt) {

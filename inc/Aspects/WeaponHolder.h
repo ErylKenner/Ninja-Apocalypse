@@ -20,11 +20,13 @@ public:
     ~WeaponHolder();
 
     void SetWeapon(Weapon * weapon);
+    void ShootWeapon();
+    void ReloadWeapon();
 
     virtual void Tick(float dt);
 
 private:
-
+    float timeSinceLastShot;
 
 };
 

@@ -15,6 +15,13 @@ public:
     Weapon(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos, Engine * eng);
     virtual ~Weapon();
     virtual void InitAspects();
+
+    float FireRate;
+    int BulletMax;
+    int CurrentBulletNumber;
+    int DamageAmount;
+
+    void Fire();
 };
 
 

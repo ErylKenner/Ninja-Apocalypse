@@ -53,6 +53,8 @@ private:
     float cameraSpeed = 400;
     float cameraRotationSpeed = 30;
     float selectionDistanceThreshold = 30;
+
+    bool mouseHeld;
 };
 
 #endif /* INC_INPUTMGR_H_ */

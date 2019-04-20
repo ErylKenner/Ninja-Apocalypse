@@ -14,6 +14,7 @@
 #include "EntityMgr.h"
 #include "UiMgr.h"
 #include "GameMgr.h"
+#include "WeaponHolder.h"
 
 #include "Player.h"
 
@@ -29,7 +30,8 @@ InputMgr::InputMgr(Engine *eng) :
         Mgr(eng),
         mInputMgr(0),
         mMouse(0),
-        mKeyboard(0){
+        mKeyboard(0),
+        mouseHeld(0){
 
 }
 
@@ -79,6 +81,10 @@ void InputMgr::Tick(float dt){
     if(mKeyboard->isKeyDown(OIS::KC_ESCAPE)){
         engine->keepRunning = false;
         return;
+    }
+
+    if(mouseHeld) {
+        engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->ShootWeapon();
     }
 
     UpdatePlayer(dt);
@@ -297,12 +303,19 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent& me){
 
 bool InputMgr::mouseReleased(const OIS::MouseEvent& me, OIS::MouseButtonID id){
     if (engine->uiMgr->mTrayMgr->injectMouseUp(me, id)) return true;
+
+    mouseHeld = false;
+
     return true;
 }
 
 bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
     if (engine->uiMgr->mTrayMgr->injectMouseDown(me, id)) return true;
 
+    mouseHeld = true;
+
+
+    /*
     std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
     if(intersection.first){
         Ogre::Vector3 cameraPos = engine->gfxMgr->mCameraNode->getPosition();
@@ -347,6 +360,8 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
         }
         //engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sphere, intersect);
     }
+
+    */
     return true;
 }
 
@@ -355,6 +370,9 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
 bool InputMgr::keyPressed(const OIS::KeyEvent& ke){
 
     switch(ke.key) {
+        case OIS::KC_R:
+            engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->ReloadWeapon();
+            break;
         default:
             break;
     }
