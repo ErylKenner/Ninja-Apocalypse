@@ -9,6 +9,8 @@
 #include "GameMgr.h"
 #include "GfxMgr.h"
 #include "EntityMgr.h"
+#include "Weapon.h"
+#include "WeaponHolder.h"
 
 GameMgr::GameMgr(Engine *eng) :
         Mgr(eng),
@@ -63,6 +65,13 @@ void GameMgr::LoadLevel(){
 
     MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(
             EntityType::PlayerType, Ogre::Vector3(0, surfaceHeight, -400)));
+
+    Weapon * weapon = static_cast<Weapon*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::WeaponType,
+            Ogre::Vector3(0, surfaceHeight, -500)));
+
+    MainPlayer->GetAspect<WeaponHolder>()->SetWeapon(weapon);
+
+
 }
 
 void GameMgr::Stop(){

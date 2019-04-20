@@ -33,7 +33,6 @@ public:
 
 private:
     Animation * anim;
-
     //static void OnCollisionCallback(Collider *other);
 
 };

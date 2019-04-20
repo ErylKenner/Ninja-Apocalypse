@@ -6,6 +6,7 @@
 #include "EntityMgr.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Weapon.h"
 #include "Engine.h"
 #include "GfxMgr.h"
 
@@ -50,6 +51,10 @@ Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector
             break;
         case EntityType::EnemyType:
             newEntity = new Enemy(id, pos, engine);
+            entities.push_back(newEntity);
+            return newEntity;
+        case EntityType::WeaponType:
+            newEntity = new Weapon(id, "cube.mesh", Ogre::Vector3(10, 10, 40), pos, engine);
             entities.push_back(newEntity);
             return newEntity;
         default:
