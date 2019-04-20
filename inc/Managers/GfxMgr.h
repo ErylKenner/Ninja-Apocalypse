@@ -12,8 +12,7 @@
 #include "Mgr.h"
 
 class GfxMgr : public Mgr,
-               public Ogre::WindowEventListener,
-               public Ogre::FrameListener{
+               public Ogre::WindowEventListener{
 public:
     GfxMgr(Engine *eng);
     ~GfxMgr();

@@ -13,6 +13,7 @@ class GameMgr;
 class GfxMgr;
 class InputMgr;
 class WaveMgr;
+class UiMgr;
 
 class Engine{
 public:
@@ -24,6 +25,7 @@ public:
     GfxMgr *gfxMgr;
     InputMgr *inputMgr;
     WaveMgr * waveMgr;
+    UiMgr * uiMgr;
 
     void Init();
     void Run();
