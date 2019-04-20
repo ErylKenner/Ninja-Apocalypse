@@ -41,6 +41,12 @@ public:
     std::vector<Aspect*> aspects;
     bool isSelected;
 
+    //sound purposes
+	std::string soundFile;
+	bool playSound;
+	unsigned int auioId;
+
+
     Engine *engine;
 
 private:

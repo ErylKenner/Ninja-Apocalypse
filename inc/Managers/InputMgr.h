@@ -15,7 +15,7 @@
 #include "Mgr.h"
 
 class InputMgr : public Mgr,
-                 public Ogre::WindowEventListener,
+                 //public Ogre::WindowEventListener,
                  public OIS::MouseListener,
                  public OIS::KeyListener{
 public:

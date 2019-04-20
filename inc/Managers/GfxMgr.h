@@ -6,6 +6,7 @@
 #ifndef INC_GFXMGR_H_
 #define INC_GFXMGR_H_
 
+#include <SdkTrays.h>
 #include <OgreRoot.h>
 #include <OgreWindowEventUtilities.h>
 
@@ -30,6 +31,7 @@ public:
     Ogre::SceneManager* mSceneMgr;
     Ogre::SceneNode *mCameraNode;
     Ogre::Viewport *mViewport;
+	Ogre::OverlaySystem* mOverlaySystem;
     Ogre::Camera* mCamera;
 private:
 };

@@ -24,13 +24,13 @@ class Command;
 class Intercept;
 
 InputMgr::InputMgr(Engine *eng) :
-		Mgr(eng), mInputMgr(0), mMouse(0), mKeyboard(0) {
+		Mgr(eng), OIS::KeyListener(), OIS::MouseListener(), mInputMgr(0), mKeyboard(0), mMouse(0) {
 
 }
 
 InputMgr::~InputMgr() {
-	Ogre::WindowEventUtilities::removeWindowEventListener(
-			engine->gfxMgr->mWindow, this);
+	//Ogre::WindowEventUtilities::removeWindowEventListener(
+			//engine->gfxMgr->mWindow, this);
 	windowClosed(engine->gfxMgr->mWindow);
 }
 
@@ -61,9 +61,19 @@ void InputMgr::Init() {
 
 	mKeyboard = static_cast<OIS::Keyboard*>(mInputMgr->createInputObject(
 			OIS::OISKeyboard, true));
-	mKeyboard->setEventCallback(this);
+
 	mMouse = static_cast<OIS::Mouse*>(mInputMgr->createInputObject(
 			OIS::OISMouse, true));
+
+	int left, top;
+		  unsigned int width, height, depth;
+
+		  engine->gfxMgr->mWindow->getMetrics(width, height, depth, left, top);
+		  const OIS::MouseState &ms = mMouse->getMouseState();
+		  ms.width = width;
+		  ms.height = height;
+
+	mKeyboard->setEventCallback(this);
 	mMouse->setEventCallback(this);
 
 	pl.insert(
@@ -74,8 +84,8 @@ void InputMgr::Init() {
 					std::string("false")));
 
 	windowResized(engine->gfxMgr->mWindow);
-	Ogre::WindowEventUtilities::addWindowEventListener(engine->gfxMgr->mWindow,
-			this);
+	//Ogre::WindowEventUtilities::addWindowEventListener(engine->gfxMgr->mWindow,
+			//this);
 }
 
 void InputMgr::Tick(float dt) {

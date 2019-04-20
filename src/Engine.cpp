@@ -10,14 +10,16 @@
 #include <GameMgr.h>
 #include <GfxMgr.h>
 #include <InputMgr.h>
+#include <UiMgr.h>
 
 Engine::Engine() {
-    entityMgr = 0; //null
-    gameMgr   = 0;
-    gfxMgr    = 0;
-    inputMgr  = 0;
+	gfxMgr    = 0;
+	entityMgr = 0; //null
+	gameMgr   = 0;
+	inputMgr  = 0;
+	uiMgr = 0;
 
-    keepRunning = true;
+	keepRunning = true;
 
 }
 
@@ -26,56 +28,63 @@ Engine::~Engine() {
 }
 
 void Engine::Init(){
-    entityMgr = new EntityMgr(this);
-    gameMgr   = new GameMgr(this);
-    gfxMgr    = new GfxMgr(this);
-    inputMgr  = new InputMgr(this);
+	gfxMgr    = new GfxMgr(this);
+	entityMgr = new EntityMgr(this);
+	gameMgr   = new GameMgr(this);
+	inputMgr  = new InputMgr(this);
+	uiMgr 	  = new UiMgr(this);
 
-    //--------------------------------------------------------------
-    entityMgr->Init();
-    gfxMgr->Init();
-    inputMgr->Init(); // must initialize AFTER gfx manager
-    gameMgr->Init();
+	//--------------------------------------------------------------
+	gfxMgr->Init();
+	entityMgr->Init();
+	inputMgr->Init(); // must initialize AFTER gfx manager
+	gameMgr->Init();
+	uiMgr->Init();
 
-    //--------------------------------------------------------------
-    entityMgr->LoadLevel();
-    gfxMgr->LoadLevel();
-    inputMgr->LoadLevel();
-    gameMgr->LoadLevel();
+	//--------------------------------------------------------------
+	gfxMgr->LoadLevel();
+	entityMgr->LoadLevel();
+	inputMgr->LoadLevel();
+	gameMgr->LoadLevel();
+	uiMgr->LoadLevel();
 }
 
 
 void Engine::TickAll(float dt){
-    gfxMgr->Tick(dt);
-    inputMgr->Tick(dt);
-    entityMgr->Tick(dt);
-    gameMgr->Tick(dt);
+	gfxMgr->Tick(dt);
+	inputMgr->Tick(dt);
+	entityMgr->Tick(dt);
+	gameMgr->Tick(dt);
+	uiMgr->Tick(dt);
 }
 
 
 void Engine::Run(){
-    const float MICROSECONDS_PER_SECOND = 1000000.0f;
-    Ogre::Timer* timer = new Ogre::Timer();
+	const float MICROSECONDS_PER_SECOND = 1000000.0f;
+	Ogre::Timer* timer = new Ogre::Timer();
 
-    float oldTime = timer->getMicroseconds()/MICROSECONDS_PER_SECOND;
-    float newTime = timer->getMicroseconds()/MICROSECONDS_PER_SECOND;
-    float dt = newTime - oldTime;
+	float oldTime = timer->getMicroseconds()/MICROSECONDS_PER_SECOND;
+	float newTime = timer->getMicroseconds()/MICROSECONDS_PER_SECOND;
+	float dt = newTime - oldTime;
 
-    while(keepRunning){
+	while(keepRunning){
 
-        TickAll(dt);
+		TickAll(dt);
 
-        newTime = timer->getMicroseconds()/MICROSECONDS_PER_SECOND;
-        dt = newTime - oldTime;
-        oldTime = newTime;
+		newTime = timer->getMicroseconds()/MICROSECONDS_PER_SECOND;
+		dt = newTime - oldTime;
+		oldTime = newTime;
 
-    }
-    // main must call cleanup or bad stuff happens->Cleanup()
+	}
+
+	// main must call cleanup or bad stuff happens->Cleanup()
 }
 
 void Engine::Cleanup(){
-    inputMgr->Stop();
-    gfxMgr->Stop();
-    entityMgr->Stop();
-    gameMgr->Stop();
+	inputMgr->Stop();
+	gfxMgr->Stop();
+	entityMgr->Stop();
+	gameMgr->Stop();
+
 }
+
