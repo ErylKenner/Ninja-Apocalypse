@@ -6,11 +6,13 @@
 #include <OgreRoot.h>
 #include <OgreRenderWindow.h>
 #include <OgreVector3.h>
+#include <SdkTrays.h>
 
 #include "Engine.h"
 #include "InputMgr.h"
 #include "GfxMgr.h"
 #include "EntityMgr.h"
+#include "UiMgr.h"
 #include "GameMgr.h"
 
 #include "Player.h"
@@ -48,7 +50,7 @@ void InputMgr::Init(){
     pl.insert(std::make_pair(std::string("WINDOW"), windowHandleStr.str()));
 
     pl.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
-    pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
+    pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("true")));
     pl.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
     pl.insert(std::make_pair(std::string("XAutoRepeatOn"), std::string("true")));
 
@@ -233,7 +235,13 @@ void InputMgr::LoadLevel(){
 }
 
 void InputMgr::Stop(){
+    if(mInputMgr != NULL){
+        mInputMgr->destroyInputObject(mMouse);
+        mInputMgr->destroyInputObject(mKeyboard);
 
+        OIS::InputManager::destroyInputSystem(mInputMgr);
+        mInputMgr = 0;
+    }
 }
 
 void InputMgr::windowResized(Ogre::RenderWindow* rw){
@@ -277,6 +285,8 @@ std::pair<bool, Ogre::Vector3> InputMgr::GetClickedPosition(const OIS::MouseEven
 }
 
 bool InputMgr::mouseMoved(const OIS::MouseEvent& me){
+    if (engine->uiMgr->mTrayMgr->injectMouseMove(me)) return true;
+
     std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
     if(intersection.first){
         engine->gameMgr->MainPlayer->LookAt(intersection.second);
@@ -286,10 +296,13 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent& me){
 }
 
 bool InputMgr::mouseReleased(const OIS::MouseEvent& me, OIS::MouseButtonID id){
+    if (engine->uiMgr->mTrayMgr->injectMouseUp(me, id)) return true;
     return true;
 }
 
 bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
+    if (engine->uiMgr->mTrayMgr->injectMouseDown(me, id)) return true;
+
     std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
     if(intersection.first){
         Ogre::Vector3 cameraPos = engine->gfxMgr->mCameraNode->getPosition();

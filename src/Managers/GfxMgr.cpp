@@ -11,7 +11,9 @@
 #include <OgreSceneManager.h>
 #include <OgreRenderWindow.h>
 
+#include "Engine.h"
 #include "GfxMgr.h"
+#include "UiMgr.h"
 
 GfxMgr::GfxMgr(Engine *eng) :
         Mgr(eng),
@@ -59,6 +61,9 @@ void GfxMgr::Init(){
     mRoot->showConfigDialog();
 
     mWindow = mRoot->initialise(true, "Application 381 Render Window");
+
+    // mOverlaySystem must be created before initialising the resource groups
+    engine->uiMgr->mOverlaySystem = new Ogre::OverlaySystem();
 
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
