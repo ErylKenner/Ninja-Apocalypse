@@ -20,6 +20,7 @@ public:
     Entity381(int id, std::string mesh, Ogre::Vector3 pos, Engine *eng);
     virtual ~Entity381();
     void Tick(float dt);
+	void DefaultInit();
 
     template<class AspectType>
     AspectType* GetAspect(){
@@ -41,11 +42,19 @@ public:
     std::vector<Aspect*> aspects;
     bool isSelected;
 
+	//selection
+	bool didSelectSoundPlay;
+
+	//sound
+	std::string soundFile;
+	bool playSound;
+	unsigned int auioId;
+
     Engine *engine;
 
 private:
 protected:
-    virtual void InitAspects() = 0;
+//    virtual void InitAspects() = 0;
 };
 
 class SphereEntity381 : public Entity381{

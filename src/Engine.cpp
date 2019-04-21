@@ -10,12 +10,14 @@
 #include <GameMgr.h>
 #include <GfxMgr.h>
 #include <InputMgr.h>
+#include <SoundMgr.h>
 
 Engine::Engine() {
     entityMgr = 0; //null
     gameMgr   = 0;
     gfxMgr    = 0;
     inputMgr  = 0;
+
 
     keepRunning = true;
 
@@ -30,18 +32,21 @@ void Engine::Init(){
     gameMgr   = new GameMgr(this);
     gfxMgr    = new GfxMgr(this);
     inputMgr  = new InputMgr(this);
+	//soundMgr = new OgreSND::SoundMgr(this);
 
     //--------------------------------------------------------------
     entityMgr->Init();
     gfxMgr->Init();
     inputMgr->Init(); // must initialize AFTER gfx manager
     gameMgr->Init();
+	//soundMgr->init();
 
     //--------------------------------------------------------------
     entityMgr->LoadLevel();
     gfxMgr->LoadLevel();
     inputMgr->LoadLevel();
     gameMgr->LoadLevel();
+	//soundMgr->loadLevel();
 }
 
 
@@ -50,6 +55,7 @@ void Engine::TickAll(float dt){
     inputMgr->Tick(dt);
     entityMgr->Tick(dt);
     gameMgr->Tick(dt);
+    //soundMgr->Tick(dt);
 }
 
 
