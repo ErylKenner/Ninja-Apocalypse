@@ -31,7 +31,7 @@ InputMgr::InputMgr(Engine *eng) :
         mInputMgr(0),
         mMouse(0),
         mKeyboard(0),
-        mouseHeld(0){
+        leftMouseHeld(0){
 
 }
 
@@ -83,7 +83,7 @@ void InputMgr::Tick(float dt){
         return;
     }
 
-    if(mouseHeld) {
+    if(leftMouseHeld){
         engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->UseWeapon();
     }
 
@@ -291,7 +291,8 @@ std::pair<bool, Ogre::Vector3> InputMgr::GetClickedPosition(const OIS::MouseEven
 }
 
 bool InputMgr::mouseMoved(const OIS::MouseEvent& me){
-    if (engine->uiMgr->mTrayMgr->injectMouseMove(me)) return true;
+    if(engine->uiMgr->mTrayMgr->injectMouseMove(me))
+        return true;
 
     std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
     if(intersection.first){
@@ -302,66 +303,71 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent& me){
 }
 
 bool InputMgr::mouseReleased(const OIS::MouseEvent& me, OIS::MouseButtonID id){
-    if (engine->uiMgr->mTrayMgr->injectMouseUp(me, id)) return true;
+    if(engine->uiMgr->mTrayMgr->injectMouseUp(me, id))
+        return true;
 
-    mouseHeld = false;
+    if(id == OIS::MouseButtonID::MB_Left){
+        leftMouseHeld = false;
+    }
 
     return true;
 }
 
 bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
-    if (engine->uiMgr->mTrayMgr->injectMouseDown(me, id)) return true;
+    if(engine->uiMgr->mTrayMgr->injectMouseDown(me, id))
+        return true;
 
-    mouseHeld = true;
-
-
-    /*
-    std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
-    if(intersection.first){
-        Ogre::Vector3 cameraPos = engine->gfxMgr->mCameraNode->getPosition();
-        Ogre::Vector3 intersect = intersection.second;
-
-        float shortestDistance = -1;
-        Entity381 *best = NULL;
-        for(unsigned int i = 0; i < (engine->entityMgr->entities).size(); ++i){
-            Entity381 *cur = engine->entityMgr->entities[i];
-            Ogre::Vector3 pos = cur->position;
-            float distance = (pos - intersect).crossProduct(pos - cameraPos).length()
-                    / (intersect - cameraPos).length();
-            if((distance < shortestDistance || shortestDistance == -1)
-                    && distance <= selectionDistanceThreshold){
-                shortestDistance = distance;
-                best = cur;
-            }
-        }
-
-        if(id == OIS::MouseButtonID::MB_Left){
-            if(shortestDistance >= 0){
-                engine->entityMgr->entities[engine->entityMgr->currentEntity]->isSelected =
-                        false;
-                engine->entityMgr->currentEntity = best->entityId;
-                engine->entityMgr->entities[engine->entityMgr->currentEntity]->isSelected =
-                        true;
-            }
-        } else if(id == OIS::MouseButtonID::MB_Right){
-            Entity381 *cur = engine->entityMgr->entities[engine->entityMgr->currentEntity];
-            UnitAI *unitAI = cur->GetAspect<UnitAI>();
-            if(unitAI != NULL){
-                if(shortestDistance >= 0){
-                    unitAI->SetCommand(new Intercept(cur, best));
-                } else{
-                    if(mKeyboard->isKeyDown(OIS::KC_LSHIFT)){
-                        unitAI->AddCommand(new MoveTo(cur, intersect));
-                    } else{
-                        unitAI->SetCommand(new MoveTo(cur, intersect));
-                    }
-                }
-            }
-        }
-        //engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sphere, intersect);
+    if(id == OIS::MouseButtonID::MB_Left){
+        leftMouseHeld = true;
     }
 
-    */
+    /*
+     std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
+     if(intersection.first){
+     Ogre::Vector3 cameraPos = engine->gfxMgr->mCameraNode->getPosition();
+     Ogre::Vector3 intersect = intersection.second;
+
+     float shortestDistance = -1;
+     Entity381 *best = NULL;
+     for(unsigned int i = 0; i < (engine->entityMgr->entities).size(); ++i){
+     Entity381 *cur = engine->entityMgr->entities[i];
+     Ogre::Vector3 pos = cur->position;
+     float distance = (pos - intersect).crossProduct(pos - cameraPos).length()
+     / (intersect - cameraPos).length();
+     if((distance < shortestDistance || shortestDistance == -1)
+     && distance <= selectionDistanceThreshold){
+     shortestDistance = distance;
+     best = cur;
+     }
+     }
+
+     if(id == OIS::MouseButtonID::MB_Left){
+     if(shortestDistance >= 0){
+     engine->entityMgr->entities[engine->entityMgr->currentEntity]->isSelected =
+     false;
+     engine->entityMgr->currentEntity = best->entityId;
+     engine->entityMgr->entities[engine->entityMgr->currentEntity]->isSelected =
+     true;
+     }
+     } else if(id == OIS::MouseButtonID::MB_Right){
+     Entity381 *cur = engine->entityMgr->entities[engine->entityMgr->currentEntity];
+     UnitAI *unitAI = cur->GetAspect<UnitAI>();
+     if(unitAI != NULL){
+     if(shortestDistance >= 0){
+     unitAI->SetCommand(new Intercept(cur, best));
+     } else{
+     if(mKeyboard->isKeyDown(OIS::KC_LSHIFT)){
+     unitAI->AddCommand(new MoveTo(cur, intersect));
+     } else{
+     unitAI->SetCommand(new MoveTo(cur, intersect));
+     }
+     }
+     }
+     }
+     //engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sphere, intersect);
+     }
+
+     */
     return true;
 }
 
