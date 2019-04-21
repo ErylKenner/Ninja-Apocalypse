@@ -20,16 +20,10 @@ void WeaponHolder::Tick(float dt){
     timeSinceLastShot += dt;
 }
 
-void WeaponHolder::ShootWeapon() {
-    if(heldWeapon != NULL && timeSinceLastShot >= heldWeapon->FireRate) {
+void WeaponHolder::UseWeapon() {
+    if(heldWeapon != NULL && timeSinceLastShot >= heldWeapon->UseRate) {
         timeSinceLastShot = 0;
-        heldWeapon->Fire();
-    }
-}
-
-void WeaponHolder::ReloadWeapon() {
-    if(heldWeapon != NULL) {
-        heldWeapon->CurrentBulletNumber = heldWeapon->BulletMax;
+        heldWeapon->Use();
     }
 }
 
@@ -38,7 +32,7 @@ void WeaponHolder::SetWeapon(Weapon * weapon){
     //Ogre::Vector3 resultPosition = entity381->ogreSceneNode->convertWorldToLocalPosition(heldWeapon->ogreSceneNode->getPosition());
     //Ogre::Quaternion resultOrientation = entity381->ogreSceneNode->convertWorldToLocalOrientation(heldWeapon->ogreSceneNode->getOrientation());
 
-    timeSinceLastShot = heldWeapon->FireRate;
+    timeSinceLastShot = heldWeapon->UseRate;
     heldWeapon->ogreSceneNode->getParentSceneNode()->removeChild(
             heldWeapon->ogreSceneNode);
     entity381->ogreSceneNode->addChild(heldWeapon->ogreSceneNode);

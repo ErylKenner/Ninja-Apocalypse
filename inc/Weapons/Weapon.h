@@ -12,16 +12,14 @@
 
 class Weapon : public Entity381{
 public:
-    Weapon(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos, Engine * eng);
+    Weapon(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos, Engine * eng, float useRate, int damageAmount);
     virtual ~Weapon();
     virtual void InitAspects();
 
-    float FireRate;
-    int BulletMax;
-    int CurrentBulletNumber;
+    float UseRate;
     int DamageAmount;
 
-    void Fire();
+    virtual void Use() = 0;
 };
 
 

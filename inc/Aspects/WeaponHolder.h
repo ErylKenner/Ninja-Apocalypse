@@ -20,8 +20,7 @@ public:
     ~WeaponHolder();
 
     void SetWeapon(Weapon * weapon);
-    void ShootWeapon();
-    void ReloadWeapon();
+    void UseWeapon();
 
     virtual void Tick(float dt);
 

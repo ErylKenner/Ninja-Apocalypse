@@ -6,6 +6,8 @@
 /usr/local/include/OGRE/Overlay
 /usr/include/ois
 "${workspace_loc:/${ProjName}/inc/Aspects/Collider}"
+"${workspace_loc:/${ProjName}/inc/Entities}"
+"${workspace_loc:/${ProjName}/inc/Weapons}"
 
 #Libraries
 OgreMain

@@ -84,7 +84,7 @@ void InputMgr::Tick(float dt){
     }
 
     if(mouseHeld) {
-        engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->ShootWeapon();
+        engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->UseWeapon();
     }
 
     UpdatePlayer(dt);
@@ -371,7 +371,7 @@ bool InputMgr::keyPressed(const OIS::KeyEvent& ke){
 
     switch(ke.key) {
         case OIS::KC_R:
-            engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->ReloadWeapon();
+            //engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->ReloadWeapon();
             break;
         default:
             break;

@@ -66,7 +66,7 @@ void GameMgr::LoadLevel(){
     MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(
             EntityType::PlayerType, Ogre::Vector3(0, surfaceHeight, -400)));
 
-    Weapon * weapon = static_cast<Weapon*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::WeaponType,
+    Weapon * weapon = static_cast<Weapon*>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
             Ogre::Vector3(0, surfaceHeight, 0)));
 
     MainPlayer->GetAspect<WeaponHolder>()->SetWeapon(weapon);
