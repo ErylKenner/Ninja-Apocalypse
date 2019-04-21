@@ -52,7 +52,6 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
     CircleCollider::OnCollision(other);
     CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
     if(castToCircle != NULL){
-        //Fix entity's position for circle to circle collision
         Ogre::Vector3 diff = entity381->position - castToCircle->entity381->position;
         diff.y = 0;
         entity381->position += ((radius + castToCircle->radius) / diff.length() - 1)
@@ -61,7 +60,14 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
 
     RectangleCollider *castToRect = dynamic_cast<RectangleCollider *>(other);
     if(castToRect != NULL){
-        //Fix entity's position for circle to rectangle collision
+        Ogre::Vector3 diff = entity381->position
+                - castToRect->GetClosestPoint(entity381->position);
+        diff.y = 0;
+        if(castToRect->PointInRectangle(entity381->position)){
+            entity381->position -= diff;
+        } else{
+            entity381->position += (radius / diff.length() - 1) * diff;
+        }
     }
 }
 
@@ -78,7 +84,8 @@ PlayerMovableCircleCollider::~PlayerMovableCircleCollider(){
 void PlayerMovableCircleCollider::OnCollision(Collider *other) const{
     MovableCircleCollider::OnCollision(other);
 
-    EnemyMovableCircleCollider *castToEnemy = dynamic_cast<EnemyMovableCircleCollider *>(other);
+    EnemyMovableCircleCollider *castToEnemy =
+            dynamic_cast<EnemyMovableCircleCollider *>(other);
     if(castToEnemy != NULL){
         Player *player = dynamic_cast<Player *>(entity381);
         Enemy *enemy = dynamic_cast<Enemy *>(other->entity381);
@@ -86,7 +93,6 @@ void PlayerMovableCircleCollider::OnCollision(Collider *other) const{
             if(!player->GetAspect<Health>()->TakeDamage(enemy->hitDamage)){
                 player->OnDeath();
             }
-            std::cout << "Player health: " << player->GetAspect<Health>()->CurrentHealth << std::endl;
         }
     }
 }
