@@ -41,7 +41,7 @@ Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector
             return newEntity;
             break;
         case EntityType::Rectangle:
-            newEntity = new RectangleEntity381(id, pos, 150, 400, 50, engine);
+            newEntity = new RectangleEntity381(id, pos, 150, 50, 400, engine);
             entities.push_back(newEntity);
             return newEntity;
             break;

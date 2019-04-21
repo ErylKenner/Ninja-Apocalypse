@@ -53,7 +53,7 @@ void SphereEntity381::InitAspects(){
 SphereEntity381::~SphereEntity381(){
 }
 
-RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, int w, int l, int h,
+RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, int w, int h, int l,
                                        Engine * eng) :
         Entity381(id, "cube.mesh", pos, eng),
         width(w),

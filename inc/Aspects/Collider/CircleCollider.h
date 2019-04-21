@@ -29,4 +29,20 @@ public:
     virtual void OnCollision(Collider *other) const;
 };
 
+class PlayerMovableCircleCollider : public MovableCircleCollider{
+public:
+    PlayerMovableCircleCollider(Entity381 *entity, int rad);
+    ~PlayerMovableCircleCollider();
+
+    virtual void OnCollision(Collider *other) const;
+};
+
+class EnemyMovableCircleCollider : public MovableCircleCollider{
+public:
+    EnemyMovableCircleCollider(Entity381 *entity, int rad);
+    ~EnemyMovableCircleCollider();
+
+    virtual void OnCollision(Collider *other) const;
+};
+
 #endif /* INC_ASPECTS_COLLIDER_CIRCLECOLLIDER_H_ */

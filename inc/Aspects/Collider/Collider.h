@@ -19,11 +19,7 @@ public:
 
     virtual bool IsColliding(Collider *other) const = 0;
     virtual void OnCollision(Collider *other) const = 0;
-
-    //void SetCallback(std::function<void(Collider *)> callback);
 protected:
-
-    //std::function<void(Collider *)> OnCollisionCallback;
     static std::vector<Collider *> colliders;
 private:
 };

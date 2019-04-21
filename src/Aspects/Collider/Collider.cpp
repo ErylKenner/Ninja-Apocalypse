@@ -9,7 +9,7 @@
 std::vector<Collider *> Collider::colliders;
 
 Collider::Collider(Entity381 *entity) :
-        Aspect(entity)/*, OnCollisionCallback(NULL)*/{
+        Aspect(entity){
     colliders.push_back(this);
 }
 
@@ -24,8 +24,4 @@ void Collider::Tick(float dt){
         }
     }
 }
-
-/*void Collider::SetCallback(std::function<void(Collider *)> callback){
- OnCollisionCallback = callback;
- }*/
 
