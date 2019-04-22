@@ -54,6 +54,10 @@ bool RectangleCollider::IsColliding(Collider *other) const{
     return false;
 }
 
+bool RectangleCollider::IsColliding(const Ray *ray) const{
+    return false;
+}
+
 inline Ogre::Vector2 RectangleCollider::GetTopLeft() const{
     const Ogre::Vector2 pos = Ogre::Vector2(entity381->position.x, entity381->position.z);
     const Ogre::Vector2 original = Ogre::Vector2(-width * 0.5, -length * 0.5);
@@ -82,7 +86,7 @@ inline Ogre::Vector2 RectangleCollider::GetBottomRight() const{
     const Ogre::Vector2 pos = Ogre::Vector2(entity381->position.x, entity381->position.z);
     const Ogre::Vector2 original = Ogre::Vector2(width * 0.5, length * 0.5);
     const float angle =
-    entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
+            entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
     return pos + RotateVectorClockwise(original, -angle);
 }
 
@@ -135,8 +139,8 @@ Ogre::Vector2 RectangleCollider::ClosestPoint(Ogre::Vector2 centerPoint, Ogre::V
     }
 }
 
-Ogre::Vector3 RectangleCollider::GetClosestPoint(Ogre::Vector3 centerPoint) const{
-    Ogre::Vector2 cp = Ogre::Vector2(centerPoint.x, centerPoint.z);
+Ogre::Vector3 RectangleCollider::GetClosestPoint(Ogre::Vector3 point) const{
+    Ogre::Vector2 cp = Ogre::Vector2(point.x, point.z);
     const Ogre::Vector2 A = GetTopLeft();
     const Ogre::Vector2 B = GetTopRight();
     const Ogre::Vector2 C = GetBottomRight();
@@ -155,15 +159,15 @@ Ogre::Vector3 RectangleCollider::GetClosestPoint(Ogre::Vector3 centerPoint) cons
             std::min(distSqr2, std::min(distSqr3, distSqr4)));
 
     if(Ogre::Math::Abs(distSqr1 - min) <= 0.1){
-        return Ogre::Vector3(closestPoint1.x, centerPoint.y, closestPoint1.y);
+        return Ogre::Vector3(closestPoint1.x, point.y, closestPoint1.y);
     } else if(Ogre::Math::Abs(distSqr2 - min) <= 0.1){
-        return Ogre::Vector3(closestPoint2.x, centerPoint.y, closestPoint2.y);
+        return Ogre::Vector3(closestPoint2.x, point.y, closestPoint2.y);
     } else if(Ogre::Math::Abs(distSqr3 - min) <= 0.1){
-        return Ogre::Vector3(closestPoint3.x, centerPoint.y, closestPoint3.y);
+        return Ogre::Vector3(closestPoint3.x, point.y, closestPoint3.y);
     } else if(Ogre::Math::Abs(distSqr4 - min) <= 0.1){
-        return Ogre::Vector3(closestPoint4.x, centerPoint.y, closestPoint4.y);
+        return Ogre::Vector3(closestPoint4.x, point.y, closestPoint4.y);
     } else{
-        return Ogre::Vector3(closestPoint1.x, centerPoint.y, closestPoint1.y);
+        return Ogre::Vector3(closestPoint1.x, point.y, closestPoint1.y);
     }
 }
 

@@ -11,6 +11,8 @@
 #include <functional>
 #include "Entity381.h"
 
+class Ray;
+
 class Collider : public Aspect{
 public:
     Collider(Entity381 *entity);
@@ -18,9 +20,13 @@ public:
     void Tick(float dt);
 
     virtual bool IsColliding(Collider *other) const = 0;
+    virtual bool IsColliding(const Ray *ray) const = 0;
     virtual void OnCollision(Collider *other) const = 0;
-protected:
+    virtual Ogre::Vector3 GetClosestPoint(Ogre::Vector3 point) const = 0;
+
     static std::vector<Collider *> colliders;
+protected:
+
 private:
 };
 

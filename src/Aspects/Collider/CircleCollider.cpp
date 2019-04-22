@@ -8,6 +8,7 @@
 #include "Health.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Ray.h"
 #include <iostream>
 
 CircleCollider::CircleCollider(Entity381 *entity, int rad) :
@@ -33,6 +34,20 @@ bool CircleCollider::IsColliding(Collider *other) const{
         //Handle circle and rectangle collision detection
     }
     return false;
+}
+
+bool CircleCollider::IsColliding(const Ray *ray) const{
+    const Ogre::Vector2 direction = ray->secondPoint - ray->origin;
+    const Ogre::Vector2 diff = ray->origin
+            - Ogre::Vector2(entity381->position.x, entity381->position.z);
+    const float b = diff.dotProduct(direction);
+    return !(b * b < direction.squaredLength() * (diff.squaredLength() - radius * radius));
+}
+
+Ogre::Vector3 CircleCollider::GetClosestPoint(Ogre::Vector3 point) const{
+    const Ogre::Vector3 offset =
+            (point - Ogre::Vector3(entity381->position.x, point.y, entity381->position.z)).normalisedCopy();
+    return entity381->position + radius * offset;
 }
 
 void CircleCollider::OnCollision(Collider *other) const{
