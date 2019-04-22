@@ -4,6 +4,7 @@
  *  Created on: Oct 30, 2013
  *      Author: sushil
  */
+
 #include <Engine.h>
 #include <SoundMgr.h>
 #include <stdlib.h>
@@ -92,7 +93,7 @@ void SoundMgr::initialize(void){
 
 	unsigned int sid;
         //background music
-	std::string filename = "data/watercraft/sounds/Spacey.wav";
+	std::string filename = "Sounds/Spacey.wav";
 	if (this->reserveAudio(filename, true, sid)){
 		std::cout << "background music loaded" << std::endl;
                 backgroundMusicSource = sourceInfo[sid].source;
@@ -115,30 +116,7 @@ void SoundMgr::initialize(void){
 }
 
 bool SoundMgr::initWatercraftSounds(){
-        //registering all sounds
-//		std::string selectionFilename = "data/watercraft/sounds/takeYourOrder.wav";
-//        std::string selection2Filename = "data/watercraft/sounds/GoodDay.wav";
-        //std::string createShipFilename = "data/watercraft/sounds/boatMoving.wav";
-        //std::string createBuildingFilename = "data/watercraft/sounds/clong.wav";
-        /*
-        for(std::list<Entity381 *>::const_iterator et = engine->entityMgr->entities.begin(); et != engine->entityMgr->entities.end(); ++et)
-        	{
-            //this->registerBattleSound(et, battleFilename);
-            if (true){
-                if ((*et)->auioId == 1){
-                        this->registerSelection(**et, selection2Filename);
-                }
-                else{
-                        this->registerSelection(**et, selectionFilename);
-                }
-                //this->registerCreate(et, createShipFilename);
-            }
-            else{
-                //no selection sound for buildings right now
-                //this->registerCreate(et, createBuildingFilename);
-            }
-        }
-                */
+
         return true;
 
 }
@@ -176,11 +154,18 @@ void SoundMgr::crosslink(void){
 }
 
 void SoundMgr::loadLevel(void){
+//	syncListenerToCamera();
+	//load sounds, bind buffers, start background music
+	//read sound files
+
+	//load background, start, loop
+	//loadStartBackground();
+
 
 	return;
 }
-//double static tmpT = 0.0;
-//bool static paused = false;
+double static tmpT = 0.0;
+bool static paused = false;
 
 
 void SoundMgr::attachSelectedNodeToSoundIndex(Entity381 *ent, unsigned int index){
@@ -192,17 +177,14 @@ void SoundMgr::tick(double dtime){
 //	syncListenerToCamera();
 
         //selection sound
-
-		for(std::vector<Entity381 *>::iterator it = engine->entityMgr->entities.begin(); it != engine->entityMgr->entities.end(); ++it){
-
-			if ((*it)->isSelected && !(*it)->didSelectSoundPlay){
+		for(std::vector<Entity381 *>::const_iterator it = engine->entityMgr->entities.begin(); it != engine->entityMgr->entities.end(); ++it){
+           if ((*it)->isSelected && !(*it)->didSelectSoundPlay){
         	   playSelectionSound(*(*it));
         	   (*it)->didSelectSoundPlay = true;
            }
            else if (!(*it)->isSelected && (*it)->didSelectSoundPlay){
         	   (*it)->didSelectSoundPlay = false;
            }
-
         }
 
 }
@@ -213,8 +195,7 @@ void SoundMgr::tick(double dtime){
 
 
 bool SoundMgr::playSelectionSound(Entity381 et){
-
-//        Ogre::Vector3 pos = et.position;
+        Ogre::Vector3 pos = et.position;
 
         if (et.soundFile == ""){
             std::cout << "There is no registered selection sounds for this entity type" << std::endl;
@@ -319,7 +300,7 @@ int SoundMgr::getEmptySourceIndex(){
 	}
 	return -1;
 }
-/*
+
 bool SoundMgr::registerSelection(Entity381 et, std::string filename){
     unsigned int sid;
     if (this->reserveAudio(filename, false, sid)){
@@ -345,7 +326,7 @@ bool SoundMgr::registerSelection(Entity381 et, std::string filename){
     else
         return false;
 }
-*/
+
 bool SoundMgr::reserveAudio(std::string filename, bool loop, unsigned int &sourceInfoIndex){
 //bool SoundMgr::reserveAudio(std::string filename, bool loop){ //
 
@@ -537,7 +518,7 @@ bool SoundMgr::loadAudio(std::string filename, int index){
 bool SoundMgr::loadStartBackground(){
 	//WaveInfo *wave;
 
-/*
+
 	alGenSources((ALuint)1, &this->backgroundMusicSource);
 	printError("Cannot generate source with id 1");
 
@@ -558,7 +539,7 @@ bool SoundMgr::loadStartBackground(){
 
 	alGenBuffers(1, &this->backgroundMusicBuffer);
 	printError("Buffer generation");
-*/
+
 	std::string fqfn = getFQFNFromFilename(OgreSND::backgroundMusicFilename);
 	std::cout << "SoundManager backgroundMusic file: " << fqfn << " is being readied" << std::endl;
 	if(fqfn == "")
@@ -751,4 +732,5 @@ bool SoundMgr::setSound( ALuint audioID, Ogre::Vector3 position,
 bool SoundMgr::setListenerDisposition( Ogre::Vector3 position, Ogre::Vector3 velocity, Ogre::Quaternion orientation ){
 	return false;
 }
+
 

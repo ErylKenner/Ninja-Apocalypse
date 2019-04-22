@@ -8,11 +8,19 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
+namespace OgreSND{
+
+	class SoundMgr;
+};
+
+using namespace OgreSND;
+
+
 class EntityMgr;
 class GameMgr;
 class GfxMgr;
 class InputMgr;
-//class SoundMgr;
+
 
 class Engine {
 public:
@@ -23,7 +31,7 @@ public:
     GameMgr   *gameMgr;
     GfxMgr    *gfxMgr;
     InputMgr  *inputMgr;
-    //SoundMgr  *soundMgr;
+    SoundMgr  *soundMgr;
 
     void Init();
     void Run();

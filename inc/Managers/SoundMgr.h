@@ -30,7 +30,7 @@ namespace OgreSND {
     const int soundPerEnt = 3;      // max different sounds to randomly choose per entity
 	const int maxAudioBuffers = 63; // + 1 for background music
 	const int maxAudioSources = 15; // + 1 for background music
-	const std::string backgroundMusicFilename = "data/watercraft/sounds/backgroundMusic.wav";
+	const std::string backgroundMusicFilename = "Sounds/Spacey.wav";
 	///home/sushil/workspace/fe1/
 
 
@@ -120,7 +120,7 @@ namespace OgreSND {
 		bool resumeBackground();
 
 		//bool registerCreate(FastEcslent::EntityType et, std::string filename);
-//                bool registerSelection(Entity381 et, std::string filename);
+                bool registerSelection(Entity381 et, std::string filename);
                 //bool registerBattleSound(FastEcslent::EntityType et, std::string filename);
                 //bool isEntityShip(FastEcslent::EntityType et);
                 bool initWatercraftSounds();

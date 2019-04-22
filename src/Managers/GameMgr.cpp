@@ -10,6 +10,7 @@
 #include "GfxMgr.h"
 #include "EntityMgr.h"
 
+
 GameMgr::GameMgr(Engine *eng) :
         Mgr(eng), MainPlayer(0){
 

@@ -8,6 +8,7 @@
 #include "Engine.h"
 #include "GfxMgr.h"
 
+
 EntityMgr::EntityMgr(Engine *eng) :
         Mgr(eng),
         currentEntity(0){

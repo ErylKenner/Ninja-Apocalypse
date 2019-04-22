@@ -14,6 +14,7 @@
 
 class UnitAI;
 class EntityMgr;
+//class Engine;
 
 class Entity381{
 public:
