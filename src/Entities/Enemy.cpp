@@ -38,7 +38,9 @@ void Enemy::InitAspects(){
 }
 
 void Enemy::OnDeath(){
-    position -= Ogre::Vector3(0, 10000, 0);
+    Ogre::Vector3 newPos = Ogre::Vector3(0,0, 25e6);
+    position = newPos;
+    GetAspect<UnitAI>()->SetCommand(new MoveTo(this, newPos));
     anim->DisableAnimation();
 }
 

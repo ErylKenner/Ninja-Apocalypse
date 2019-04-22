@@ -19,9 +19,9 @@ Collider* Ray::GetIntersectedCollider() const{
     for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
         Collider *cur = Collider::colliders[i];
         if(cur->IsColliding(this)){
-            Ogre::Vector2 pos = cur->GetClosestPoint(
+            Ogre::Vector3 pos = cur->GetClosestPoint(
                     Ogre::Vector3(origin.x, cur->entity381->position.y, origin.y));
-            float distSqr = origin.squaredDistance(pos);
+            float distSqr = origin.squaredDistance(Ogre::Vector2(pos.x, pos.z));
             if(distSqr < closestDistSqr){
                 closestDistSqr = distSqr;
                 closest = cur;

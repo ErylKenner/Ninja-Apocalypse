@@ -24,7 +24,10 @@ public:
     virtual void OnCollision(Collider *other) const = 0;
     virtual Ogre::Vector3 GetClosestPoint(Ogre::Vector3 point) const = 0;
 
+    bool IsTrigger = false;
+
     static std::vector<Collider *> colliders;
+protected:
 protected:
 
 private:

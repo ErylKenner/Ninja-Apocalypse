@@ -7,6 +7,8 @@
 #define INC_ASPECTS_COLLIDER_CIRCLECOLLIDER_H_
 
 #include "Collider.h"
+#include "Weapon.h"
+#include "Throwable.h"
 
 class CircleCollider : public Collider{
 public:
@@ -21,6 +23,17 @@ public:
     int radius;
 protected:
 private:
+};
+
+class WeaponCollider : public CircleCollider{
+public:
+    WeaponCollider(Entity381 *entity, int rad);
+    ~WeaponCollider();
+
+    virtual void OnCollision(Collider *other) const;
+
+    Weapon * attachedWeapon;
+    Throwable * throwable;
 };
 
 class MovableCircleCollider : public CircleCollider{

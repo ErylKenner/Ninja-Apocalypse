@@ -31,6 +31,7 @@ public:
     void LookAt(Vector3 pos);
     void Move(Vector3 direction, float dt);
     void OnDeath();
+    float GetCurrentAngle();
 private:
     Animation * anim;
     //static void OnCollisionCallback(Collider *other);

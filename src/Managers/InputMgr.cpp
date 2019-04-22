@@ -321,6 +321,10 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
         leftMouseHeld = true;
     }
 
+    if(id == OIS::MouseButtonID::MB_Right){
+        engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->ThrowWeapon();
+    }
+
     /*
      std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
      if(intersection.first){
