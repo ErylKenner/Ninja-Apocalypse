@@ -34,8 +34,6 @@ Enemy::Enemy(int id, Ogre::Vector3 pos, Engine * eng) :
 
 Enemy::~Enemy(){
 }
-void Enemy::InitAspects(){
-}
 
 void Enemy::OnDeath(){
     Ogre::Vector3 newPos = Ogre::Vector3(0,0, 25e6);

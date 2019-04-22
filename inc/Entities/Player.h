@@ -26,7 +26,6 @@ public:
 
     Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engine *eng);
     ~Player();
-    virtual void InitAspects();
 
     void LookAt(Vector3 pos);
     void Move(Vector3 direction, float dt);

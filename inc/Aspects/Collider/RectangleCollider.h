@@ -36,7 +36,16 @@ protected:
     static bool IntersectsCircle(Ogre::Vector2 centerPoint, int radius, Ogre::Vector2 A,
                                  Ogre::Vector2 B);
     static bool RayLineIntersection(Ray ray, Ogre::Vector2 A, Ogre::Vector2 B,
-                             float *intersectDist);
+                                    float *intersectDist);
+private:
+};
+
+class RectangleBorderCollider : public RectangleCollider{
+public:
+    RectangleBorderCollider(Entity381 *entity, int w, int l);
+    ~RectangleBorderCollider();
+
+    virtual void OnCollision(Collider *other) const;
 private:
 };
 

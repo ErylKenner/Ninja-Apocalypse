@@ -15,7 +15,6 @@ class Enemy : public Entity381{
 public:
     Enemy(int id, Ogre::Vector3 pos, Engine * eng);
     virtual ~Enemy();
-    virtual void InitAspects();
 
     void OnDeath();
     int hitDamage;

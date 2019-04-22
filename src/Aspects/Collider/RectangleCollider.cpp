@@ -221,3 +221,18 @@ bool RectangleCollider::PointInRectangle(Ogre::Vector3 centerPoint) const{
             GetBottomLeft());
 }
 
+//--------------------------------------------------------------------
+
+RectangleBorderCollider::RectangleBorderCollider(Entity381 *entity, int w, int l) :
+        RectangleCollider(entity, w, l){
+
+}
+
+RectangleBorderCollider::~RectangleBorderCollider(){
+
+}
+
+void RectangleBorderCollider::OnCollision(Collider *other) const{
+    RectangleCollider::OnCollision(other);
+}
+

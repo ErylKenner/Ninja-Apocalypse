@@ -26,9 +26,6 @@ Player::Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engin
 }
 Player::~Player(){
 }
-void Player::InitAspects(){
-    // should deprecate this function
-}
 
 void Player::LookAt(Vector3 pos){
     pos.y = position.y;

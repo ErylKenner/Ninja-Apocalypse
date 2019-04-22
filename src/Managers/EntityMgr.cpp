@@ -37,12 +37,19 @@ Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector
     Entity381 *newEntity;
     switch(type) {
         case EntityType::Sphere:
+        case EntityType::TerrainSphere:
             newEntity = new SphereEntity381(id, pos, scale.x, engine);
             entities.push_back(newEntity);
             return newEntity;
             break;
         case EntityType::Rectangle:
+        case EntityType::TerrainRectangle:
             newEntity = new RectangleEntity381(id, pos, scale, engine);
+            entities.push_back(newEntity);
+            return newEntity;
+            break;
+        case EntityType::TerrainBorder:
+            newEntity = new RectangleBorderEntity381(id, pos, scale, engine);
             entities.push_back(newEntity);
             return newEntity;
             break;

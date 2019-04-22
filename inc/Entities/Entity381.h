@@ -46,14 +46,12 @@ public:
 
 private:
 protected:
-    virtual void InitAspects() = 0;
 };
 
 class SphereEntity381 : public Entity381{
 public:
     SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng);
     ~SphereEntity381();
-    virtual void InitAspects();
 private:
     int radius;
 };
@@ -62,11 +60,17 @@ class RectangleEntity381 : public Entity381{
 public:
     RectangleEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 sc, Engine * eng);
     ~RectangleEntity381();
-    virtual void InitAspects();
-private:
+protected:
     int width;
     int height;
     int length;
+};
+
+class RectangleBorderEntity381 : public RectangleEntity381{
+public:
+    RectangleBorderEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 sc, Engine * eng);
+    ~RectangleBorderEntity381();
+private:
 };
 
 #endif /* INC_ENTITY381_H_ */
