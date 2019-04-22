@@ -187,7 +187,11 @@ EnemyMovableCircleCollider::~EnemyMovableCircleCollider(){
 }
 
 void EnemyMovableCircleCollider::OnCollision(Collider *other) const{
-    MovableCircleCollider::OnCollision(other);
+    RectangleBorderCollider *castToBorder = dynamic_cast<RectangleBorderCollider *>(other);
+    if(castToBorder != NULL){
 
+    } else{
+        MovableCircleCollider::OnCollision(other);
+    }
 }
 

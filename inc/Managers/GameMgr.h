@@ -20,10 +20,15 @@ public:
     void Stop();
 
     Ogre::Plane mPlane;
-    float surfaceHeight = -100;
+    const float surfaceHeight = 0;
     Player * MainPlayer;
 protected:
 private:
+    void LoadLevelOne();
+
+    const float mapWidth = 5000;
+    const float mapHeight = 2500;
+    const float borderWallThickness = 200;
 };
 
 #endif /* INC_GAMEMGR_H_ */

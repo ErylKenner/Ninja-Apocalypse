@@ -28,6 +28,3 @@ Weapon::~Weapon(){
         }
     }
 }
-void Weapon::InitAspects(){
-}
-

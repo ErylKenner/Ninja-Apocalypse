@@ -64,12 +64,12 @@ void UiMgr::LoadLevel() {
 void UiMgr::EnableHud(){
 	OgreBites::ProgressBar * bossHealth;
 	bossHealth = mTrayMgr->createProgressBar(OgreBites::TL_TOP, "BHealthBar", "Boss Health",
-			250, 150);
+			300, 170);
 	bossHealth->setProgress(100);
 
 	//OgreBites::ProgressBar playerHealth;
 	playerHealth = mTrayMgr->createProgressBar(OgreBites::TL_BOTTOMRIGHT, "PHealthBar", "Player Health",
-			200, 100);
+			250, 120);
 
 	playerHealth->setProgress(1);
 
@@ -109,7 +109,7 @@ void UiMgr::UpdateLabels(){
 			ammoNum = "0";
 	}
 	waveNum = std::to_string(engine->waveMgr->waveNumber);
-	timeElapsed = std::to_string(engine->waveMgr->timeElapsed);
+	timeElapsed = std::to_string((int)engine->waveMgr->timeElapsed);
 
 	playerHealth->setProgress((float) currentHealth/100);
 	timeLabel->setCaption(timeElapsed);
