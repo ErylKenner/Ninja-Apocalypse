@@ -37,12 +37,24 @@ bool CircleCollider::IsColliding(Collider *other) const{
     return false;
 }
 
-bool CircleCollider::IsColliding(const Ray *ray) const{
-    const Ogre::Vector2 direction = ray->secondPoint - ray->origin;
-    const Ogre::Vector2 diff = ray->origin
-            - Ogre::Vector2(entity381->position.x, entity381->position.z);
-    const float b = diff.dotProduct(direction);
-    return !(b * b < direction.squaredLength() * (diff.squaredLength() - radius * radius));
+bool CircleCollider::GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const{
+    const Ogre::Vector2 circlePos = Ogre::Vector2(entity381->position.x,
+            entity381->position.z);
+    const Ogre::Vector2 diff = circlePos - ray.origin;
+    const Ogre::Vector2 projection = (diff.dotProduct(ray.directionVector)
+            / ray.directionVector.squaredLength()) * ray.directionVector;
+    if(circlePos.squaredDistance(ray.origin + projection) <= radius * radius){
+        if(pos != NULL){
+            //*pos = Ogre::Vector2(entity381->position.x, entity381->position.z);
+            Ogre::Vector3 pos3D = GetClosestPoint(
+                    Ogre::Vector3(ray.origin.x, 0, ray.origin.y));
+            *pos = Ogre::Vector2(pos3D.x, pos3D.z);
+        }
+        return true;
+    } else{
+        pos = NULL;
+        return false;
+    }
 }
 
 Ogre::Vector3 CircleCollider::GetClosestPoint(Ogre::Vector3 point) const{

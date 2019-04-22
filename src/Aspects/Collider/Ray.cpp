@@ -4,27 +4,37 @@
  */
 
 #include "Ray.h"
+#include "CircleCollider.h"
 
-Ray::Ray(){
+Ray::Ray(Ogre::Vector2 start, Ogre::Vector2 dir) :
+        origin(start),
+        directionVector(dir){
 
+}
+
+Ray::Ray(Ogre::Vector3 start, Ogre::Vector2 dir) :
+        directionVector(dir){
+    origin = Ogre::Vector2(start.x, start.z);
 }
 
 Ray::~Ray(){
 
 }
 
-Collider* Ray::GetIntersectedCollider() const{
+Collider* Ray::GetClosestIntersectedCollider() const{
     Collider *closest = NULL;
     float closestDistSqr = Ogre::Math::POS_INFINITY;
     for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
         Collider *cur = Collider::colliders[i];
-        if(cur->IsColliding(this)){
-            Ogre::Vector3 pos = cur->GetClosestPoint(
-                    Ogre::Vector3(origin.x, cur->entity381->position.y, origin.y));
-            float distSqr = origin.squaredDistance(Ogre::Vector2(pos.x, pos.z));
-            if(distSqr < closestDistSqr){
-                closestDistSqr = distSqr;
-                closest = cur;
+        if(!cur->IsTrigger && dynamic_cast<PlayerMovableCircleCollider *>(cur) == NULL){
+            Ogre::Vector2 pos;
+            bool collided = cur->GetClosestPoint(*this, &pos);
+            if(collided){
+                float distSqr = origin.squaredDistance(pos);
+                if(distSqr < closestDistSqr){
+                    closestDistSqr = distSqr;
+                    closest = cur;
+                }
             }
         }
     }

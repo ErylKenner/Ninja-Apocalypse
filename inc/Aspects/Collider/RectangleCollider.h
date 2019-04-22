@@ -15,8 +15,7 @@ public:
 
     virtual void OnCollision(Collider *other) const;
     virtual bool IsColliding(Collider *other) const;
-    virtual bool IsColliding(const Ray *ray) const;
-
+    virtual bool GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const;
     virtual Ogre::Vector3 GetClosestPoint(Ogre::Vector3 point) const;
     bool PointInRectangle(Ogre::Vector3 centerPoint) const;
 protected:
@@ -36,6 +35,8 @@ protected:
                                 Ogre::Vector2 topRight, Ogre::Vector2 bottomLeft);
     static bool IntersectsCircle(Ogre::Vector2 centerPoint, int radius, Ogre::Vector2 A,
                                  Ogre::Vector2 B);
+    static bool RayLineIntersection(Ray ray, Ogre::Vector2 A, Ogre::Vector2 B,
+                             float *intersectDist);
 private:
 };
 

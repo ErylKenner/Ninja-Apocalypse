@@ -20,9 +20,9 @@ public:
     void Tick(float dt);
 
     virtual bool IsColliding(Collider *other) const = 0;
-    virtual bool IsColliding(const Ray *ray) const = 0;
     virtual void OnCollision(Collider *other) const = 0;
     virtual Ogre::Vector3 GetClosestPoint(Ogre::Vector3 point) const = 0;
+    virtual bool GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const = 0;
 
     bool IsTrigger = false;
 

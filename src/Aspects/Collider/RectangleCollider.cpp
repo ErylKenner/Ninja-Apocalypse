@@ -5,6 +5,7 @@
 
 #include "RectangleCollider.h"
 #include "CircleCollider.h"
+#include "Ray.h"
 #include <algorithm>
 
 RectangleCollider::RectangleCollider(Entity381 *entity, int w, int l) :
@@ -54,7 +55,50 @@ bool RectangleCollider::IsColliding(Collider *other) const{
     return false;
 }
 
-bool RectangleCollider::IsColliding(const Ray *ray) const{
+bool RectangleCollider::GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const{
+    const Ogre::Vector2 A = GetTopLeft();
+    const Ogre::Vector2 B = GetTopRight();
+    const Ogre::Vector2 C = GetBottomRight();
+    const Ogre::Vector2 D = GetBottomLeft();
+    float intersectDist1 = Ogre::Math::POS_INFINITY;
+    float intersectDist2 = Ogre::Math::POS_INFINITY;
+    float intersectDist3 = Ogre::Math::POS_INFINITY;
+    float intersectDist4 = Ogre::Math::POS_INFINITY;
+    bool hit1 = RectangleCollider::RayLineIntersection(ray, A, B, &intersectDist1);
+    bool hit2 = RectangleCollider::RayLineIntersection(ray, B, C, &intersectDist2);
+    bool hit3 = RectangleCollider::RayLineIntersection(ray, C, D, &intersectDist3);
+    bool hit4 = RectangleCollider::RayLineIntersection(ray, D, A, &intersectDist4);
+    if(hit1 || hit2 || hit3 || hit4){
+        if(pos != NULL){
+            const float min = std::min(intersectDist1,
+                    std::min(intersectDist2, std::min(intersectDist3, intersectDist4)));
+            *pos = ray.origin + min * ray.directionVector;
+        }
+        return true;
+    }
+    pos = NULL;
+    return false;
+}
+
+bool RectangleCollider::RayLineIntersection(Ray ray, Ogre::Vector2 A, Ogre::Vector2 B,
+                                            float *intersectDist){
+    Ogre::Vector2 v1 = ray.origin - A;
+    Ogre::Vector2 v2 = B - A;
+    Ogre::Vector2 v3 = Ogre::Vector2(-ray.directionVector.y, ray.directionVector.x);
+    float dot = v2.dotProduct(v3);
+    if(Ogre::Math::Abs(dot) < 0.0001){
+        intersectDist = NULL;
+        return false;
+    }
+    float t1 = v2.crossProduct(v1) / dot;
+    float t2 = v1.dotProduct(v3) / dot;
+    if(t1 >= 0.0 && t2 >= 0.0 && t2 <= 1.0){
+        if(intersectDist != NULL){
+            *intersectDist = t1;
+        }
+        return true;
+    }
+    intersectDist = NULL;
     return false;
 }
 

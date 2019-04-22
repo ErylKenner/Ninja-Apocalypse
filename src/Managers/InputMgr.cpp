@@ -294,9 +294,9 @@ bool InputMgr::mouseMoved(const OIS::MouseEvent& me){
     if(engine->uiMgr->mTrayMgr->injectMouseMove(me))
         return true;
 
-    std::pair<bool, Ogre::Vector3> intersection = GetClickedPosition(me);
-    if(intersection.first){
-        engine->gameMgr->MainPlayer->LookAt(intersection.second);
+    mouseLocation = GetClickedPosition(me);
+    if(mouseLocation.first){
+        engine->gameMgr->MainPlayer->LookAt(mouseLocation.second);
     }
 
     return true;

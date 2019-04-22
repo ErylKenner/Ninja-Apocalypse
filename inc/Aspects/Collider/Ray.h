@@ -10,12 +10,13 @@
 
 class Ray{
 public:
-    Ray();
+    Ray(Ogre::Vector2 start, Ogre::Vector2 dir);
+    Ray(Ogre::Vector3 start, Ogre::Vector2 dir);
     ~Ray();
-    Collider* GetIntersectedCollider() const;
+    Collider* GetClosestIntersectedCollider() const;
 
     Ogre::Vector2 origin;
-    Ogre::Vector2 secondPoint;
+    Ogre::Vector2 directionVector;
 private:
 };
 

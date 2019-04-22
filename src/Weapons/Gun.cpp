@@ -6,6 +6,12 @@
  */
 
 #include "Gun.h"
+#include "Ray.h"
+#include "GameMgr.h"
+#include "InputMgr.h"
+#include "CircleCollider.h"
+#include "Enemy.h"
+#include "Health.h"
 
 Gun::Gun(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos,
          Engine * eng, float useRate, int damageAmount, int bulletMax) :
@@ -21,17 +27,28 @@ void Gun::Use(){
     if(CurrentBulletNumber > 0){
         CurrentBulletNumber--;
         std::cout << "Bang! " << CurrentBulletNumber << " bullets left." << std::endl;
-        // create a ray from the player's position (perhaps pass in a ray?)
-        // selected the closest intersected collider
-        // if it's an enemy, deal damage to it
-        // check if it's dead
-        // if so, call onKilled
+        const Ogre::Vector2 playerPos = Ogre::Vector2(
+                engine->gameMgr->MainPlayer->position.x,
+                engine->gameMgr->MainPlayer->position.z);
+        const Ogre::Vector2 dir = Ogre::Vector2(engine->inputMgr->mouseLocation.second.x,
+                engine->inputMgr->mouseLocation.second.z) - playerPos;
+        Ray ray(playerPos, dir);
+        Collider *closest = ray.GetClosestIntersectedCollider();
+        if(closest != NULL){
+            EnemyMovableCircleCollider *enemyCollider =
+                    dynamic_cast<EnemyMovableCircleCollider *>(closest);
+            if(enemyCollider != NULL){
+                Enemy * enemy = static_cast<Enemy *>(enemyCollider->entity381);
+                if(!enemy->GetAspect<Health>()->TakeDamage(DamageAmount)){
+                    enemy->OnDeath();
+                }
+            }
+        }
     }
-
 }
 
 Handgun::Handgun(int id, Ogre::Vector3 pos, Engine * eng) :
-        Gun(id, "cube.mesh", Ogre::Vector3(10, 10, 40), pos, eng, 0.25f, 20, 20){
+        Gun(id, "cube.mesh", Ogre::Vector3(10, 10, 40), pos, eng, 1 / 25.0, 20, 80){
     ogreEntity->setMaterialName("Examples/BumpyMetal");
 
 }
