@@ -62,9 +62,10 @@ RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 
         length(sc.z){
     scale = 0.01 * sc;
     Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName(
-            "Examples/Rockwall");
+            "Examples/Rockwall")->clone(
+            std::to_string(width) + "_" + std::to_string(height));
     material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(
-            width / 76666.0/*0.03*/, length / 133/*1.5*/);
+            156.0 / width, 156.0 / length);
     ogreEntity->setMaterial(material);
     InitAspects();
 }

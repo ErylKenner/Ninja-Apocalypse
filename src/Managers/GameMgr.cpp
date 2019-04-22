@@ -73,14 +73,12 @@ void GameMgr::LoadLevelOne(){
     //Borders
     temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
             Ogre::Vector3(-mapWidth * 0.5, surfaceHeight, 0),
-            Ogre::Vector3(mapHeight - borderWallThickness, borderWallThickness,
-                    borderWallThickness));
-    temp->ogreSceneNode->yaw(Ogre::Degree(90));
+            Ogre::Vector3(borderWallThickness, borderWallThickness,
+                    mapHeight - borderWallThickness));
     temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
             Ogre::Vector3(mapWidth * 0.5, surfaceHeight, 0),
-            Ogre::Vector3(mapHeight - borderWallThickness, borderWallThickness,
-                    borderWallThickness));
-    temp->ogreSceneNode->yaw(Ogre::Degree(90));
+            Ogre::Vector3(borderWallThickness, borderWallThickness,
+                    mapHeight - borderWallThickness));
     temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
             Ogre::Vector3(0, surfaceHeight, -mapHeight * 0.5),
             Ogre::Vector3(mapWidth + borderWallThickness, borderWallThickness,
