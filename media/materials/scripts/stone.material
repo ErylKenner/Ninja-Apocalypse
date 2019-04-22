@@ -1,0 +1,14 @@
+material Stone
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture rockwall.tga
+				env_map spherical
+			}
+		}
+	}
+}

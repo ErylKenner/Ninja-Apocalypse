@@ -41,6 +41,7 @@ SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng)
         Entity381(id, "sphere.mesh", pos, eng),
         radius(r){
     scale = Ogre::Vector3((float)r / 100, (float)r / 100, (float)r / 100);
+    ogreEntity->setMaterialName("Stone");
     InitAspects();
 }
 
@@ -60,6 +61,7 @@ RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, int w, int h, 
         length(l),
         height(h){
     scale = Ogre::Vector3((float)w / 100, (float)h / 100, (float)l / 100);
+    ogreEntity->setMaterialName("Examples/Rockwall");
     InitAspects();
 }
 

@@ -45,8 +45,8 @@ void GameMgr::LoadLevel(){
                     "GroundNode");
     groundNode->attachObject(groundEntity);
     Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName(
-            "Examples/Rockwall");
-    material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(8, 8);
+            "Examples/GrassFloor");
+    material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(15, 15);
 
     groundEntity->setMaterial(material);
     groundEntity->setCastShadows(false);
