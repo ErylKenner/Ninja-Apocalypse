@@ -60,7 +60,7 @@ private:
 
 class RectangleEntity381 : public Entity381{
 public:
-    RectangleEntity381(int id, Ogre::Vector3 pos, int w, int h, int l, Engine * eng);
+    RectangleEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 sc, Engine * eng);
     ~RectangleEntity381();
     virtual void InitAspects();
 private:

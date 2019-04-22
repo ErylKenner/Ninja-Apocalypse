@@ -40,7 +40,7 @@ Entity381::~Entity381(){
 SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng) :
         Entity381(id, "sphere.mesh", pos, eng),
         radius(r){
-    scale = Ogre::Vector3((float)r / 100, (float)r / 100, (float)r / 100);
+    scale = 0.01 * Ogre::Vector3(r, r, r);
     InitAspects();
 }
 
@@ -53,13 +53,13 @@ void SphereEntity381::InitAspects(){
 SphereEntity381::~SphereEntity381(){
 }
 
-RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, int w, int h, int l,
+RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 sc,
                                        Engine * eng) :
         Entity381(id, "cube.mesh", pos, eng),
-        width(w),
-        length(l),
-        height(h){
-    scale = Ogre::Vector3((float)w / 100, (float)h / 100, (float)l / 100);
+        width(sc.x),
+        height(sc.y),
+        length(sc.z){
+    scale = 0.01 * sc;
     InitAspects();
 }
 

@@ -31,17 +31,18 @@ void EntityMgr::Tick(float dt){
     }
 }
 
-Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector3 pos){
+Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector3 pos,
+                                                   Ogre::Vector3 scale){
     int id = entities.size();
     Entity381 *newEntity;
     switch(type) {
         case EntityType::Sphere:
-            newEntity = new SphereEntity381(id, pos, 200, engine);
+            newEntity = new SphereEntity381(id, pos, scale.x, engine);
             entities.push_back(newEntity);
             return newEntity;
             break;
         case EntityType::Rectangle:
-            newEntity = new RectangleEntity381(id, pos, 150, 50, 400, engine);
+            newEntity = new RectangleEntity381(id, pos, scale, engine);
             entities.push_back(newEntity);
             return newEntity;
             break;
