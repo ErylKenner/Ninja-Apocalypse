@@ -15,7 +15,7 @@
 
 WaveMgr::WaveMgr(Engine *eng) :
         Mgr(eng),
-        enemiesPerWave(10),
+        enemiesPerWave(20),
         waveNumber(1),
         spawnDelay(2),
         timeElapsed(0),
@@ -74,13 +74,16 @@ void WaveMgr::SpawnEnemy(){
 }
 void WaveMgr::OnEnemyKilled(Enemy * enemy){
     // Decrements enemiesRemaining
-    spawnedEnemyList.erase(
-            std::remove(spawnedEnemyList.begin(), spawnedEnemyList.end(), enemy));
-    enemiesRemaining--;
-    // Checks if <= 0, and decides to start the next wave
-    if(enemiesRemaining <= 0){
-        NextWave();
+    if(std::find(spawnedEnemyList.begin(), spawnedEnemyList.end(), enemy) != spawnedEnemyList.end()) {
+        spawnedEnemyList.erase(
+                    std::remove(spawnedEnemyList.begin(), spawnedEnemyList.end(), enemy));
+            enemiesRemaining--;
+            // Checks if <= 0, and decides to start the next wave
+            if(enemiesRemaining <= 0){
+                NextWave();
+            }
     }
+
 
 }
 void WaveMgr::NextWave(){

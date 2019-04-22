@@ -13,6 +13,7 @@
 #include "Command.h"
 #include "GameMgr.h"
 #include "CircleCollider.h"
+#include "WaveMgr.h"
 
 Enemy::Enemy(int id, Ogre::Vector3 pos, Engine * eng) :
         Entity381(id, "ninja.mesh", pos, eng),
@@ -40,5 +41,6 @@ void Enemy::OnDeath(){
     position = newPos;
     GetAspect<UnitAI>()->SetCommand(new MoveTo(this, newPos));
     anim->DisableAnimation();
+    engine->waveMgr->OnEnemyKilled(this);
 }
 
