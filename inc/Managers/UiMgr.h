@@ -21,7 +21,9 @@
 class UiMgr : public Mgr, public OIS::KeyListener, public OIS::MouseListener, public Ogre::WindowEventListener, public OgreBites::SdkTrayListener
 {
 private:
-
+	float waitTime;
+	float currentTime;
+	bool splashScreenDisable = false;
 
 protected:
 	virtual void windowResized(Ogre::RenderWindow *rw);
@@ -35,6 +37,7 @@ protected:
 
     void buttonHit(OgreBites::Button *b);
     void itemSelected(OgreBites::SelectMenu *m);
+    void EnableHud();
 
 public:
 
@@ -44,6 +47,8 @@ public:
 	virtual void Tick(float dt);
 	virtual void LoadLevel();
 	virtual void stop();
+
+	void splashScreen(float dt);
 
 	OgreBites::InputContext mInputContext;
 	OgreBites::SdkTrayManager* mTrayMgr;

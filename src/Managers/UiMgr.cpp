@@ -5,6 +5,7 @@
  *      Author: chad
  */
 
+#include<time.h>
 #include <UiMgr.h>
 #include <Engine.h>
 #include <GfxMgr.h>
@@ -33,24 +34,40 @@ void UiMgr::Init() {
 	mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName",
 			engine->gfxMgr->mWindow, mInputContext, this);
 
+
 }
 
 void UiMgr::stop() {
 
 }
 
-void UiMgr::LoadLevel() {
+void UiMgr::splashScreen(float dt){
+	currentTime += dt;
+	if(currentTime >= waitTime){
+		mTrayMgr->hideBackdrop();
+		EnableHud();
+		splashScreenDisable = true;
+	}
+}
 
-    std::cout << "Loading UiMgr" << std::endl;
+void UiMgr::LoadLevel() {
+	waitTime = 3;
+
+	mTrayMgr->showBackdrop("Backdrop");
+}
+
+void UiMgr::EnableHud(){
 	OgreBites::ProgressBar * pbar;
 	pbar = mTrayMgr->createProgressBar(OgreBites::TL_TOP, "HealthBar", "Health",
 			300, 200);
 	pbar->setProgress(100);
-
 }
 
 void UiMgr::Tick(float dt) {
 	mTrayMgr->refreshCursor();
+	if(!splashScreenDisable){
+		splashScreen(dt);
+	}
 }
 
 void UiMgr::windowResized(Ogre::RenderWindow* rw) {

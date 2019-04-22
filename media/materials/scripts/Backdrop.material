@@ -1,0 +1,13 @@
+material Backdrop
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture splashscreen.jpg
+			}
+		}
+	}
+}
