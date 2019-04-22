@@ -21,6 +21,7 @@ public:
 
     void SetWeapon(Weapon * weapon);
     void UseWeapon();
+    void ThrowWeapon();
 
     virtual void Tick(float dt);
 

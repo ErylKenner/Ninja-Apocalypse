@@ -19,6 +19,8 @@ public:
 
     virtual bool IsColliding(Collider *other) const = 0;
     virtual void OnCollision(Collider *other) const = 0;
+
+    bool IsTrigger = false;
 protected:
     static std::vector<Collider *> colliders;
 private:

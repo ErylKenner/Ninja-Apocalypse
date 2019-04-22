@@ -22,7 +22,7 @@ Player::Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engin
     aspects.push_back(new CameraTether(this, 1000, camera));
     aspects.push_back(new WeaponHolder(this));
     aspects.push_back(new PlayerMovableCircleCollider(this, 50));
-    aspects.push_back(new Renderable(this));
+    aspects.push_back(new Renderable(this, 90));
 }
 Player::~Player(){
 }
@@ -50,6 +50,11 @@ void Player::Move(Vector3 direction, float dt){
 
 void Player::OnDeath(){
     engine->keepRunning = false;
+}
+
+float Player::GetCurrentAngle() {
+    return ogreSceneNode->getOrientation().getYaw().valueDegrees()
+            + GetAspect<Renderable>()->AngleOffset;
 }
 
 /*
