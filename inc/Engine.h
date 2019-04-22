@@ -20,18 +20,22 @@ class EntityMgr;
 class GameMgr;
 class GfxMgr;
 class InputMgr;
-
+class WaveMgr;
+class UiMgr;
 
 class Engine {
+
 public:
     Engine();
     virtual ~Engine();
 
     EntityMgr *entityMgr;
-    GameMgr   *gameMgr;
-    GfxMgr    *gfxMgr;
-    InputMgr  *inputMgr;
-    SoundMgr  *soundMgr;
+    GameMgr *gameMgr;
+    GfxMgr *gfxMgr;
+    InputMgr *inputMgr;
+    WaveMgr * waveMgr;
+    UiMgr * uiMgr;
+    SoundMgr * soundMgr;
 
     void Init();
     void Run();

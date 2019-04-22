@@ -17,3 +17,11 @@ Collider::~Collider(){
     colliders.erase(std::remove(colliders.begin(), colliders.end(), this));
 }
 
+void Collider::Tick(float dt){
+    for(unsigned int i = 0; i < colliders.size(); ++i){
+        if(colliders[i] != this && IsColliding(colliders[i])){
+            colliders[i]->OnCollision(this);
+        }
+    }
+}
+

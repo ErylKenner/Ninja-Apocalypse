@@ -6,8 +6,6 @@
 #ifndef INC_GAMEMGR_H_
 #define INC_GAMEMGR_H_
 
-
-
 #include "Mgr.h"
 #include "Player.h"
 
@@ -21,6 +19,7 @@ public:
     void LoadLevel();
     void Stop();
 
+    Ogre::Plane mPlane;
     float surfaceHeight = -100;
     Player * MainPlayer;
 protected:

@@ -11,7 +11,9 @@
 #include <OgreSceneManager.h>
 #include <OgreRenderWindow.h>
 
+#include "Engine.h"
 #include "GfxMgr.h"
+#include "UiMgr.h"
 
 GfxMgr::GfxMgr(Engine *eng) :
         Mgr(eng),
@@ -60,6 +62,9 @@ void GfxMgr::Init(){
 
     mWindow = mRoot->initialise(true, "Application 381 Render Window");
 
+    // mOverlaySystem must be created before initialising the resource groups
+    engine->uiMgr->mOverlaySystem = new Ogre::OverlaySystem();
+
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
@@ -71,7 +76,9 @@ void GfxMgr::Init(){
     mViewport = mWindow->addViewport(mCamera);
     mViewport->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
 
-    mCamera->setAspectRatio(Ogre::Real(mViewport->getActualWidth()) / Ogre::Real(mViewport->getActualHeight()));
+    mCamera->setAspectRatio(
+            Ogre::Real(mViewport->getActualWidth())
+                    / Ogre::Real(mViewport->getActualHeight()));
 
     mCameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
     mCameraNode->attachObject(mCamera);

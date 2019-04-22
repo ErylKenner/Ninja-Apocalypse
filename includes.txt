@@ -6,12 +6,18 @@
 /usr/local/include/OGRE/Overlay
 /usr/include/ois
 "${workspace_loc:/${ProjName}/inc/Aspects/Collider}"
+"${workspace_loc:/${ProjName}/inc/Entities}"
+"${workspace_loc:/${ProjName}/inc/Weapons}"
+/usr/include/audio
+/usr/include/AL
 
 #Libraries
 OgreMain
 OgreOverlay
 boost_system
 OIS
+openal
+audio
 
 #Library search path
 /usr/local/lib

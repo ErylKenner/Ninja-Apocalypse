@@ -26,6 +26,7 @@ public:
 protected:
     UnitAI *unitAI;
     OrientedPhysics3D *orientedPhysics3D;
+    void GoTo(Ogre::Vector3 diff, float dt);
 private:
 };
 

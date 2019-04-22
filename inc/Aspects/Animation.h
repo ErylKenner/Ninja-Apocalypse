@@ -11,21 +11,21 @@
 #include "Aspect.h"
 #include "OgreAnimationState.h"
 
-class Animation: public Aspect {
+class Animation : public Aspect{
 public:
 
-	Animation(Entity381 * entity);
-	~Animation();
+    Animation(Entity381 * entity);
+    ~Animation();
 
-	std::string GetAnimationName();
-	void SetAnimation(std::string newState, bool looped, float newAnimSpeed = 1);
-	void DisableAnimation();
+    std::string GetAnimationName();
+    void SetAnimation(std::string newState, bool looped, float newAnimSpeed = 1);
+    void DisableAnimation();
 
-	virtual void Tick(float dt);
+    virtual void Tick(float dt);
 
 private:
-	Ogre::AnimationState * animState;
-	float animSpeed;
+    Ogre::AnimationState * animState;
+    float animSpeed;
 };
 
 #endif /* INC_ASPECTS_ANIMATION_H_ */

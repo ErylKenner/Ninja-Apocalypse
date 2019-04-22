@@ -15,4 +15,3 @@ Aspect::Aspect(Entity381 *entity){
 Aspect::~Aspect(){
 }
 
-

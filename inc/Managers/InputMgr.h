@@ -30,6 +30,8 @@ public:
     OIS::InputManager* mInputMgr;
     OIS::Mouse* mMouse;
     OIS::Keyboard* mKeyboard;
+
+    std::pair<bool, Ogre::Vector3> mouseLocation;
 protected:
     virtual void windowResized(Ogre::RenderWindow* rw);
     virtual void windowClosed(Ogre::RenderWindow* rw);
@@ -45,7 +47,7 @@ private:
     void UpdateCamera(float dt);
     void UpdatePlayer(float dt);
 
-    std::pair<bool,Ogre::Vector3> GetClickedPosition(const OIS::MouseEvent& me);
+    std::pair<bool, Ogre::Vector3> GetClickedPosition(const OIS::MouseEvent& me);
 
     float shipAngleIncrement = 45;
     float shipSpeedIncrement = 10;
@@ -53,6 +55,8 @@ private:
     float cameraSpeed = 400;
     float cameraRotationSpeed = 30;
     float selectionDistanceThreshold = 30;
+
+    bool leftMouseHeld;
 };
 
 #endif /* INC_INPUTMGR_H_ */

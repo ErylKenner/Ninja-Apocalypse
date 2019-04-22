@@ -8,15 +8,28 @@
 
 #include <vector>
 #include "Aspect.h"
+#include <functional>
+#include "Entity381.h"
+
+class Ray;
 
 class Collider : public Aspect{
 public:
     Collider(Entity381 *entity);
     ~Collider();
-    virtual void Tick(float dt) = 0;
-    virtual bool IsColliding() const = 0;
-protected:
+    void Tick(float dt);
+
+    virtual bool IsColliding(Collider *other) const = 0;
+    virtual void OnCollision(Collider *other) const = 0;
+    virtual Ogre::Vector3 GetClosestPoint(Ogre::Vector3 point) const = 0;
+    virtual bool GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const = 0;
+
+    bool IsTrigger = false;
+
     static std::vector<Collider *> colliders;
+protected:
+protected:
+
 private:
 };
 

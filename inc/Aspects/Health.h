@@ -14,14 +14,16 @@ class Health : public Aspect {
 public:
 	int CurrentHealth;
 
-	Health(Entity381 * entity, int startingHealth = 100);
+	Health(Entity381 * entity, int startingHealth = 100, int dps = 10);
 	~Health();
 
 	bool IsAlive();
 	bool TakeDamage(int damageAmount);
 
 	virtual void Tick(float dt);
+private:
+	const int incomingDamagePerSecond;
+	float timeSinceLastHit;
 };
-
 
 #endif /* INC_ASPECTS_HEALTH_H_ */

@@ -17,6 +17,21 @@ Command::Command(Entity381* ent) :
 Command::~Command(){
 }
 
+void Command::GoTo(Ogre::Vector3 diff, float dt){
+    orientedPhysics3D->desiredHeading = Ogre::Math::fRad2Deg * atan2f(diff.z, diff.x);
+    float dist = diff.length();
+    float stoppingRadius = (orientedPhysics3D->maxSpeed * orientedPhysics3D->maxSpeed)
+            / (2 * orientedPhysics3D->acceleration);
+    //if(dist > stoppingRadius){
+    orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
+    /*} else if(unitAI != NULL && unitAI->NumCommands() > 1){
+     orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
+     } else{
+     orientedPhysics3D->desiredSpeed = Ogre::Math::Sqrt(
+     2 * dist * orientedPhysics3D->acceleration);
+     }*/
+}
+
 //-----------------------------------
 
 MoveTo::MoveTo(Entity381* ent, Ogre::Vector3 location) :
@@ -36,16 +51,7 @@ void MoveTo::Tick(float dt){
     if(orientedPhysics3D != NULL){
         Ogre::Vector3 diff = targetLocation - entity->position;
         diff.y = 0;
-        orientedPhysics3D->desiredHeading = 180 / 3.1415 * atan2f(diff.z, diff.x);
-        float dist = diff.length();
-        float stoppingRadius = (orientedPhysics3D->maxSpeed * orientedPhysics3D->maxSpeed) / (2 * orientedPhysics3D->acceleration);
-        if(dist > stoppingRadius){
-            orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
-        } else if(unitAI != NULL && unitAI->NumCommands() > 1){
-            orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
-        } else{
-            orientedPhysics3D->desiredSpeed = Ogre::Math::Sqrt(2 * dist * orientedPhysics3D->acceleration);
-        }
+        GoTo(diff, dt);
     }
 }
 
@@ -81,22 +87,19 @@ void Intercept::Tick(float dt){
     if(orientedPhysics3D != NULL && targetPhysics != NULL){
         float timeNeeded = (targetObject->position - entity->position).length()
                 / (targetPhysics->velocity - orientedPhysics3D->velocity).length();
-        Ogre::Vector3 interceptLocation = targetObject->position + targetPhysics->velocity * timeNeeded;
+        Ogre::Vector3 interceptLocation = targetObject->position
+                + targetPhysics->velocity * timeNeeded;
         Ogre::Vector3 diff = interceptLocation - entity->position;
         diff.y = 0;
-        orientedPhysics3D->desiredHeading = 180 / 3.1415 * atan2f(diff.z, diff.x);
-        float dist = diff.length();
-        float stoppingRadius = (orientedPhysics3D->maxSpeed * orientedPhysics3D->maxSpeed) / (2 * orientedPhysics3D->acceleration);
-        if(dist > stoppingRadius){
-            orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
-        } else{
-            orientedPhysics3D->desiredSpeed = Ogre::Math::Sqrt(2 * dist * orientedPhysics3D->acceleration);
-        }
+        GoTo(diff, dt);
+    } else{
+        GoTo(targetObject->position - entity->position, dt);
     }
 }
 
 bool Intercept::Done(){
-    return entity->position.distance(targetObject->position) <= moveDistanceThreshold;
+    //return entity->position.distance(targetObject->position) <= moveDistanceThreshold;
+    return false;
 }
 
 void Intercept::Finish(){
