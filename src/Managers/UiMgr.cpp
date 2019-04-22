@@ -5,13 +5,18 @@
  *      Author: chad
  */
 
-#include<time.h>
+#include <time.h>
 #include <UiMgr.h>
 #include <Engine.h>
 #include <GfxMgr.h>
 #include <InputMgr.h>
 #include <EntityMgr.h>
 #include <SdkTrays.h>
+#include <GameMgr.h>
+#include <Health.h>
+#include "WeaponHolder.h"
+#include "Gun.h"
+#include "WaveMgr.h"
 
 UiMgr::UiMgr(Engine* eng) :
 		Mgr(eng) {
@@ -57,10 +62,25 @@ void UiMgr::LoadLevel() {
 }
 
 void UiMgr::EnableHud(){
-	OgreBites::ProgressBar * pbar;
-	pbar = mTrayMgr->createProgressBar(OgreBites::TL_TOP, "HealthBar", "Health",
-			300, 200);
-	pbar->setProgress(100);
+	OgreBites::ProgressBar * bossHealth;
+	bossHealth = mTrayMgr->createProgressBar(OgreBites::TL_TOP, "BHealthBar", "Boss Health",
+			250, 150);
+	bossHealth->setProgress(100);
+
+	//OgreBites::ProgressBar playerHealth;
+	playerHealth = mTrayMgr->createProgressBar(OgreBites::TL_BOTTOMRIGHT, "PHealthBar", "Player Health",
+			200, 100);
+
+	playerHealth->setProgress(1);
+
+	waveLabel = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT,"waveLabel","Wave #",130);
+
+	timeLabel = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT,"timeLabel","Time:",130);
+
+	weaponLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT,"weaponLabel","Weapon",75);
+
+	ammoLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT,"ammoLabel","Ammo",75);
+
 }
 
 void UiMgr::Tick(float dt) {
@@ -68,6 +88,34 @@ void UiMgr::Tick(float dt) {
 	if(!splashScreenDisable){
 		splashScreen(dt);
 	}
+	else{
+		UpdateLabels();
+	}
+}
+
+void UiMgr::UpdateLabels(){
+	currentHealth = engine->gameMgr->MainPlayer->GetAspect<Health>()->CurrentHealth;
+	Weapon* heldWeapon = engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->heldWeapon;
+	if(heldWeapon != NULL){
+		Gun* gun = dynamic_cast<Gun*>(heldWeapon);
+		if(gun != NULL){
+			ammoNum = std::to_string(gun->CurrentBulletNumber);
+		}
+		else{
+			ammoNum = "inf";
+		}
+	}
+	else{
+			ammoNum = "0";
+	}
+	waveNum = std::to_string(engine->waveMgr->waveNumber);
+	timeElapsed = std::to_string(engine->waveMgr->timeElapsed);
+
+	playerHealth->setProgress((float) currentHealth/100);
+	timeLabel->setCaption(timeElapsed);
+	waveLabel->setCaption(waveNum);
+//	weaponLabel->setCaption("timeElapsed");
+	ammoLabel->setCaption(ammoNum);
 }
 
 void UiMgr::windowResized(Ogre::RenderWindow* rw) {

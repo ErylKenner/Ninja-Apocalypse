@@ -24,6 +24,9 @@ private:
 	float waitTime;
 	float currentTime;
 	bool splashScreenDisable = false;
+	std::string waveNum, ammoNum, timeElapsed;
+	int currentHealth;
+	OgreBites::ProgressBar* playerHealth;
 
 protected:
 	virtual void windowResized(Ogre::RenderWindow *rw);
@@ -49,14 +52,15 @@ public:
 	virtual void stop();
 
 	void splashScreen(float dt);
+	void UpdateLabels();
 
 	OgreBites::InputContext mInputContext;
 	OgreBites::SdkTrayManager* mTrayMgr;
 	Ogre::OverlaySystem* mOverlaySystem;
-	OgreBites::Label *mLabel;
-	OgreBites::Label *infoLabel;
-	OgreBites::Label *infoLabel2;
-	OgreBites::Label *infoLabel3;
+	OgreBites::Label *waveLabel;
+	OgreBites::Label *timeLabel;
+	OgreBites::Label *weaponLabel;
+	OgreBites::Label *ammoLabel;
 };
 
 #endif /* INC_UIMGR_H_ */
