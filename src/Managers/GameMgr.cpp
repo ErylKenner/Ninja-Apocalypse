@@ -63,7 +63,7 @@ void GameMgr::LoadLevel(){
 
     //Create gun
     engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
-            Ogre::Vector3(0, surfaceHeight, -700));
+            Ogre::Vector3(0, surfaceHeight, -300));
 
     LoadLevelOne();
 }

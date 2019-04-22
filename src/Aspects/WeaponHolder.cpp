@@ -74,7 +74,7 @@ void WeaponHolder::ThrowWeapon(){
 
         // for testing purposes
         entity381->engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
-                        Ogre::Vector3(0, entity381->engine->gameMgr->surfaceHeight, -700));
+                        Ogre::Vector3(0, entity381->engine->gameMgr->surfaceHeight, -300));
     }
 }
 
