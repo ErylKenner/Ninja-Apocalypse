@@ -65,8 +65,8 @@ public:
     virtual void InitAspects();
 private:
     int width;
-    int length;
     int height;
+    int length;
 };
 
 #endif /* INC_ENTITY381_H_ */

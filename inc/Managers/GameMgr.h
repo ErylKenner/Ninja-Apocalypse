@@ -24,6 +24,8 @@ public:
     Player * MainPlayer;
 protected:
 private:
+    void LoadLevelOne();
+
     const float mapWidth = 5000;
     const float mapHeight = 2500;
     const float borderWallThickness = 200;

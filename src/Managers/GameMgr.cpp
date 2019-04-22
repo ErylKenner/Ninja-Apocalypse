@@ -51,9 +51,9 @@ void GameMgr::LoadLevel(){
                     "GroundNode");
     groundNode->attachObject(groundEntity);
     Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName(
-            "Examples/Rockwall");
-    material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(10.4,
-            10.4);
+            "Examples/GrassFloor");
+    material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(20,
+            20);
     groundEntity->setMaterial(material);
     groundEntity->setCastShadows(false);
 
@@ -65,24 +65,115 @@ void GameMgr::LoadLevel(){
     engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
             Ogre::Vector3(0, surfaceHeight, -700));
 
-    //--------------------CREATE MAP--------------------
+    LoadLevelOne();
+}
+
+void GameMgr::LoadLevelOne(){
+    Entity381 *temp;
     //Borders
-    engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
             Ogre::Vector3(-mapWidth * 0.5, surfaceHeight, 0),
-            Ogre::Vector3(borderWallThickness, borderWallThickness,
-                    mapHeight + borderWallThickness));
-    engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(mapHeight - borderWallThickness, borderWallThickness,
+                    borderWallThickness));
+    temp->ogreSceneNode->yaw(Ogre::Degree(90));
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
             Ogre::Vector3(mapWidth * 0.5, surfaceHeight, 0),
-            Ogre::Vector3(borderWallThickness, borderWallThickness,
-                    mapHeight + borderWallThickness));
-    engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(mapHeight - borderWallThickness, borderWallThickness,
+                    borderWallThickness));
+    temp->ogreSceneNode->yaw(Ogre::Degree(90));
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
             Ogre::Vector3(0, surfaceHeight, -mapHeight * 0.5),
             Ogre::Vector3(mapWidth + borderWallThickness, borderWallThickness,
                     borderWallThickness));
-    engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
             Ogre::Vector3(0, surfaceHeight, mapHeight * 0.5),
             Ogre::Vector3(mapWidth + borderWallThickness, borderWallThickness,
                     borderWallThickness));
+
+    //Top left corner
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(-mapWidth * 0.4, surfaceHeight, -mapHeight * 0.225),
+            Ogre::Vector3(borderWallThickness, borderWallThickness, 0.25 * mapHeight));
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(-mapWidth * 0.275, surfaceHeight,
+                    -mapHeight * 0.35 + 0.5 * borderWallThickness),
+            Ogre::Vector3(mapWidth * 0.25 - borderWallThickness, borderWallThickness,
+                    borderWallThickness));
+
+    //Bottom left corner
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(-mapWidth * 0.4, surfaceHeight, mapHeight * 0.225),
+            Ogre::Vector3(borderWallThickness, borderWallThickness, 0.25 * mapHeight));
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(-mapWidth * 0.275, surfaceHeight,
+                    mapHeight * 0.35 - 0.5 * borderWallThickness),
+            Ogre::Vector3(mapWidth * 0.25 - borderWallThickness, borderWallThickness,
+                    borderWallThickness));
+
+    //Top right corner
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(mapWidth * 0.4, surfaceHeight, -mapHeight * 0.225),
+            Ogre::Vector3(borderWallThickness, borderWallThickness, 0.25 * mapHeight));
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(mapWidth * 0.275, surfaceHeight,
+                    -mapHeight * 0.35 + 0.5 * borderWallThickness),
+            Ogre::Vector3(mapWidth * 0.25 - borderWallThickness, borderWallThickness,
+                    borderWallThickness));
+
+    //Bottom right corner
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(mapWidth * 0.4, surfaceHeight, mapHeight * 0.225),
+            Ogre::Vector3(borderWallThickness, borderWallThickness, 0.25 * mapHeight));
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(mapWidth * 0.275, surfaceHeight,
+                    mapHeight * 0.35 - 0.5 * borderWallThickness),
+            Ogre::Vector3(mapWidth * 0.25 - borderWallThickness, borderWallThickness,
+                    borderWallThickness));
+
+    //Left large center block
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(-mapWidth * 0.275, surfaceHeight, 0),
+            Ogre::Vector3(mapWidth * 0.075, borderWallThickness, mapHeight * 0.25));
+
+    //Left top center block
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(-mapWidth * 0.1, surfaceHeight, -mapHeight * 0.2),
+            Ogre::Vector3(mapWidth * 0.025, borderWallThickness, mapHeight * 0.275));
+
+    //Left bottom center block
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(-mapWidth * 0.1, surfaceHeight, mapHeight * 0.2),
+            Ogre::Vector3(mapWidth * 0.025, borderWallThickness, mapHeight * 0.275));
+
+    //Right large center block
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(mapWidth * 0.275, surfaceHeight, 0),
+            Ogre::Vector3(mapWidth * 0.075, borderWallThickness, mapHeight * 0.25));
+
+    //Right top center block
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(mapWidth * 0.1, surfaceHeight, -mapHeight * 0.2),
+            Ogre::Vector3(mapWidth * 0.025, borderWallThickness, mapHeight * 0.275));
+
+    //Right bottom center block
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(mapWidth * 0.1, surfaceHeight, mapHeight * 0.2),
+            Ogre::Vector3(mapWidth * 0.025, borderWallThickness, mapHeight * 0.275));
+
+    //Bottom center circle
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sphere,
+            Ogre::Vector3(0, surfaceHeight, mapHeight * 0.275),
+            Ogre::Vector3(borderWallThickness, 1, 1));
+
+    //Top center circle
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Sphere,
+            Ogre::Vector3(0, surfaceHeight, -mapHeight * 0.275),
+            Ogre::Vector3(borderWallThickness, 1, 1));
+
+    //Center block
+    temp = engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::Rectangle,
+            Ogre::Vector3(0, surfaceHeight, 0),
+            Ogre::Vector3(borderWallThickness, borderWallThickness, mapHeight * 0.15));
 
 }
 
