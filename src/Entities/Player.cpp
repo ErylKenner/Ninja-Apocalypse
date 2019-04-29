@@ -16,7 +16,7 @@
 Player::Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engine * eng) :
         Entity381(id, "ninja.mesh", pos, eng),
         Speed(speed){
-    aspects.push_back(new Health(this, 100, 25));
+    aspects.push_back(new Health(this, 100, 2));
     anim = new Animation(this);
     aspects.push_back(anim);
     aspects.push_back(new CameraTether(this, 1000, camera));

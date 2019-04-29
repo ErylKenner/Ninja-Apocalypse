@@ -21,7 +21,7 @@
 
 Enemy::Enemy(int id, Ogre::Vector3 pos, Engine * eng) :
         Entity381(id, "ninja.mesh", pos, eng),
-        hitDamage(4){
+        hitDamage(20){
     // TODO: add 0 heading to Renderable aspect to make enemies face the right direction
     aspects.push_back(new Health(this, 100, -1));
     anim = new Animation(this);
