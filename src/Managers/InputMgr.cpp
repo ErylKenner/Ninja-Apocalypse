@@ -214,6 +214,7 @@ void InputMgr::UpdateShipDesiredAttributes(float dt){
         if(mKeyboard->isKeyDown(OIS::KC_SPACE)){
             physics->desiredSpeed = 0;
         }
+
     }
 
     leftArrow_DownLastFrame = left;

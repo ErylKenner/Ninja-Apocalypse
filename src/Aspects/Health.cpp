@@ -6,6 +6,7 @@
  */
 
 #include "Health.h"
+#include "SoundMgr.h"
 #include <iostream>
 
 Health::Health(Entity381 * entity, int startingHealth, int dps) :
@@ -32,6 +33,7 @@ bool Health::TakeDamage(int damageAmount){
         if(incomingDamagePerSecond != 0){
             timeSinceLastHit = 1 / (float)incomingDamagePerSecond;
         }
+        entity381->engine->soundMgr->playPlayerDamage();
         CurrentHealth -= damageAmount;
         if(!IsAlive()){
             // health is never below zero
