@@ -15,12 +15,13 @@
 #include "UiMgr.h"
 
 Engine::Engine(){
-    entityMgr = 0; //null
+    entityMgr = 0;
     gameMgr = 0;
     gfxMgr = 0;
     inputMgr = 0;
     waveMgr = 0;
     uiMgr = 0;
+    soundMgr = 0;
 
 
     keepRunning = true;
