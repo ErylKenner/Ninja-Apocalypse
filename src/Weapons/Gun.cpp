@@ -12,6 +12,7 @@
 #include "CircleCollider.h"
 #include "Enemy.h"
 #include "Health.h"
+#include "SoundMgr.h"
 
 Gun::Gun(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos,
          Engine * eng, float useRate, int damageAmount, int bulletMax) :
@@ -25,6 +26,7 @@ Gun::~Gun(){
 
 void Gun::Use(){
     if(CurrentBulletNumber > 0){
+    	engine->soundMgr->playGunshot();
         CurrentBulletNumber--;
         std::cout << "Bang! " << CurrentBulletNumber << " bullets left." << std::endl;
         const Ogre::Vector2 playerPos = Ogre::Vector2(

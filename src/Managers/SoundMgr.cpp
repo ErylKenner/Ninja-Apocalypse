@@ -92,6 +92,7 @@ void SoundMgr::initialize(void){
 
 
 	unsigned int sid;
+
         //background music
 	std::string filename = "Sounds/Spacey.wav";
 	if (this->reserveAudio(filename, true, sid)){
@@ -101,23 +102,25 @@ void SoundMgr::initialize(void){
         }
 	std::cout << "background music loaded" << std::endl;
 
-        initWatercraftSounds();
 
-        //filename = "data/watercraft/sounds/explosion.wav";
-        //default explosion sound for all entities
-        if (this->reserveAudio(filename, false, sid)){
-            battleSoundSource = sourceInfo[sid].source;
-            alSourcei(this->battleSoundSource, AL_REFERENCE_DISTANCE, 2000.0f);
-            alSourcei(this->battleSoundSource, AL_MAX_DISTANCE, 8000.0f);
+
+
+//      default gunshot sound for all entities
+    unsigned int gunshotsid;
+    std::string gunshotfilename = "Sounds/gunshot.wav";
+    if (this->reserveAudio(gunshotfilename, false, gunshotsid)){
+            battleSoundSource = sourceInfo[gunshotsid].source;
+            this->loadStartGunshot(); ///////
+        }
+
+    unsigned int playerdamagesid;
+    std::string playerdamagefilename = "Sounds/player_damage.wav";
+    if (this->reserveAudio(playerdamagefilename, false, playerdamagesid)){
+            playerDamageSource = sourceInfo[gunshotsid].source;
+            this->loadPlayerDamage(); ///////
         }
 
 	return;
-
-}
-
-bool SoundMgr::initWatercraftSounds(){
-
-        return true;
 
 }
 
@@ -174,6 +177,7 @@ void SoundMgr::attachSelectedNodeToSoundIndex(Entity381 *ent, unsigned int index
 
 void SoundMgr::tick(double dtime){
 
+//	playGunshot();
 //	syncListenerToCamera();
 
         //selection sound
@@ -321,6 +325,7 @@ bool SoundMgr::registerSelection(Entity381 et, std::string filename){
 
                 sourceDictionary[sid] = filename;
                 et.soundFile = filename;
+
                 return true;
     }
     else
@@ -515,75 +520,6 @@ bool SoundMgr::loadAudio(std::string filename, int index){
 	return true;
 }
 
-bool SoundMgr::loadStartBackground(){
-	//WaveInfo *wave;
-
-
-	alGenSources((ALuint)1, &this->backgroundMusicSource);
-	printError("Cannot generate source with id 1");
-
-	alSourcef(this->backgroundMusicSource, AL_PITCH, 1);
-	printError("Source pitch");
-
-	alSourcef(this->backgroundMusicSource, AL_GAIN, 2);
-	printError("Source Gain");
-
-	alSource3f(this->backgroundMusicSource, AL_POSITION, 0, 0, 0);
-	printError("Source position");
-
-	alSource3f(this->backgroundMusicSource, AL_VELOCITY, 0, 0, 0);
-	printError("Source velocity");
-
-	alSourcei(this->backgroundMusicSource, AL_LOOPING, AL_TRUE);
-	printError("Source looping");
-
-	alGenBuffers(1, &this->backgroundMusicBuffer);
-	printError("Buffer generation");
-
-	std::string fqfn = getFQFNFromFilename(OgreSND::backgroundMusicFilename);
-	std::cout << "SoundManager backgroundMusic file: " << fqfn << " is being readied" << std::endl;
-	if(fqfn == "")
-		return false;
-
-	this->backgroundWaveInfo = WaveOpenFileForReading(fqfn.c_str());
-	if(!this->backgroundWaveInfo){
-		std::cerr << "ERROR: Cannot open wave file for reading" << std::endl;
-		return false;
-	}
-	int ret = WaveSeekFile(0, this->backgroundWaveInfo);
-	if (ret) {
-		std::cerr << "ERROR: Cannot seek" << std::endl;
-		return false;
-	}
-	char *tmpBuf = (char *) malloc(this->backgroundWaveInfo->dataSize);
-	//this->backgroundBufferData = (char *) malloc(this->backgroundWaveInfo->dataSize);
-	if(!tmpBuf){
-		std::cerr << "ERROR: in malloc" << std::endl;
-		return false;
-	}
-	ret = WaveReadFile(tmpBuf, this->backgroundWaveInfo->dataSize, this->backgroundWaveInfo);
-	if(ret != (int) this->backgroundWaveInfo->dataSize){
-		std::cerr << "ERROR: short read " << ret << " wanted: " << this->backgroundWaveInfo->dataSize << std::endl;
-		return false;
-	}
-	alBufferData(this->backgroundMusicBuffer,
-			toALFormat(this->backgroundWaveInfo->channels, this->backgroundWaveInfo->bitsPerSample),
-			tmpBuf, this->backgroundWaveInfo->dataSize, this->backgroundWaveInfo->sampleRate);
-	if(printError("Failed to load bufferData") < 0){
-		return false;
-	}
-
-	free(tmpBuf);
-
-	alSourcei(this->backgroundMusicSource, AL_BUFFER, this->backgroundMusicBuffer);
-	printError("Source binding");
-
-	alSourcePlay(this->backgroundMusicSource);
-	printError("Playing");
-
-
-	return true;
-}
 
 
 // Returns true if we can play the sound. Rewinds sound if already playing and forceRestart is true,
@@ -732,5 +668,241 @@ bool SoundMgr::setSound( ALuint audioID, Ogre::Vector3 position,
 bool SoundMgr::setListenerDisposition( Ogre::Vector3 position, Ogre::Vector3 velocity, Ogre::Quaternion orientation ){
 	return false;
 }
+
+bool SoundMgr::initActionSounds(Entity381* et){
+        //registering all sounds
+		std::string gunshotFilename = "Sounds/gunshot.wav";
+        std::string selection2Filename = "data/watercraft/sounds/GoodDay.wav";
+        //std::string createShipFilename = "data/watercraft/sounds/boatMoving.wav";
+        //std::string createBuildingFilename = "data/watercraft/sounds/clong.wav";
+            //this->registerBattleSound(et, battleFilename);
+                        this->registerSelection(*et, gunshotFilename);
+
+                //this->registerCreate(et, createShipFilename);
+
+
+        return true;
+}
+void SoundMgr::playGunshot(){
+	alSourcePlay(this->battleSoundSource);
+//	stopAudio(this->battleSoundSource);
+}
+
+void SoundMgr::playPlayerDamage(){
+	alSourcePlay(this->playerDamageSource);
+//	stopAudio(this->battleSoundSource);
+}
+
+
+bool SoundMgr::loadStartGunshot(){
+	//WaveInfo *wave;
+
+	alGenSources((ALuint)1, &this->battleSoundSource);
+	printError("Cannot generate source with id 1");
+
+	alSourcef(this->battleSoundSource, AL_PITCH, .95);
+	printError("Source pitch");
+
+	alSourcef(this->battleSoundSource, AL_GAIN, 2);
+	printError("Source Gain");
+
+	alSource3f(this->battleSoundSource, AL_POSITION, 0, 0, 0);
+	printError("Source position");
+
+	alSource3f(this->battleSoundSource, AL_VELOCITY, 0, 0, 0);
+	printError("Source velocity");
+
+	alSourcei(this->battleSoundSource, AL_LOOPING, AL_FALSE);
+	printError("Source looping");
+
+	alGenBuffers(1, &this->battleSoundBuffer);  /////
+	printError("Buffer generation");
+
+	std::string fqfn = getFQFNFromFilename(OgreSND::battleSoundFilename);
+	std::cout << "SoundManager battleSound file: " << fqfn << " is being readied" << std::endl;
+	if(fqfn == "")
+		return false;
+
+	this->battleWaveInfo = WaveOpenFileForReading(fqfn.c_str());
+	if(!this->battleWaveInfo){
+		std::cerr << "ERROR: Cannot open wave file for reading" << std::endl;
+		return false;
+	}
+	int ret = WaveSeekFile(0, this->battleWaveInfo);
+	if (ret) {
+		std::cerr << "ERROR: Cannot seek" << std::endl;
+		return false;
+	}
+	char *tmpBuf = (char *) malloc(this->battleWaveInfo->dataSize);
+	//this->backgroundBufferData = (char *) malloc(this->backgroundWaveInfo->dataSize);
+	if(!tmpBuf){
+		std::cerr << "ERROR: in malloc" << std::endl;
+		return false;
+	}
+	ret = WaveReadFile(tmpBuf, this->battleWaveInfo->dataSize, this->battleWaveInfo);
+	if(ret != (int) this->battleWaveInfo->dataSize){
+		std::cerr << "ERROR: short read " << ret << " wanted: " << this->battleWaveInfo->dataSize << std::endl;
+		return false;
+	}
+	alBufferData(this->battleSoundBuffer,
+			toALFormat(this->battleWaveInfo->channels, this->battleWaveInfo->bitsPerSample),
+			tmpBuf, this->battleWaveInfo->dataSize, this->battleWaveInfo->sampleRate);
+	if(printError("Failed to load bufferData") < 0){
+		return false;
+	}
+
+	free(tmpBuf);
+
+	alSourcei(this->battleSoundSource, AL_BUFFER, this->battleSoundBuffer);
+	printError("Source binding");
+
+	printError("Playing");
+//	printError("Playing");
+
+
+	return true;
+}
+
+bool SoundMgr::loadStartBackground(){
+	//WaveInfo *wave;
+
+
+	alGenSources((ALuint)1, &this->backgroundMusicSource);
+	printError("Cannot generate source with id 1");
+
+	alSourcef(this->backgroundMusicSource, AL_PITCH, 1);
+	printError("Source pitch");
+
+	alSourcef(this->backgroundMusicSource, AL_GAIN, 2);
+	printError("Source Gain");
+
+	alSource3f(this->backgroundMusicSource, AL_POSITION, 0, 0, 0);
+	printError("Source position");
+
+	alSource3f(this->backgroundMusicSource, AL_VELOCITY, 0, 0, 0);
+	printError("Source velocity");
+
+	alSourcei(this->backgroundMusicSource, AL_LOOPING, AL_TRUE);
+	printError("Source looping");
+
+	alGenBuffers(1, &this->backgroundMusicBuffer);
+	printError("Buffer generation");
+
+	std::string fqfn = getFQFNFromFilename(OgreSND::backgroundMusicFilename);
+	std::cout << "SoundManager backgroundMusic file: " << fqfn << " is being readied" << std::endl;
+	if(fqfn == "")
+		return false;
+
+	this->backgroundWaveInfo = WaveOpenFileForReading(fqfn.c_str());
+	if(!this->backgroundWaveInfo){
+		std::cerr << "ERROR: Cannot open wave file for reading" << std::endl;
+		return false;
+	}
+	int ret = WaveSeekFile(0, this->backgroundWaveInfo);
+	if (ret) {
+		std::cerr << "ERROR: Cannot seek" << std::endl;
+		return false;
+	}
+	char *tmpBuf = (char *) malloc(this->backgroundWaveInfo->dataSize);
+	//this->backgroundBufferData = (char *) malloc(this->backgroundWaveInfo->dataSize);
+	if(!tmpBuf){
+		std::cerr << "ERROR: in malloc" << std::endl;
+		return false;
+	}
+	ret = WaveReadFile(tmpBuf, this->backgroundWaveInfo->dataSize, this->backgroundWaveInfo);
+	if(ret != (int) this->backgroundWaveInfo->dataSize){
+		std::cerr << "ERROR: short read " << ret << " wanted: " << this->backgroundWaveInfo->dataSize << std::endl;
+		return false;
+	}
+	alBufferData(this->backgroundMusicBuffer,
+			toALFormat(this->backgroundWaveInfo->channels, this->backgroundWaveInfo->bitsPerSample),
+			tmpBuf, this->backgroundWaveInfo->dataSize, this->backgroundWaveInfo->sampleRate);
+	if(printError("Failed to load bufferData") < 0){
+		return false;
+	}
+
+	free(tmpBuf);
+
+	alSourcei(this->backgroundMusicSource, AL_BUFFER, this->backgroundMusicBuffer);
+	printError("Source binding");
+
+//	alSourcePlay(this->backgroundMusicSource);
+	printError("Playing");
+
+
+	return true;
+}
+
+bool SoundMgr::loadPlayerDamage(){
+	//WaveInfo *wave;
+
+
+	alGenSources((ALuint)1, &this->playerDamageSource);
+	printError("Cannot generate source with id 1");
+
+	alSourcef(this->playerDamageSource, AL_PITCH, 1);
+	printError("Source pitch");
+
+	alSourcef(this->playerDamageSource, AL_GAIN, 2);
+	printError("Source Gain");
+
+	alSource3f(this->playerDamageSource, AL_POSITION, 0, 0, 0);
+	printError("Source position");
+
+	alSource3f(this->playerDamageSource, AL_VELOCITY, 0, 0, 0);
+	printError("Source velocity");
+
+	alSourcei(this->playerDamageSource, AL_LOOPING, AL_FALSE);
+	printError("Source looping");
+
+	alGenBuffers(1, &this->playerDamageBuffer);
+	printError("Buffer generation");
+
+	std::string fqfn = getFQFNFromFilename(OgreSND::playerDamageFilename);
+	std::cout << "SoundManager backgroundMusic file: " << fqfn << " is being readied" << std::endl;
+	if(fqfn == "")
+		return false;
+
+	this->playerDamageInfo = WaveOpenFileForReading(fqfn.c_str());
+	if(!this->playerDamageInfo){
+		std::cerr << "ERROR: Cannot open wave file for reading" << std::endl;
+		return false;
+	}
+	int ret = WaveSeekFile(0, this->playerDamageInfo);
+	if (ret) {
+		std::cerr << "ERROR: Cannot seek" << std::endl;
+		return false;
+	}
+	char *tmpBuf = (char *) malloc(this->playerDamageInfo->dataSize);
+	//this->backgroundBufferData = (char *) malloc(this->playerDamageInfo->dataSize);
+	if(!tmpBuf){
+		std::cerr << "ERROR: in malloc" << std::endl;
+		return false;
+	}
+	ret = WaveReadFile(tmpBuf, this->playerDamageInfo->dataSize, this->playerDamageInfo);
+	if(ret != (int) this->playerDamageInfo->dataSize){
+		std::cerr << "ERROR: short read " << ret << " wanted: " << this->playerDamageInfo->dataSize << std::endl;
+		return false;
+	}
+	alBufferData(this->playerDamageBuffer,
+			toALFormat(this->playerDamageInfo->channels, this->playerDamageInfo->bitsPerSample),
+			tmpBuf, this->playerDamageInfo->dataSize, this->playerDamageInfo->sampleRate);
+	if(printError("Failed to load bufferData") < 0){
+		return false;
+	}
+
+	free(tmpBuf);
+
+	alSourcei(this->playerDamageSource, AL_BUFFER, this->playerDamageBuffer);
+	printError("Source binding");
+
+	alSourcePlay(this->playerDamageSource);
+	printError("Playing");
+
+
+	return true;
+}
+
+
 
 
