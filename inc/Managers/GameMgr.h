@@ -9,6 +9,8 @@
 #include "Mgr.h"
 #include "Player.h"
 
+class WeaponMgr;
+
 class GameMgr : public Mgr{
 public:
     GameMgr(Engine *eng);
@@ -19,6 +21,7 @@ public:
     void LoadLevel();
     void Stop();
 
+    WeaponMgr * weaponMgr;
     Ogre::Plane mPlane;
     const float surfaceHeight = 0;
     Player * MainPlayer;

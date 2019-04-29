@@ -14,7 +14,8 @@ Weapon::Weapon(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3
                Engine * eng, float useRate, int damageAmount) :
         Entity381(id, meshName, pos, eng),
         UseRate(useRate),
-        DamageAmount(damageAmount){
+        DamageAmount(damageAmount),
+        spawnedFrom(0){
     scale = _scale / 100.0f;
     aspects.push_back(new Throwable(this, 600));
     aspects.push_back(new WeaponCollider(this, 25));

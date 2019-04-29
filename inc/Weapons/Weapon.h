@@ -9,6 +9,7 @@
 #define INC_WEAPON_H_
 
 #include "Entity381.h"
+#include "WeaponMgr.h"
 
 class Weapon : public Entity381{
 public:
@@ -17,6 +18,7 @@ public:
 
     float UseRate;
     int DamageAmount;
+    WeaponSpawnPoint * spawnedFrom;
 
     virtual void Use() = 0;
 };

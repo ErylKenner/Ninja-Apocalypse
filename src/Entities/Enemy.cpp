@@ -14,6 +14,10 @@
 #include "GameMgr.h"
 #include "CircleCollider.h"
 #include "WaveMgr.h"
+#include "EntityMgr.h"
+
+#include <cstdlib>
+#include <ctime>
 
 Enemy::Enemy(int id, Ogre::Vector3 pos, Engine * eng) :
         Entity381(id, "ninja.mesh", pos, eng),
@@ -31,12 +35,18 @@ Enemy::Enemy(int id, Ogre::Vector3 pos, Engine * eng) :
     ai->SetCommand(new Intercept(this, eng->gameMgr->MainPlayer));
     aspects.push_back(new EnemyMovableCircleCollider(this, 30));
     aspects.push_back(new Renderable(this, 90));
+
+    std::srand(std::time(nullptr));
 }
 
 Enemy::~Enemy(){
 }
 
 void Enemy::OnDeath(){
+    int rand = std::rand() % 100;
+        if(rand < 12) {
+            engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType, position);
+        }
     Ogre::Vector3 newPos = Ogre::Vector3(0,0, 25e6);
     position = newPos;
     GetAspect<UnitAI>()->SetCommand(new MoveTo(this, newPos));
