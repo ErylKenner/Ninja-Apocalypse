@@ -33,8 +33,13 @@ void Gun::Use(){
         const Ogre::Vector2 dir = Ogre::Vector2(engine->inputMgr->mouseLocation.second.x,
                 engine->inputMgr->mouseLocation.second.z) - playerPos;
         Ray ray(playerPos, dir);
-        Collider *closest = ray.GetClosestIntersectedCollider();
+        float dist;
+        Collider *closest = ray.GetClosestIntersectedCollider(&dist);
         if(closest != NULL){
+            Ogre::Vector2 endPos = playerPos + dir.normalisedCopy() * dist;
+            engine->gameMgr->DrawLine(engine->gameMgr->MainPlayer->position,
+                    Ogre::Vector3(endPos.x, engine->gameMgr->MainPlayer->position.y,
+                            endPos.y));
             EnemyMovableCircleCollider *enemyCollider =
                     dynamic_cast<EnemyMovableCircleCollider *>(closest);
             if(enemyCollider != NULL){
@@ -48,7 +53,7 @@ void Gun::Use(){
 }
 
 Handgun::Handgun(int id, Ogre::Vector3 pos, Engine * eng) :
-        Gun(id, "cube.mesh", Ogre::Vector3(10, 10, 40), pos, eng, 1 / 25.0, 20, 80){
+        Gun(id, "cube.mesh", Ogre::Vector3(10, 10, 40), pos, eng, 1 / 10.0, 20, 80){
     ogreEntity->setMaterialName("Examples/BumpyMetal");
 
 }
