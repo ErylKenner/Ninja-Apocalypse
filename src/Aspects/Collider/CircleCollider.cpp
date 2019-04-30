@@ -166,11 +166,12 @@ PlayerMovableCircleCollider::~PlayerMovableCircleCollider(){
 }
 
 void PlayerMovableCircleCollider::OnCollision(Collider *other) const{
-    MovableCircleCollider::OnCollision(other);
 
     EnemyMovableCircleCollider *castToEnemy =
             dynamic_cast<EnemyMovableCircleCollider *>(other);
-    if(castToEnemy != NULL){
+    if(castToEnemy == NULL){
+        MovableCircleCollider::OnCollision(other);
+    } else{
         Player *player = dynamic_cast<Player *>(entity381);
         Enemy *enemy = dynamic_cast<Enemy *>(other->entity381);
         if(player != NULL && enemy != NULL){
@@ -193,9 +194,9 @@ EnemyMovableCircleCollider::~EnemyMovableCircleCollider(){
 
 void EnemyMovableCircleCollider::OnCollision(Collider *other) const{
     RectangleBorderCollider *castToBorder = dynamic_cast<RectangleBorderCollider *>(other);
-    if(castToBorder != NULL){
-
-    } else{
+    EnemyMovableCircleCollider *castToEnemy =
+            dynamic_cast<EnemyMovableCircleCollider *>(other);
+    if(castToBorder == NULL && castToEnemy == NULL){
         MovableCircleCollider::OnCollision(other);
     }
 }
