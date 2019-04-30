@@ -199,7 +199,7 @@ void GameMgr::Stop(){
 void GameMgr::DrawLine(Ogre::Vector3 start, Ogre::Vector3 end){
     timer = lineVisibleTime;
     line->clear();
-    line->begin("lineMaterial", Ogre::RenderOperation::OT_LINE_LIST);
+    line->begin("lineMaterial", Ogre::RenderOperation::OT_LINE_STRIP);
     line->position(start.x, start.y, start.z);
     line->position(end.x, end.y, end.z);
     line->end();

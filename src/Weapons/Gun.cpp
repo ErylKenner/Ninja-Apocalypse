@@ -29,9 +29,6 @@ void Gun::Use(){
     if(CurrentBulletNumber > 0){
         engine->soundMgr->playGunshot();
         CurrentBulletNumber--;
-        const Ogre::Vector2 playerPos = Ogre::Vector2(
-                engine->gameMgr->MainPlayer->position.x,
-                engine->gameMgr->MainPlayer->position.z);
         const Ogre::Vector2 mousePos = Ogre::Vector2(
                 engine->inputMgr->mouseLocation.second.x,
                 engine->inputMgr->mouseLocation.second.z);
@@ -39,7 +36,7 @@ void Gun::Use(){
                 engine->gameMgr->MainPlayer->ogreSceneNode->convertLocalToWorldPosition(
                         Ogre::Vector3(50 * Ogre::Math::Sin(20) * scale.x, 0,
                                 -50 * Ogre::Math::Cos(20) * scale.z) + position);
-        const Ogre::Vector2 dir = mousePos - playerPos;
+        const Ogre::Vector2 dir = mousePos - Ogre::Vector2(gunPos.x, gunPos.z);
         Ray ray(gunPos, dir);
         float dist = Ogre::Math::POS_INFINITY;
         Collider *closest = ray.GetClosestIntersectedCollider(&dist);

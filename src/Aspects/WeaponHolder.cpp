@@ -49,7 +49,7 @@ void WeaponHolder::SetWeapon(Weapon * weapon){
     entity381->ogreSceneNode->addChild(heldWeapon->ogreSceneNode);
     heldWeapon->ogreSceneNode->setOrientation(Ogre::Quaternion());
     heldWeapon->position = Ogre::Vector3(48, 95, -15);
-    heldWeapon->ogreSceneNode->yaw(Ogre::Degree(0));
+    heldWeapon->ogreSceneNode->yaw(Ogre::Degree(10));
     heldWeapon->ogreSceneNode->setInheritScale(false);
 }
 
