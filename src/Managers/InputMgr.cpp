@@ -15,6 +15,7 @@
 #include "UiMgr.h"
 #include "GameMgr.h"
 #include "WeaponHolder.h"
+#include "CameraTether.h"
 
 #include "Player.h"
 
@@ -115,6 +116,13 @@ void InputMgr::UpdatePlayer(float dt){
 
     // movement == zero, will tell the player to go back to idle animation
     player->Move(movement, dt);
+
+    if(mKeyboard->isKeyDown(OIS::KC_UP)){
+        player->GetAspect<CameraTether>()->Height += 400 * dt;
+    }
+    if(mKeyboard->isKeyDown(OIS::KC_DOWN)){
+            player->GetAspect<CameraTether>()->Height -= 400 * dt;
+        }
 
 }
 
