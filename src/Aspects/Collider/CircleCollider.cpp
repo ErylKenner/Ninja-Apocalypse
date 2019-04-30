@@ -114,6 +114,8 @@ void WeaponCollider::OnCollision(Collider *other) const{
         }
 
         entity381->position = Ogre::Vector3(0, 0, 25e6);
+        entity381->GetAspect<Throwable>()->Thrown = false;
+
     }
 }
 

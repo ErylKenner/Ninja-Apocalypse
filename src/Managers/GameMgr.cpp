@@ -11,12 +11,15 @@
 #include "EntityMgr.h"
 #include "Weapon.h"
 #include "WeaponHolder.h"
+#include "WeaponMgr.h"
 
 GameMgr::GameMgr(Engine *eng) :
         Mgr(eng),
+        weaponMgr(0),
         MainPlayer(0),
         line(0),
         lineNode(0){
+    weaponMgr = new WeaponMgr(engine);
     mPlane = Ogre::Plane(Ogre::Vector3::UNIT_Y, surfaceHeight);
 
 }
@@ -26,7 +29,7 @@ GameMgr::~GameMgr(){
 }
 
 void GameMgr::Init(){
-
+    weaponMgr->Init();
 }
 
 void GameMgr::Tick(float dt){
@@ -37,6 +40,7 @@ void GameMgr::Tick(float dt){
         line->clear();
     }
     //std::cout << "FPS: " << (int)(1 / dt);
+    weaponMgr->Tick(dt);
 }
 
 void GameMgr::LoadLevel(){
@@ -86,8 +90,10 @@ void GameMgr::LoadLevel(){
     //MainPlayer->ogreSceneNode->addChild(lineNode);
 
     //Create gun
-    engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
-            Ogre::Vector3(0, surfaceHeight, -300));
+    //engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
+    //Ogre::Vector3(0, surfaceHeight, -300));
+
+    weaponMgr->LoadLevel();
 
     LoadLevelOne();
 }
@@ -200,7 +206,7 @@ void GameMgr::LoadLevelOne(){
 }
 
 void GameMgr::Stop(){
-
+    weaponMgr->Stop();
 }
 
 void GameMgr::DrawLine(Ogre::Vector2 start, Ogre::Vector2 end){

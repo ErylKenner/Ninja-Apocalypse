@@ -216,6 +216,7 @@ void InputMgr::UpdateShipDesiredAttributes(float dt){
         if(mKeyboard->isKeyDown(OIS::KC_SPACE)){
             physics->desiredSpeed = 0;
         }
+
     }
 
     leftArrow_DownLastFrame = left;
@@ -389,8 +390,9 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
 bool InputMgr::keyPressed(const OIS::KeyEvent& ke){
 
     switch(ke.key) {
-        case OIS::KC_R:
+        case OIS::KC_SPACE:
             //engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->ReloadWeapon();
+            std::cout << engine->gameMgr->MainPlayer->position << std::endl;
             break;
         default:
             break;

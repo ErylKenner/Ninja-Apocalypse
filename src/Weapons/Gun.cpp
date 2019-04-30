@@ -12,6 +12,7 @@
 #include "CircleCollider.h"
 #include "Enemy.h"
 #include "Health.h"
+#include "SoundMgr.h"
 
 Gun::Gun(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos,
          Engine * eng, float useRate, int damageAmount, int bulletMax) :
@@ -25,6 +26,7 @@ Gun::~Gun(){
 
 void Gun::Use(){
     if(CurrentBulletNumber > 0){
+    	engine->soundMgr->playGunshot();
         CurrentBulletNumber--;
         const Ogre::Vector2 playerPos = Ogre::Vector2(
                 engine->gameMgr->MainPlayer->position.x,
@@ -53,7 +55,7 @@ void Gun::Use(){
 }
 
 Handgun::Handgun(int id, Ogre::Vector3 pos, Engine * eng) :
-        Gun(id, "cube.mesh", Ogre::Vector3(10, 10, 40), pos, eng, 1 / 10.0, 20, 80){
+        Gun(id, "cube.mesh", Ogre::Vector3(10, 10, 40), pos, eng, 1 / 10.0, 20, 60){
     ogreEntity->setMaterialName("Examples/BumpyMetal");
 
 }

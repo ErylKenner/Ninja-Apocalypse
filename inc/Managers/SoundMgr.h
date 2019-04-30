@@ -31,6 +31,9 @@ namespace OgreSND {
 	const int maxAudioBuffers = 63; // + 1 for background music
 	const int maxAudioSources = 15; // + 1 for background music
 	const std::string backgroundMusicFilename = "Sounds/Spacey.wav";
+	const std::string battleSoundFilename = "Sounds/gunshot.wav";
+	const std::string playerDamageFilename = "Sounds/player_damage.wav";
+
 	///home/sushil/workspace/fe1/
 
 
@@ -61,8 +64,9 @@ namespace OgreSND {
 
 		//Special treatment for background source and buffer
 		ALuint backgroundMusicBuffer, backgroundMusicSource;
-                ALuint battleSoundSource; //default battle sound source, not entity specific
-		WaveInfo *backgroundWaveInfo;
+        ALuint battleSoundSource, battleSoundBuffer; //gunshot sounds
+        ALuint playerDamageSource, playerDamageBuffer; //gunshot sounds
+		WaveInfo *backgroundWaveInfo, *battleWaveInfo, *playerDamageInfo;
 		//unsigned int scvId;
                 //unsigned int soundDictionary[FastEcslent::NENTITYTYPES];
                 std::vector <std::string> sourceDictionary;
@@ -115,6 +119,8 @@ namespace OgreSND {
 		bool loadAudio(std::string filename, int sid);
 		//bool loadAndBindAudio(std::string filename, bool loop, ALuint &audioId); //return +ive audioId or -ive error code
 		bool loadStartBackground();
+		bool loadStartGunshot();
+		bool loadPlayerDamage();
 		bool stopBackground();
 		bool pauseBackground();
 		bool resumeBackground();
@@ -123,7 +129,7 @@ namespace OgreSND {
                 bool registerSelection(Entity381 et, std::string filename);
                 //bool registerBattleSound(FastEcslent::EntityType et, std::string filename);
                 //bool isEntityShip(FastEcslent::EntityType et);
-                bool initWatercraftSounds();
+                bool initActionSounds(Entity381* et);
 
 		bool reserveAudio(std::string filename, bool loop, unsigned int &alSourceInfoIndex);
 		bool releaseSource(ALuint audioId);
@@ -160,6 +166,9 @@ namespace OgreSND {
             bool playNow, bool forceRestart, float minGain );
 
         bool setListenerDisposition( Ogre::Vector3 position, Ogre::Vector3 velocity, Ogre::Quaternion orientation );
+
+        void playGunshot();
+        void playPlayerDamage();
 
 	};
 
