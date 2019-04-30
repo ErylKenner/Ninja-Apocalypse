@@ -8,9 +8,9 @@
 #include "Enemy.h"
 #include "Weapon.h"
 #include "Gun.h"
+#include "FirstBoss.h"
 #include "Engine.h"
 #include "GfxMgr.h"
-
 
 EntityMgr::EntityMgr(Engine *eng) :
         Mgr(eng),
@@ -65,6 +65,10 @@ Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector
             return newEntity;
         case EntityType::HandgunType:
             newEntity = new Handgun(id, pos, engine);
+            entities.push_back(newEntity);
+            return newEntity;
+        case EntityType::FirstBossType:
+            newEntity = new FirstBoss(id, pos, engine);
             entities.push_back(newEntity);
             return newEntity;
         default:

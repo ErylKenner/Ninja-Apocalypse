@@ -17,7 +17,7 @@ WaveMgr::WaveMgr(Engine *eng) :
         Mgr(eng),
         enemiesPerWave(20),
         waveNumber(1),
-        spawnDelay(1),
+        spawnDelay(2000),
         timeElapsed(0),
         timeSinceLastSpawn(0){
     enemiesRemaining = enemiesPerWave;

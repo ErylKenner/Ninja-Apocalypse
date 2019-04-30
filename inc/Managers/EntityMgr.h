@@ -20,6 +20,7 @@ enum EntityType{
     PlayerType,
     EnemyType,
     HandgunType,
+    FirstBossType,
     TerrainRectangle,
     TerrainSphere,
     TerrainBorder
