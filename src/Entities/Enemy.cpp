@@ -15,6 +15,7 @@
 #include "CircleCollider.h"
 #include "WaveMgr.h"
 #include "EntityMgr.h"
+#include "PotentialField.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -29,10 +30,11 @@ Enemy::Enemy(int id, Ogre::Vector3 pos, Engine * eng) :
     anim->SetAnimation("Walk", true, 1.2);
 
     aspects.push_back(new OrientedPhysics3D(this, 200, 180, 180));
-    UnitAI * ai = new UnitAI(this);
-    aspects.push_back(ai);
+    //UnitAI * ai = new UnitAI(this);
+    //aspects.push_back(ai);
+    aspects.push_back(new PotentialField(this, PotentialFieldType::Enemy));
 
-    ai->SetCommand(new Intercept(this, eng->gameMgr->MainPlayer));
+    //ai->SetCommand(new Intercept(this, eng->gameMgr->MainPlayer));
     aspects.push_back(new EnemyMovableCircleCollider(this, 30));
     aspects.push_back(new Renderable(this, 90));
 
@@ -44,12 +46,12 @@ Enemy::~Enemy(){
 
 void Enemy::OnDeath(){
     int rand = std::rand() % 100;
-        if(rand < 12) {
-            engine->entityMgr->CreateEntity(EntityType::HandgunType, position);
-        }
-    Ogre::Vector3 newPos = Ogre::Vector3(0,0, 25e6);
+    if(rand < 12){
+        engine->entityMgr->CreateEntity(EntityType::HandgunType, position);
+    }
+    Ogre::Vector3 newPos = Ogre::Vector3(0, 0, 25e6);
     position = newPos;
-    GetAspect<UnitAI>()->SetCommand(new MoveTo(this, newPos));
+    //GetAspect<UnitAI>()->SetCommand(new MoveTo(this, newPos));
     anim->DisableAnimation();
     engine->waveMgr->OnEnemyKilled(this);
 }

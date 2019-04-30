@@ -12,6 +12,7 @@
 #include "UnitAI.h"
 #include "CircleCollider.h"
 #include "RectangleCollider.h"
+#include "PotentialField.h"
 
 void Entity381::Tick(float dt){
     for(unsigned int i = 0; i < aspects.size(); ++i){
@@ -44,6 +45,7 @@ SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng)
     ogreEntity->setMaterialName("Stone");
     aspects.push_back(new UnitAI(this));
     aspects.push_back(new CircleCollider(this, radius));
+    aspects.push_back(new PotentialField(this, PotentialFieldType::Obstacle));
     aspects.push_back(new Renderable(this));
 }
 
@@ -65,6 +67,7 @@ RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 
     ogreEntity->setMaterial(material);
     aspects.push_back(new UnitAI(this));
     aspects.push_back(new RectangleCollider(this, width, length));
+    aspects.push_back(new PotentialField(this, PotentialFieldType::Obstacle));
     aspects.push_back(new Renderable(this));
 }
 
@@ -74,7 +77,8 @@ RectangleEntity381::~RectangleEntity381(){
 RectangleBorderEntity381::RectangleBorderEntity381(int id, Ogre::Vector3 pos,
                                                    Ogre::Vector3 sc, Engine * eng) :
         RectangleEntity381(id, pos, sc, eng){
-    aspects.erase(std::remove(aspects.begin(), aspects.end(), GetAspect<RectangleCollider>()));
+    aspects.erase(
+            std::remove(aspects.begin(), aspects.end(), GetAspect<RectangleCollider>()));
     aspects.push_back(new UnitAI(this));
     aspects.push_back(new RectangleBorderCollider(this, width, length));
     aspects.push_back(new Renderable(this));

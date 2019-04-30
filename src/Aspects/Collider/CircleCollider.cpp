@@ -61,9 +61,9 @@ bool CircleCollider::GetClosestPoint(const Ray ray, float *dist) const{
 }
 
 Ogre::Vector3 CircleCollider::GetClosestPoint(Ogre::Vector3 point) const{
-    const Ogre::Vector3 offset =
-            (point - Ogre::Vector3(entity381->position.x, point.y, entity381->position.z)).normalisedCopy();
-    return entity381->position + radius * offset;
+    const Ogre::Vector3 offset = point
+            - Ogre::Vector3(entity381->position.x, point.y, entity381->position.z);
+    return entity381->position + radius * offset.normalisedCopy();
 }
 
 void CircleCollider::OnCollision(Collider *other) const{
@@ -136,8 +136,13 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
         if(castToCircle != NULL){
             Ogre::Vector3 diff = entity381->position - castToCircle->entity381->position;
             diff.y = 0;
-            entity381->position += ((radius + castToCircle->radius) / diff.length() - 1)
-                    * diff;
+            const float dist = diff.length();
+            if(dist <= 0.0001){
+                entity381->position += Ogre::Vector3(0, 0, radius + castToCircle->radius);
+            } else{
+                entity381->position += ((radius + castToCircle->radius) / dist - 1)
+                        * diff;
+            }
         }
 
         RectangleCollider *castToRect = dynamic_cast<RectangleCollider *>(other);
@@ -145,10 +150,11 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
             Ogre::Vector3 diff = entity381->position
                     - castToRect->GetClosestPoint(entity381->position);
             diff.y = 0;
+            const float dist = diff.length();
             if(castToRect->PointInRectangle(entity381->position)){
                 entity381->position -= diff;
-            } else{
-                entity381->position += (radius / diff.length() - 1) * diff;
+            } else if(dist >= 0.0001){
+                entity381->position += (radius / dist - 1) * diff;
             }
         }
     }

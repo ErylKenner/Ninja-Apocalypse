@@ -16,6 +16,7 @@
 #include "GameMgr.h"
 #include "WeaponHolder.h"
 #include "CameraTether.h"
+#include "PotentialField.h"
 
 #include "Player.h"
 
@@ -97,6 +98,9 @@ void InputMgr::Tick(float dt){
 }
 
 void InputMgr::UpdatePlayer(float dt){
+    static bool ctrlR_DownLastFrame = false;
+    bool ctrlR = mKeyboard->isKeyDown(OIS::KC_LCONTROL)
+            && mKeyboard->isKeyDown(OIS::KC_R);
     Player * player = engine->gameMgr->MainPlayer;
 
     // uses yghj
@@ -121,8 +125,12 @@ void InputMgr::UpdatePlayer(float dt){
         player->GetAspect<CameraTether>()->Height += 400 * dt;
     }
     if(mKeyboard->isKeyDown(OIS::KC_DOWN)){
-            player->GetAspect<CameraTether>()->Height -= 400 * dt;
-        }
+        player->GetAspect<CameraTether>()->Height -= 400 * dt;
+    }
+    if(ctrlR && !ctrlR_DownLastFrame){
+        player->GetAspect<PotentialField>()->enabled ^= true;
+    }
+    ctrlR_DownLastFrame = ctrlR;
 
 }
 
