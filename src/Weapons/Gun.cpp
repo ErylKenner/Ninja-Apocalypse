@@ -26,20 +26,20 @@ Gun::~Gun(){
 void Gun::Use(){
     if(CurrentBulletNumber > 0){
         CurrentBulletNumber--;
-        std::cout << "Bang! " << CurrentBulletNumber << " bullets left." << std::endl;
         const Ogre::Vector2 playerPos = Ogre::Vector2(
                 engine->gameMgr->MainPlayer->position.x,
                 engine->gameMgr->MainPlayer->position.z);
         const Ogre::Vector2 dir = Ogre::Vector2(engine->inputMgr->mouseLocation.second.x,
                 engine->inputMgr->mouseLocation.second.z) - playerPos;
         Ray ray(playerPos, dir);
-        float dist;
+        float dist = Ogre::Math::POS_INFINITY;
         Collider *closest = ray.GetClosestIntersectedCollider(&dist);
         if(closest != NULL){
-            Ogre::Vector2 endPos = playerPos + dir.normalisedCopy() * dist;
-            engine->gameMgr->DrawLine(engine->gameMgr->MainPlayer->position,
-                    Ogre::Vector3(endPos.x, engine->gameMgr->MainPlayer->position.y,
-                            endPos.y));
+            if(dist != Ogre::Math::POS_INFINITY){
+                Ogre::Vector2 endPos = playerPos + dir.normalisedCopy() * dist;
+                engine->gameMgr->DrawLine(playerPos, endPos);
+            }
+
             EnemyMovableCircleCollider *enemyCollider =
                     dynamic_cast<EnemyMovableCircleCollider *>(closest);
             if(enemyCollider != NULL){

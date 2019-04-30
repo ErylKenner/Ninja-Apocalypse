@@ -83,6 +83,8 @@ void InputMgr::Tick(float dt){
         return;
     }
 
+    mouseLocation = GetClickedPosition(lastMousePos);
+
     if(leftMouseHeld){
         engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->UseWeapon();
     }
@@ -273,13 +275,9 @@ void InputMgr::windowClosed(Ogre::RenderWindow* rw){
     }
 }
 
-std::pair<bool, Ogre::Vector3> InputMgr::GetClickedPosition(const OIS::MouseEvent& me){
-    Ogre::Viewport* vp = engine->gfxMgr->mViewport;
-    Ogre::Real x = me.state.X.abs / Ogre::Real(vp->getActualWidth());
-    Ogre::Real y = me.state.Y.abs / Ogre::Real(vp->getActualHeight());
-
-    Ogre::Ray mouseRay = engine->gfxMgr->mCamera->getCameraToViewportRay(x, y);
-
+std::pair<bool, Ogre::Vector3> InputMgr::GetClickedPosition(Ogre::Vector2 mousePosition){
+    Ogre::Ray mouseRay = engine->gfxMgr->mCamera->getCameraToViewportRay(mousePosition.x,
+            mousePosition.y);
     std::pair<bool, Ogre::Real> point = mouseRay.intersects(engine->gameMgr->mPlane);
 
     if(point.first){
@@ -288,6 +286,15 @@ std::pair<bool, Ogre::Vector3> InputMgr::GetClickedPosition(const OIS::MouseEven
     } else{
         return std::pair<bool, Ogre::Vector3>(false, Ogre::Vector3::ZERO);
     }
+}
+
+std::pair<bool, Ogre::Vector3> InputMgr::GetClickedPosition(const OIS::MouseEvent& me){
+    Ogre::Viewport* vp = engine->gfxMgr->mViewport;
+    Ogre::Vector2 mousePosition = Ogre::Vector2(
+            me.state.X.abs / Ogre::Real(vp->getActualWidth()),
+            me.state.Y.abs / Ogre::Real(vp->getActualHeight()));
+    lastMousePos = mousePosition;
+    return GetClickedPosition(mousePosition);
 }
 
 bool InputMgr::mouseMoved(const OIS::MouseEvent& me){
@@ -306,6 +313,7 @@ bool InputMgr::mouseReleased(const OIS::MouseEvent& me, OIS::MouseButtonID id){
     if(engine->uiMgr->mTrayMgr->injectMouseUp(me, id))
         return true;
 
+    mouseLocation = GetClickedPosition(me);
     if(id == OIS::MouseButtonID::MB_Left){
         leftMouseHeld = false;
     }
@@ -317,6 +325,7 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
     if(engine->uiMgr->mTrayMgr->injectMouseDown(me, id))
         return true;
 
+    mouseLocation = GetClickedPosition(me);
     if(id == OIS::MouseButtonID::MB_Left){
         leftMouseHeld = true;
     }

@@ -14,7 +14,9 @@
 
 GameMgr::GameMgr(Engine *eng) :
         Mgr(eng),
-        MainPlayer(0){
+        MainPlayer(0),
+        line(0),
+        lineNode(0){
     mPlane = Ogre::Plane(Ogre::Vector3::UNIT_Y, surfaceHeight);
 
 }
@@ -28,10 +30,11 @@ void GameMgr::Init(){
 }
 
 void GameMgr::Tick(float dt){
+    float prev = timer;
     timer -= dt;
-    if(timer <= 0){
-        timer = 0;
-        DrawLine(Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 0));
+    if(timer <= 0 && prev >= 0){
+        timer = -1;
+        line->clear();
     }
     //std::cout << "FPS: " << (int)(1 / dt);
 }
@@ -72,9 +75,10 @@ void GameMgr::LoadLevel(){
     myManualObjectMaterial->getTechnique(0)->setLightingEnabled(true);
     myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(0.2, 0.2, 0.2, 0);
     myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(0, 0, 0);
-    myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(0.1, 0.1, 0.1);
+    myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(0.1, 0.1,
+            0.1);
     lineNode->attachObject(line);
-    lineNode->setInheritScale(false);
+    //lineNode->setInheritScale(false);
 
     //Create player
     MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(
@@ -199,11 +203,11 @@ void GameMgr::Stop(){
 
 }
 
-void GameMgr::DrawLine(Ogre::Vector3 start, Ogre::Vector3 end){
+void GameMgr::DrawLine(Ogre::Vector2 start, Ogre::Vector2 end){
     timer = lineVisibleTime;
     line->clear();
     line->begin("lineMaterial", Ogre::RenderOperation::OT_LINE_LIST);
-    line->position(start.x, start.y + 1, start.z);
-    line->position(end.x, end.y + 1, end.z);
+    line->position(start.x, surfaceHeight + 5, start.y);
+    line->position(end.x, surfaceHeight + 5, end.y);
     line->end();
 }

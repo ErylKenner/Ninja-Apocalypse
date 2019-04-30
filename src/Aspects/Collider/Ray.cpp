@@ -23,25 +23,21 @@ Ray::~Ray(){
 
 Collider* Ray::GetClosestIntersectedCollider(float *dist) const{
     Collider *closest = NULL;
-    float closestDistSqr = Ogre::Math::POS_INFINITY;
+    float closestDist = Ogre::Math::POS_INFINITY;
     for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
         Collider *cur = Collider::colliders[i];
         if(!cur->IsTrigger && dynamic_cast<PlayerMovableCircleCollider *>(cur) == NULL){
-            Ogre::Vector2 pos;
-            bool collided = cur->GetClosestPoint(*this, &pos);
-            if(collided){
-                float distSqr = origin.squaredDistance(pos);
-                if(distSqr < closestDistSqr){
-                    closestDistSqr = distSqr;
-                    closest = cur;
-                }
+            float dist = Ogre::Math::POS_INFINITY;
+            bool collided = cur->GetClosestPoint(*this, &dist);
+            if(collided && dist < closestDist){
+                closestDist = dist;
+                closest = cur;
             }
         }
     }
     if(closest != NULL && dist != NULL){
-        *dist = Ogre::Math::Sqrt(closestDistSqr);
+        *dist = closestDist;
     }
     return closest;
 }
-
 

@@ -23,7 +23,7 @@ public:
     const float surfaceHeight = 0;
     Player * MainPlayer;
 
-    void DrawLine(Ogre::Vector3 start, Ogre::Vector3 end);
+    void DrawLine(Ogre::Vector2 start, Ogre::Vector2 end);
 protected:
 private:
     void LoadLevelOne();

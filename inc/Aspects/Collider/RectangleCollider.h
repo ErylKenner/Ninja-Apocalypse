@@ -15,7 +15,7 @@ public:
 
     virtual void OnCollision(Collider *other) const;
     virtual bool IsColliding(Collider *other) const;
-    virtual bool GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const;
+    virtual bool GetClosestPoint(const Ray ray, float *dist) const;
     virtual Ogre::Vector3 GetClosestPoint(Ogre::Vector3 point) const;
     bool PointInRectangle(Ogre::Vector3 centerPoint) const;
 protected:

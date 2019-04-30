@@ -37,24 +37,27 @@ bool CircleCollider::IsColliding(Collider *other) const{
     return false;
 }
 
-bool CircleCollider::GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const{
-    const Ogre::Vector2 circlePos = Ogre::Vector2(entity381->position.x,
-            entity381->position.z);
-    const Ogre::Vector2 diff = circlePos - ray.origin;
-    const Ogre::Vector2 projection = (diff.dotProduct(ray.directionVector)
-            / ray.directionVector.squaredLength()) * ray.directionVector;
-    if(circlePos.squaredDistance(ray.origin + projection) <= radius * radius){
-        if(pos != NULL){
-            //*pos = Ogre::Vector2(entity381->position.x, entity381->position.z);
-            Ogre::Vector3 pos3D = GetClosestPoint(
-                    Ogre::Vector3(ray.origin.x, 0, ray.origin.y));
-            *pos = Ogre::Vector2(pos3D.x, pos3D.z);
+bool CircleCollider::GetClosestPoint(const Ray ray, float *dist) const{
+    const Ogre::Vector2 diff = Ogre::Vector2(entity381->position.x, entity381->position.z)
+            - ray.origin;
+    const double a = ray.directionVector.squaredLength();
+    const double b = 2 * (ray.directionVector).dotProduct(diff);
+    const double c = diff.squaredLength() - radius * radius;
+    double discriminant = b * b - 4 * a * c;
+
+    if(discriminant >= 0){
+        if(dist != NULL){
+            double t = (2 * c) / (b + Ogre::Math::Sqrt(discriminant));
+            if(t >= 0){
+                *dist = t * Ogre::Math::Sqrt(a);
+                return true;
+            }
         }
-        return true;
-    } else{
-        pos = NULL;
-        return false;
     }
+    if(dist != NULL){
+        *dist = Ogre::Math::POS_INFINITY;
+    }
+    return false;
 }
 
 Ogre::Vector3 CircleCollider::GetClosestPoint(Ogre::Vector3 point) const{
