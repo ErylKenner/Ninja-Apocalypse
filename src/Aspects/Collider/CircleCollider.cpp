@@ -24,7 +24,10 @@ CircleCollider::~CircleCollider(){
 bool CircleCollider::IsColliding(Collider *other) const{
     CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
     if(castToCircle != NULL){
-        Ogre::Vector3 diff = entity381->position - castToCircle->entity381->position;
+        Ogre::Vector3 diff = entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
+                entity381->position)
+                - castToCircle->entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
+                        castToCircle->entity381->position);
         diff.y = 0;
         float radiusTotal = radius + castToCircle->radius;
         return diff.squaredLength() <= radiusTotal * radiusTotal;
@@ -38,8 +41,9 @@ bool CircleCollider::IsColliding(Collider *other) const{
 }
 
 bool CircleCollider::GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const{
-    const Ogre::Vector2 circlePos = Ogre::Vector2(entity381->position.x,
-            entity381->position.z);
+    const Ogre::Vector3 globalPosition =
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(entity381->position);
+    const Ogre::Vector2 circlePos = Ogre::Vector2(globalPosition.x, globalPosition.z);
     const Ogre::Vector2 diff = circlePos - ray.origin;
     const Ogre::Vector2 projection = (diff.dotProduct(ray.directionVector)
             / ray.directionVector.squaredLength()) * ray.directionVector;
@@ -58,9 +62,11 @@ bool CircleCollider::GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const{
 }
 
 Ogre::Vector3 CircleCollider::GetClosestPoint(Ogre::Vector3 point) const{
+    const Ogre::Vector3 globalPosition =
+                entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(entity381->position);
     const Ogre::Vector3 offset =
-            (point - Ogre::Vector3(entity381->position.x, point.y, entity381->position.z)).normalisedCopy();
-    return entity381->position + radius * offset;
+            (point - Ogre::Vector3(globalPosition.x, point.y, globalPosition.z)).normalisedCopy();
+    return globalPosition + radius * offset;
 }
 
 void CircleCollider::OnCollision(Collider *other) const{
