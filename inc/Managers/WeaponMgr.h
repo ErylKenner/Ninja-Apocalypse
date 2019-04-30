@@ -26,8 +26,8 @@ public:
 
 private:
     void SpawnWeapon();
-    float currentTimer;
     Engine * engine;
+    float currentTimer;
 };
 
 class WeaponMgr : public Mgr{

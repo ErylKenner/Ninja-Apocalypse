@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "Health.h"
 #include "SoundMgr.h"
+#include "WeaponHolder.h"
 
 Gun::Gun(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos,
          Engine * eng, float useRate, int damageAmount, int bulletMax) :
@@ -26,20 +27,27 @@ Gun::~Gun(){
 
 void Gun::Use(){
     if(CurrentBulletNumber > 0){
-    	engine->soundMgr->playGunshot();
+        engine->soundMgr->playGunshot();
         CurrentBulletNumber--;
         const Ogre::Vector2 playerPos = Ogre::Vector2(
                 engine->gameMgr->MainPlayer->position.x,
                 engine->gameMgr->MainPlayer->position.z);
-        const Ogre::Vector2 dir = Ogre::Vector2(engine->inputMgr->mouseLocation.second.x,
-                engine->inputMgr->mouseLocation.second.z) - playerPos;
-        Ray ray(playerPos, dir);
+        const Ogre::Vector2 mousePos = Ogre::Vector2(
+                engine->inputMgr->mouseLocation.second.x,
+                engine->inputMgr->mouseLocation.second.z);
+        const Ogre::Vector3 gunPos =
+                engine->gameMgr->MainPlayer->ogreSceneNode->convertLocalToWorldPosition(
+                        Ogre::Vector3(50 * Ogre::Math::Sin(20) * scale.x, 0,
+                                -50 * Ogre::Math::Cos(20) * scale.z) + position);
+        const Ogre::Vector2 dir = mousePos - playerPos;
+        Ray ray(gunPos, dir);
         float dist = Ogre::Math::POS_INFINITY;
         Collider *closest = ray.GetClosestIntersectedCollider(&dist);
         if(closest != NULL){
             if(dist != Ogre::Math::POS_INFINITY){
-                Ogre::Vector2 endPos = playerPos + dir.normalisedCopy() * dist;
-                engine->gameMgr->DrawLine(playerPos, endPos);
+                Ogre::Vector2 endPos = ray.origin + dir.normalisedCopy() * dist;
+                engine->gameMgr->DrawLine(Ogre::Vector3(ray.origin.x, 30, ray.origin.y),
+                        Ogre::Vector3(endPos.x, 30, endPos.y));
             }
 
             EnemyMovableCircleCollider *enemyCollider =

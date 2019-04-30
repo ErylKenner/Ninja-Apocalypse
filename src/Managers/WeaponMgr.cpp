@@ -37,11 +37,11 @@ void WeaponMgr::Stop(){
 }
 
 WeaponSpawnPoint::WeaponSpawnPoint(Ogre::Vector3 pos, float coolDown, Engine * eng) :
+        spawnedWeapon(0),
         position(pos),
         respawnCooldown(coolDown),
         engine(eng),
-        currentTimer(0),
-        spawnedWeapon(0){
+        currentTimer(0){
     SpawnWeapon();
 }
 
@@ -57,7 +57,7 @@ void WeaponSpawnPoint::Tick(float dt){
 
 void WeaponSpawnPoint::SpawnWeapon(){
     currentTimer = 0;
-    spawnedWeapon = static_cast<Weapon*>(engine->entityMgr->CreateEntityOfTypeAtPosition(
+    spawnedWeapon = static_cast<Weapon*>(engine->entityMgr->CreateEntity(
             EntityType::HandgunType, position));
     spawnedWeapon->spawnedFrom = this;
 }

@@ -26,7 +26,8 @@ public:
     const float surfaceHeight = 0;
     Player * MainPlayer;
 
-    void DrawLine(Ogre::Vector2 start, Ogre::Vector2 end);
+    void DrawLine(Ogre::Vector3 start, Ogre::Vector3 end);
+    void ResetLevel();
 protected:
 private:
     void LoadLevelOne();
@@ -37,8 +38,8 @@ private:
     float timer = 0;
     float lineVisibleTime = 0.1;
 
-    const float mapWidth = 5000;
-    const float mapHeight = 2500;
+    float mapWidth = 5000;
+    float mapHeight = 2500;
     const float borderWallThickness = 200;
 };
 

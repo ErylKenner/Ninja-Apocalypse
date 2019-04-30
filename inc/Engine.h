@@ -43,6 +43,12 @@ public:
     void Cleanup();
 
     bool keepRunning;
+    int fps;
+
+private:
+    void UpdateFPS(float dt);
+    int fpsBuffer[10];
+    float timeInterval;
 };
 
 #endif /* ENGINE_H_ */

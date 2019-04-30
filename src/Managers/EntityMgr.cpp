@@ -32,7 +32,7 @@ void EntityMgr::Tick(float dt){
     }
 }
 
-Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector3 pos,
+Entity381* EntityMgr::CreateEntity(EntityType type, Ogre::Vector3 pos,
                                                    Ogre::Vector3 scale){
     int id = entities.size();
     Entity381 *newEntity;

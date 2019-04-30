@@ -39,6 +39,7 @@ void WaveMgr::Tick(float dt){
         timeSinceLastSpawn = 0;
         // SpawnEnemy
         SpawnEnemy();
+        std::cout << "# of spawned enemies: " << spawnedEnemyList.size() << std::endl;
     }
     /*std::cout << " # enemies: " << spawnedEnemyList.size() << ", fps: " << (int)(1 / dt)
             << std::endl;*/
@@ -67,7 +68,7 @@ void WaveMgr::SpawnEnemy(){
     spawnPosition.x += deltaX;
     spawnPosition.z += deltaZ;
     Enemy * newEnemy =
-            static_cast<Enemy *>(engine->entityMgr->CreateEntityOfTypeAtPosition(
+            static_cast<Enemy *>(engine->entityMgr->CreateEntity(
                     EntityType::EnemyType, spawnPosition));
     // Adds it to spawned enemy list
     spawnedEnemyList.push_back(newEnemy);

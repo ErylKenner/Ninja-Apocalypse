@@ -45,7 +45,7 @@ Enemy::~Enemy(){
 void Enemy::OnDeath(){
     int rand = std::rand() % 100;
         if(rand < 12) {
-            engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType, position);
+            engine->entityMgr->CreateEntity(EntityType::HandgunType, position);
         }
     Ogre::Vector3 newPos = Ogre::Vector3(0,0, 25e6);
     position = newPos;

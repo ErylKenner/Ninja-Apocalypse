@@ -14,7 +14,8 @@
 #include "WaveMgr.h"
 #include "UiMgr.h"
 
-Engine::Engine(){
+Engine::Engine() :
+        fps(0){
     entityMgr = 0;
     gameMgr = 0;
     gfxMgr = 0;
@@ -22,10 +23,12 @@ Engine::Engine(){
     waveMgr = 0;
     uiMgr = 0;
     soundMgr = 0;
-
+    timeInterval = 0;
 
     keepRunning = true;
-
+    for(int i = 0; i < 10; ++i){
+        fpsBuffer[i] = 0.0;
+    }
 }
 
 Engine::~Engine(){
@@ -34,13 +37,13 @@ Engine::~Engine(){
 
 void Engine::Init(){
 
-	entityMgr = new EntityMgr(this);
+    entityMgr = new EntityMgr(this);
     gameMgr = new GameMgr(this);
     gfxMgr = new GfxMgr(this);
     inputMgr = new InputMgr(this);
     waveMgr = new WaveMgr(this);
     uiMgr = new UiMgr(this);
-	soundMgr = new OgreSND::SoundMgr(this);
+    soundMgr = new OgreSND::SoundMgr(this);
 
     //--------------------------------------------------------------
     entityMgr->Init();
@@ -49,7 +52,7 @@ void Engine::Init(){
     gameMgr->Init();
     waveMgr->Init();
     uiMgr->Init();
-	soundMgr->init();
+    soundMgr->init();
 
     //--------------------------------------------------------------
     entityMgr->LoadLevel();
@@ -58,10 +61,28 @@ void Engine::Init(){
     gameMgr->LoadLevel();
     waveMgr->LoadLevel();
     uiMgr->LoadLevel();
-	soundMgr->loadLevel();
+    soundMgr->loadLevel();
+}
+
+void Engine::UpdateFPS(float dt){
+    for(int i = 8; i >= 0; --i){
+        fpsBuffer[i + 1] = fpsBuffer[i];
+    }
+    fpsBuffer[0] = (int)(1 / (double)dt);
+
+    timeInterval += dt;
+    if(timeInterval >= 0.5){
+        timeInterval = 0.0;
+        fps = 0;
+        for(int i = 0; i < 10; ++i){
+            fps += fpsBuffer[i];
+        }
+        fps /= 10;
+    }
 }
 
 void Engine::TickAll(float dt){
+    UpdateFPS(dt);
     gfxMgr->Tick(dt);
     inputMgr->Tick(dt);
     entityMgr->Tick(dt);

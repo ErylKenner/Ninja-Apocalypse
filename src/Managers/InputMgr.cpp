@@ -394,6 +394,9 @@ bool InputMgr::keyPressed(const OIS::KeyEvent& ke){
             //engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->ReloadWeapon();
             std::cout << engine->gameMgr->MainPlayer->position << std::endl;
             break;
+        case OIS::KC_P:
+            engine->gameMgr->ResetLevel();
+            break;
         default:
             break;
     }
