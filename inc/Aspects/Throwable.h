@@ -26,6 +26,4 @@ private:
     Ogre::Vector3 thrownDirection;
 };
 
-
-
 #endif /* INC_ASPECTS_THROWABLE_H_ */

@@ -6,6 +6,7 @@
 #include <OgreRoot.h>
 #include <OgreRenderWindow.h>
 #include <OgreVector3.h>
+#include <OrientedPhysics.h>
 #include <SdkTrays.h>
 
 #include "Engine.h"
@@ -14,14 +15,14 @@
 #include "EntityMgr.h"
 #include "UiMgr.h"
 #include "GameMgr.h"
+
+#include "Enemy.h"
+#include "Player.h"
+
 #include "WeaponHolder.h"
 #include "CameraTether.h"
 #include "PotentialField.h"
-
-#include "Player.h"
-
 #include "UnitAI.h"
-#include "OrientedPhysics3D.h"
 
 using Ogre::Vector3;
 
@@ -92,9 +93,6 @@ void InputMgr::Tick(float dt){
     }
 
     UpdatePlayer(dt);
-    //UpdateCamera(dt);
-    //UpdateShipDesiredAttributes(dt);
-    //UpdateSelection(dt);
 }
 
 void InputMgr::UpdatePlayer(float dt){
@@ -132,127 +130,6 @@ void InputMgr::UpdatePlayer(float dt){
     }
     ctrlR_DownLastFrame = ctrlR;
 
-}
-
-void InputMgr::UpdateCamera(float dt){
-    float speedScalar = 1;
-    if(mKeyboard->isKeyDown(OIS::KC_LSHIFT)){
-        speedScalar = 2;
-    }
-
-    //Translation
-    Ogre::Vector3 cameraVelocity = Ogre::Vector3::ZERO;
-    if(mKeyboard->isKeyDown(OIS::KC_A)){
-        cameraVelocity.x -= cameraSpeed;
-    }
-    if(mKeyboard->isKeyDown(OIS::KC_D)){
-        cameraVelocity.x += cameraSpeed;
-    }
-    if(mKeyboard->isKeyDown(OIS::KC_W)){
-        cameraVelocity.z -= cameraSpeed;
-    }
-    if(mKeyboard->isKeyDown(OIS::KC_S)){
-        cameraVelocity.z += cameraSpeed;
-    }
-    if(mKeyboard->isKeyDown(OIS::KC_F)){
-        cameraVelocity.y -= cameraSpeed;
-    }
-    if(mKeyboard->isKeyDown(OIS::KC_R)){
-        cameraVelocity.y += cameraSpeed;
-    }
-    Ogre::SceneNode *cam = engine->gfxMgr->mCameraNode;
-    cam->translate(cameraVelocity * speedScalar * dt,
-            Ogre::Node::TransformSpace::TS_LOCAL);
-    if(cam->getPosition().y < engine->gameMgr->surfaceHeight + 5){
-        cam->setPosition(cam->getPosition().x, engine->gameMgr->surfaceHeight + 5,
-                cam->getPosition().z);
-    }
-
-    //Rotation
-    if(mKeyboard->isKeyDown(OIS::KC_Q)){
-        cam->rotate(Ogre::Vector3(0, 1, 0),
-                Ogre::Radian(Ogre::Degree(cameraRotationSpeed)) * speedScalar * dt,
-                Ogre::Node::TransformSpace::TS_WORLD);
-    }
-    if(mKeyboard->isKeyDown(OIS::KC_E)){
-        cam->rotate(Ogre::Vector3(0, 1, 0),
-                -Ogre::Radian(Ogre::Degree(cameraRotationSpeed)) * speedScalar * dt,
-                Ogre::Node::TransformSpace::TS_WORLD);
-    }
-    if(mKeyboard->isKeyDown(OIS::KC_Z)){
-        cam->rotate(Ogre::Vector3(1, 0, 0),
-                Ogre::Radian(Ogre::Degree(cameraRotationSpeed)) * speedScalar * dt,
-                Ogre::Node::TransformSpace::TS_LOCAL);
-    }
-    if(mKeyboard->isKeyDown(OIS::KC_X)){
-        cam->rotate(Ogre::Vector3(1, 0, 0),
-                -Ogre::Radian(Ogre::Degree(cameraRotationSpeed)) * speedScalar * dt,
-                Ogre::Node::TransformSpace::TS_LOCAL);
-    }
-}
-
-void InputMgr::UpdateShipDesiredAttributes(float dt){
-    static bool leftArrow_DownLastFrame = false;
-    static bool rightArrow_DownLastFrame = false;
-    static bool upArrow_DownLastFrame = false;
-    static bool downArrow_DownLastFrame = false;
-    static bool pgUp_DownLastFrame = false;
-    static bool pgDown_DownLastFrame = false;
-
-    bool left = mKeyboard->isKeyDown(OIS::KC_LEFT);
-    bool right = mKeyboard->isKeyDown(OIS::KC_RIGHT);
-    bool up = mKeyboard->isKeyDown(OIS::KC_UP);
-    bool down = mKeyboard->isKeyDown(OIS::KC_DOWN);
-    bool pgUp = mKeyboard->isKeyDown(OIS::KC_PGUP);
-    bool pgDown = mKeyboard->isKeyDown(OIS::KC_PGDOWN);
-
-    Entity381 *cur = engine->entityMgr->entities[engine->entityMgr->currentEntity];
-    OrientedPhysics3D *physics = cur->GetAspect<OrientedPhysics3D>();
-    if(physics != NULL){
-        if(left && !leftArrow_DownLastFrame){
-            physics->desiredHeading -= shipAngleIncrement;
-        }
-        if(right && !rightArrow_DownLastFrame){
-            physics->desiredHeading += shipAngleIncrement;
-        }
-        if(up && !upArrow_DownLastFrame){
-            physics->desiredSpeed += shipSpeedIncrement;
-        }
-        if(down && !downArrow_DownLastFrame){
-            physics->desiredSpeed -= shipSpeedIncrement;
-        }
-        if(pgDown && !pgDown_DownLastFrame){
-            physics->desiredAltitude -= shipAltitudeIncrement;
-        }
-        if(pgUp && !pgUp_DownLastFrame){
-            physics->desiredAltitude += shipAltitudeIncrement;
-        }
-
-        //Disable movement
-        if(mKeyboard->isKeyDown(OIS::KC_SPACE)){
-            physics->desiredSpeed = 0;
-        }
-
-    }
-
-    leftArrow_DownLastFrame = left;
-    rightArrow_DownLastFrame = right;
-    upArrow_DownLastFrame = up;
-    downArrow_DownLastFrame = down;
-    pgUp_DownLastFrame = pgUp;
-    pgDown_DownLastFrame = pgDown;
-}
-
-void InputMgr::UpdateSelection(float dt){
-    static bool tab_DownLastFrame = false;
-    bool tab = mKeyboard->isKeyDown(OIS::KC_TAB);
-    if(tab && !tab_DownLastFrame){
-        engine->entityMgr->entities[engine->entityMgr->currentEntity]->isSelected = false;
-        engine->entityMgr->currentEntity = (engine->entityMgr->currentEntity + 1)
-                % engine->entityMgr->entities.size();
-        engine->entityMgr->entities[engine->entityMgr->currentEntity]->isSelected = true;
-    }
-    tab_DownLastFrame = tab;
 }
 
 void InputMgr::LoadLevel(){
@@ -400,8 +277,6 @@ bool InputMgr::mousePressed(const OIS::MouseEvent& me, OIS::MouseButtonID id){
      */
     return true;
 }
-
-#include "Enemy.h"
 
 bool InputMgr::keyPressed(const OIS::KeyEvent& ke){
 

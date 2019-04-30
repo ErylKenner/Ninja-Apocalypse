@@ -5,9 +5,9 @@
  *      Author: kylebrain
  */
 
+#include <OrientedPhysics.h>
 #include "Animation.h"
 #include "Entity381.h"
-#include "OrientedPhysics3D.h"
 
 Animation::Animation(Entity381 * entity) :
         Aspect(entity),
@@ -40,7 +40,7 @@ void Animation::Tick(float dt){
     if(animState != NULL && animState->getEnabled()){
         animState->addTime(animSpeed * dt);
     }
-    OrientedPhysics3D *physics = entity381->GetAspect<OrientedPhysics3D>();
+    OrientedPhysics *physics = entity381->GetAspect<OrientedPhysics>();
     if(physics != NULL && physics->speed == 0){
         DisableAnimation();
     } else if(animState != NULL){

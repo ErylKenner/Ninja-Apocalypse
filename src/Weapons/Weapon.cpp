@@ -23,8 +23,8 @@ Weapon::Weapon(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3
 
 }
 Weapon::~Weapon(){
-    for(unsigned int i = 0; i < aspects.size(); i++) {
-        if(aspects[i] != NULL) {
+    for(unsigned int i = 0; i < aspects.size(); i++){
+        if(aspects[i] != NULL){
             delete aspects[i];
         }
     }

@@ -3,10 +3,10 @@
  * EMAIL: eryl.kenner@gmail.com
  */
 
+#include <OrientedPhysics.h>
 #include "Command.h"
 #include "Entity381.h"
 #include "UnitAI.h"
-#include "OrientedPhysics3D.h"
 
 Command::Command(Entity381* ent) :
         entity(ent),
@@ -19,12 +19,13 @@ Command::~Command(){
 
 void Command::GoTo(Ogre::Vector3 diff, float dt){
     orientedPhysics3D->desiredHeading = Ogre::Math::fRad2Deg * atan2f(diff.z, diff.x);
-    float dist = diff.length();
-    float stoppingRadius = (orientedPhysics3D->maxSpeed * orientedPhysics3D->maxSpeed)
-            / (2 * orientedPhysics3D->acceleration);
-    //if(dist > stoppingRadius){
     orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
-    /*} else if(unitAI != NULL && unitAI->NumCommands() > 1){
+    /*float dist = diff.length();
+     float stoppingRadius = (orientedPhysics3D->maxSpeed * orientedPhysics3D->maxSpeed)
+     / (2 * orientedPhysics3D->acceleration);
+     if(dist > stoppingRadius){
+     orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
+     } else if(unitAI != NULL && unitAI->NumCommands() > 1){
      orientedPhysics3D->desiredSpeed = orientedPhysics3D->maxSpeed;
      } else{
      orientedPhysics3D->desiredSpeed = Ogre::Math::Sqrt(
@@ -44,7 +45,7 @@ MoveTo::~MoveTo(){
 
 void MoveTo::Init(){
     unitAI = entity->GetAspect<UnitAI>();
-    orientedPhysics3D = entity->GetAspect<OrientedPhysics3D>();
+    orientedPhysics3D = entity->GetAspect<OrientedPhysics>();
 }
 
 void MoveTo::Tick(float dt){
@@ -79,11 +80,11 @@ Intercept::Intercept(Entity381* ent, Entity381 *target) :
 
 void Intercept::Init(){
     unitAI = entity->GetAspect<UnitAI>();
-    orientedPhysics3D = entity->GetAspect<OrientedPhysics3D>();
+    orientedPhysics3D = entity->GetAspect<OrientedPhysics>();
 }
 
 void Intercept::Tick(float dt){
-    OrientedPhysics3D *targetPhysics = targetObject->GetAspect<OrientedPhysics3D>();
+    OrientedPhysics *targetPhysics = targetObject->GetAspect<OrientedPhysics>();
     if(orientedPhysics3D != NULL && targetPhysics != NULL){
         float timeNeeded = (targetObject->position - entity->position).length()
                 / (targetPhysics->velocity - orientedPhysics3D->velocity).length();

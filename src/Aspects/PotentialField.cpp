@@ -3,10 +3,10 @@
  * EMAIL: eryl.kenner@gmail.com
  */
 
+#include <OrientedPhysics.h>
 #include "PotentialField.h"
 #include "OgreVector2.h"
 #include "Entity381.h"
-#include "OrientedPhysics3D.h"
 #include <algorithm>
 
 double PotentialField::c_Enemy_Enemy_repulsion = 1000000;
@@ -88,7 +88,7 @@ void PotentialField::Tick(float dt){
     }
 
     //std::cout << vectorSum << " ";
-    OrientedPhysics3D *physics = entity381->GetAspect<OrientedPhysics3D>();
+    OrientedPhysics *physics = entity381->GetAspect<OrientedPhysics>();
     if(physics != NULL){
         if(vectorSum != Ogre::Vector2::ZERO){
             physics->desiredHeading = Ogre::Degree(

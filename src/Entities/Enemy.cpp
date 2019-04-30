@@ -5,10 +5,10 @@
  *      Author: kylebrain
  */
 
+#include <OrientedPhysics.h>
 #include "Enemy.h"
 #include "Renderable.h"
 #include "Health.h"
-#include "OrientedPhysics3D.h"
 #include "UnitAI.h"
 #include "Command.h"
 #include "GameMgr.h"
@@ -29,7 +29,7 @@ Enemy::Enemy(int id, Ogre::Vector3 pos, Engine * eng) :
     aspects.push_back(anim);
     anim->SetAnimation("Walk", true, 1.2);
 
-    aspects.push_back(new OrientedPhysics3D(this, 200, 180, 180));
+    aspects.push_back(new OrientedPhysics(this, 200, 180, 180));
     //UnitAI * ai = new UnitAI(this);
     //aspects.push_back(ai);
     aspects.push_back(new PotentialField(this, PotentialFieldType::Enemy));

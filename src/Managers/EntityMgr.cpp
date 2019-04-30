@@ -11,7 +11,6 @@
 #include "Engine.h"
 #include "GfxMgr.h"
 
-
 EntityMgr::EntityMgr(Engine *eng) :
         Mgr(eng),
         currentEntity(0){
@@ -33,7 +32,7 @@ void EntityMgr::Tick(float dt){
 }
 
 Entity381* EntityMgr::CreateEntity(EntityType type, Ogre::Vector3 pos,
-                                                   Ogre::Vector3 scale){
+                                   Ogre::Vector3 scale){
     int id = entities.size();
     Entity381 *newEntity;
     switch(type) {

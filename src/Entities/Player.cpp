@@ -51,7 +51,7 @@ void Player::OnDeath(){
     engine->keepRunning = false;
 }
 
-float Player::GetCurrentAngle() {
+float Player::GetCurrentAngle(){
     return ogreSceneNode->getOrientation().getYaw().valueDegrees()
             + GetAspect<Renderable>()->AngleOffset;
 }

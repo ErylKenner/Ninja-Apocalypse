@@ -14,7 +14,6 @@
 class WeaponHolder : public Aspect{
 public:
 
-
     Weapon * heldWeapon;
     WeaponHolder(Entity381 * entity);
     ~WeaponHolder();
@@ -29,8 +28,5 @@ private:
     float timeSinceLastShot;
 
 };
-
-
-
 
 #endif /* INC_ASPECTS_WEAPONHOLDER_H_ */

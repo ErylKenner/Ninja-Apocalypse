@@ -13,7 +13,7 @@
 
 class Weapon;
 
-class WeaponSpawnPoint {
+class WeaponSpawnPoint{
 public:
     Weapon * spawnedWeapon;
     Ogre::Vector3 position;
@@ -43,8 +43,5 @@ public:
     std::vector<WeaponSpawnPoint *> spawnPoints;
     float weaponCooldown;
 };
-
-
-
 
 #endif /* INC_MANAGERS_WEAPONMGR_H_ */

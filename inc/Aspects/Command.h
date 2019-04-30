@@ -10,7 +10,7 @@
 
 class Entity381;
 class UnitAI;
-class OrientedPhysics3D;
+class OrientedPhysics;
 
 class Command{
 public:
@@ -25,7 +25,7 @@ public:
     Entity381 *entity;
 protected:
     UnitAI *unitAI;
-    OrientedPhysics3D *orientedPhysics3D;
+    OrientedPhysics *orientedPhysics3D;
     void GoTo(Ogre::Vector3 diff, float dt);
 private:
 };
