@@ -61,6 +61,7 @@ public:
 	OgreBites::Label *timeLabel;
 	OgreBites::Label *weaponLabel;
 	OgreBites::Label *ammoLabel;
+	OgreBites::ProgressBar * bossHealth;
 };
 
 #endif /* INC_UIMGR_H_ */

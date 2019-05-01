@@ -8,6 +8,7 @@
 
 #include "Mgr.h"
 #include "Player.h"
+#include "Boss.h"
 
 class WeaponMgr;
 
@@ -25,6 +26,7 @@ public:
     Ogre::Plane mPlane;
     const float surfaceHeight = 0;
     Player * MainPlayer;
+    Boss * LevelBoss;
 
     void DrawLine(Ogre::Vector3 start, Ogre::Vector3 end);
 protected:

@@ -13,6 +13,8 @@
 #include "Enemy.h"
 #include "Health.h"
 #include "SoundMgr.h"
+#include "BossCollider.h"
+#include "Boss.h"
 
 Gun::Gun(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos,
          Engine * eng, float useRate, int damageAmount, int bulletMax) :
@@ -49,6 +51,23 @@ void Gun::Use(){
                 if(!enemy->GetAspect<Health>()->TakeDamage(DamageAmount)){
                     enemy->OnDeath();
                 }
+            }
+
+            BossCircleCollider * bossCircleCol = dynamic_cast<BossCircleCollider *>(closest);
+            BossRectangleCollider * bossRectCol = dynamic_cast<BossRectangleCollider *>(closest);
+            if(bossCircleCol != NULL || bossRectCol != NULL) {
+                Boss * boss;
+                if(bossCircleCol != NULL) {
+                    boss = bossCircleCol->bossEntity;
+                }
+
+                if(bossRectCol != NULL) {
+                    boss = bossRectCol->bossEntity;
+                }
+
+                // TODO: Add BossWeakPointCollider and multiply the damageAmount by the multiple member
+                boss->GetAspect<Health>()->TakeDamage(DamageAmount);
+                //std::cout << "Damaged boss!" << std::endl;
             }
         }
     }

@@ -115,7 +115,8 @@ inline Ogre::Vector2 RectangleCollider::GetTopLeft() const{
     const Ogre::Vector2 pos = Ogre::Vector2(globalPosition.x, globalPosition.z);
     const Ogre::Vector2 original = Ogre::Vector2(-width * 0.5, -length * 0.5);
     const float angle =
-            entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldOrientation(
+                    entity381->ogreSceneNode->getOrientation()).getYaw().valueRadians();
     return pos + RotateVectorClockwise(original, -angle);
 }
 
@@ -126,7 +127,8 @@ inline Ogre::Vector2 RectangleCollider::GetTopRight() const{
     const Ogre::Vector2 pos = Ogre::Vector2(globalPosition.x, globalPosition.z);
     const Ogre::Vector2 original = Ogre::Vector2(width * 0.5, -length * 0.5);
     const float angle =
-            entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldOrientation(
+                    entity381->ogreSceneNode->getOrientation()).getYaw().valueRadians();
     return pos + RotateVectorClockwise(original, -angle);
 }
 
@@ -137,7 +139,8 @@ inline Ogre::Vector2 RectangleCollider::GetBottomLeft() const{
     const Ogre::Vector2 pos = Ogre::Vector2(globalPosition.x, globalPosition.z);
     const Ogre::Vector2 original = Ogre::Vector2(-width * 0.5, length * 0.5);
     const float angle =
-            entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldOrientation(
+                    entity381->ogreSceneNode->getOrientation()).getYaw().valueRadians();
     return pos + RotateVectorClockwise(original, -angle);
 }
 
@@ -148,7 +151,8 @@ inline Ogre::Vector2 RectangleCollider::GetBottomRight() const{
     const Ogre::Vector2 pos = Ogre::Vector2(globalPosition.x, globalPosition.z);
     const Ogre::Vector2 original = Ogre::Vector2(width * 0.5, length * 0.5);
     const float angle =
-            entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldOrientation(
+                    entity381->ogreSceneNode->getOrientation()).getYaw().valueRadians();
     return pos + RotateVectorClockwise(original, -angle);
 }
 

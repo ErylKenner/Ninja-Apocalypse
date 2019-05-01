@@ -13,6 +13,7 @@
 class Health : public Aspect {
 public:
 	int CurrentHealth;
+	int StartingHealth;
 
 	Health(Entity381 * entity, int startingHealth = 100, int dps = 10);
 	~Health();

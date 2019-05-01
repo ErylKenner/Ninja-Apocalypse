@@ -15,7 +15,7 @@
 
 GameMgr::GameMgr(Engine *eng) :
         Mgr(eng),
-        MainPlayer(0), weaponMgr(0){
+        MainPlayer(0), LevelBoss(0), weaponMgr(0){
     weaponMgr = new WeaponMgr(engine);
     mPlane = Ogre::Plane(Ogre::Vector3::UNIT_Y, surfaceHeight);
 
@@ -88,7 +88,7 @@ void GameMgr::LoadLevel(){
     //engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
             //Ogre::Vector3(0, surfaceHeight, -300));
 
-    engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::FirstBossType, Ogre::Vector3(200, surfaceHeight + 100, -400));
+    LevelBoss = static_cast<Boss *>(engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::FirstBossType, Ogre::Vector3(200, surfaceHeight + 100, -400)));
 
     weaponMgr->LoadLevel();
 

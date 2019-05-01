@@ -17,6 +17,7 @@
 #include "WeaponHolder.h"
 #include "Gun.h"
 #include "WaveMgr.h"
+#include "Boss.h"
 
 UiMgr::UiMgr(Engine* eng) :
 		Mgr(eng) {
@@ -62,10 +63,10 @@ void UiMgr::LoadLevel() {
 }
 
 void UiMgr::EnableHud(){
-	OgreBites::ProgressBar * bossHealth;
+
 	bossHealth = mTrayMgr->createProgressBar(OgreBites::TL_TOP, "BHealthBar", "Boss Health",
 			300, 170);
-	bossHealth->setProgress(100);
+	bossHealth->setProgress(1);
 
 	//OgreBites::ProgressBar playerHealth;
 	playerHealth = mTrayMgr->createProgressBar(OgreBites::TL_BOTTOMRIGHT, "PHealthBar", "Player Health",
@@ -116,6 +117,14 @@ void UiMgr::UpdateLabels(){
 	waveLabel->setCaption(waveNum);
 //	weaponLabel->setCaption("timeElapsed");
 	ammoLabel->setCaption(ammoNum);
+
+	Boss * levelBoss = engine->gameMgr->LevelBoss;
+	if(levelBoss != NULL) {
+	    Health * bossHealthAspect = levelBoss->GetAspect<Health>();
+	    //std::cout << bossHealthAspect->CurrentHealth / (float)bossHealthAspect->StartingHealth << std::endl;
+	    bossHealth->setProgress(bossHealthAspect->CurrentHealth / (float)bossHealthAspect->StartingHealth);
+	}
+
 }
 
 void UiMgr::windowResized(Ogre::RenderWindow* rw) {
