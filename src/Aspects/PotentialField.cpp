@@ -21,7 +21,7 @@ double PotentialField::c_Enemy_Target_attraction = 100/*10000*/;
 double PotentialField::e_Enemy_Target_attraction = 0/*-1*/;
 
 double PotentialField::c_Enemy_Obstacle_repulsion = 50000;
-double PotentialField::e_Enemy_Obstacle_repulsion = -1.8;
+double PotentialField::e_Enemy_Obstacle_repulsion = -1.6;
 double PotentialField::c_Enemy_Obstacle_attraction = 0;
 double PotentialField::e_Enemy_Obstacle_attraction = 1;
 

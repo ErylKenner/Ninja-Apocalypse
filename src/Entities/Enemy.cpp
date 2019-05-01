@@ -35,7 +35,7 @@ Enemy::Enemy(int id, Ogre::Vector3 pos, Engine * eng) :
     aspects.push_back(new PotentialField(this, PotentialFieldType::Enemy));
 
     //ai->SetCommand(new Intercept(this, eng->gameMgr->MainPlayer));
-    aspects.push_back(new EnemyMovableCircleCollider(this, 30));
+    aspects.push_back(new EnemyMovableCircleCollider(this, 50));
     aspects.push_back(new Renderable(this, 90));
 
     std::srand(std::time(nullptr));
