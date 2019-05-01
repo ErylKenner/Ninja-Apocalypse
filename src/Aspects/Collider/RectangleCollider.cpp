@@ -221,7 +221,7 @@ Ogre::Vector3 RectangleCollider::GetClosestPoint(Ogre::Vector3 point) const{
     }
 }
 
-bool RectangleCollider::PointInRectangle(Ogre::Vector3 centerPoint) const{
+bool RectangleCollider::Contains(Ogre::Vector3 centerPoint) const{
     const Ogre::Vector2 center = Ogre::Vector2(centerPoint.x, centerPoint.z);
     return RectangleCollider::InsideRectangle(center, GetTopLeft(), GetTopRight(),
             GetBottomLeft());

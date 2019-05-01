@@ -6,11 +6,12 @@
 #include <OrientedPhysics.h>
 #include "PotentialField.h"
 #include "OgreVector2.h"
+#include "Collider.h"
 #include "Entity381.h"
 #include <algorithm>
 
-double PotentialField::c_Enemy_Enemy_repulsion = 1000000;
-double PotentialField::e_Enemy_Enemy_repulsion = -3;
+double PotentialField::c_Enemy_Enemy_repulsion = 80000000/*1000000*/;
+double PotentialField::e_Enemy_Enemy_repulsion = -3.5/*-2.8*/;
 double PotentialField::c_Enemy_Enemy_attraction = 0;
 double PotentialField::e_Enemy_Enemy_attraction = 1;
 
@@ -19,8 +20,8 @@ double PotentialField::e_Enemy_Target_repulsion = 1;
 double PotentialField::c_Enemy_Target_attraction = 100/*10000*/;
 double PotentialField::e_Enemy_Target_attraction = 0/*-1*/;
 
-double PotentialField::c_Enemy_Obstacle_repulsion = 500000;
-double PotentialField::e_Enemy_Obstacle_repulsion = -2;
+double PotentialField::c_Enemy_Obstacle_repulsion = 50000;
+double PotentialField::e_Enemy_Obstacle_repulsion = -1.8;
 double PotentialField::c_Enemy_Obstacle_attraction = 0;
 double PotentialField::e_Enemy_Obstacle_attraction = 1;
 
@@ -52,32 +53,51 @@ void PotentialField::Tick(float dt){
         double e_rep = 0;
         double c_attr = 0;
         double e_attr = 0;
+        Ogre::Vector2 diff;
+        Collider* collider;
         switch(potentialFields[i]->type) {
             case PotentialFieldType::Target:
                 c_rep = PotentialField::c_Enemy_Target_repulsion;
                 e_rep = PotentialField::e_Enemy_Target_repulsion;
                 c_attr = PotentialField::c_Enemy_Target_attraction;
                 e_attr = PotentialField::e_Enemy_Target_attraction;
+                diff = Ogre::Vector2(
+                        entity381->position.x - potentialFields[i]->entity381->position.x,
+                        entity381->position.z
+                                - potentialFields[i]->entity381->position.z);
                 break;
             case PotentialFieldType::Obstacle:
                 c_rep = PotentialField::c_Enemy_Obstacle_repulsion;
                 e_rep = PotentialField::e_Enemy_Obstacle_repulsion;
                 c_attr = PotentialField::c_Enemy_Obstacle_attraction;
                 e_attr = PotentialField::e_Enemy_Obstacle_attraction;
+                collider = potentialFields[i]->entity381->GetAspect<Collider>();
+                if(collider != NULL){
+                    Ogre::Vector3 temp = entity381->position
+                            - collider->GetClosestPoint(entity381->position);
+                    diff = Ogre::Vector2(temp.x, temp.z);
+                } else{
+                    diff = Ogre::Vector2(
+                            entity381->position.x
+                                    - potentialFields[i]->entity381->position.x,
+                            entity381->position.z
+                                    - potentialFields[i]->entity381->position.z);
+                }
                 break;
             case PotentialFieldType::Enemy:
                 c_rep = PotentialField::c_Enemy_Enemy_repulsion;
                 e_rep = PotentialField::e_Enemy_Enemy_repulsion;
                 c_attr = PotentialField::c_Enemy_Enemy_attraction;
                 e_attr = PotentialField::e_Enemy_Enemy_attraction;
+                diff = Ogre::Vector2(
+                        entity381->position.x - potentialFields[i]->entity381->position.x,
+                        entity381->position.z
+                                - potentialFields[i]->entity381->position.z);
                 break;
         }
 
-        Ogre::Vector2 diff = Ogre::Vector2(
-                entity381->position.x - potentialFields[i]->entity381->position.x,
-                entity381->position.z - potentialFields[i]->entity381->position.z);
-        diff.x /= potentialFields[i]->entity381->scale.x;
-        diff.y /= potentialFields[i]->entity381->scale.z;
+        //diff.x /= potentialFields[i]->entity381->scale.x;
+        //diff.y /= potentialFields[i]->entity381->scale.z;
         const double d = diff.length();
         if(d >= 100.0 && potentialFields[i]->type == PotentialFieldType::Enemy){
             continue;

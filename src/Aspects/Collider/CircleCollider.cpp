@@ -66,6 +66,12 @@ Ogre::Vector3 CircleCollider::GetClosestPoint(Ogre::Vector3 point) const{
     return entity381->position + radius * offset.normalisedCopy();
 }
 
+bool CircleCollider::Contains(Ogre::Vector3 centerPoint) const{
+    Ogre::Vector2 diff = Ogre::Vector2(centerPoint.x - entity381->position.x,
+            centerPoint.z - entity381->position.z);
+    return diff.squaredLength() <= radius * radius;
+}
+
 void CircleCollider::OnCollision(Collider *other) const{
 }
 
@@ -151,7 +157,7 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
                     - castToRect->GetClosestPoint(entity381->position);
             diff.y = 0;
             const float dist = diff.length();
-            if(castToRect->PointInRectangle(entity381->position)){
+            if(castToRect->Contains(entity381->position)){
                 entity381->position -= diff;
             } else if(dist >= 0.0001){
                 entity381->position += (radius / dist - 1) * diff;

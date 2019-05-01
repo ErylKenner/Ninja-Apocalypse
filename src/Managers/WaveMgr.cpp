@@ -72,6 +72,12 @@ void WaveMgr::SpawnEnemy(){
                 || spawnPosition.x <= -0.5 * engine->gameMgr->mapWidth
                 || spawnPosition.z >= 0.5 * engine->gameMgr->mapHeight
                 || spawnPosition.z <= -0.5 * engine->gameMgr->mapHeight;
+        for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
+            if(Collider::colliders[i]->Contains(spawnPosition)){
+                continueTrying = true;
+                break;
+            }
+        }
     } while(continueTrying);
 
     Enemy * newEnemy = static_cast<Enemy *>(engine->entityMgr->CreateEntity(

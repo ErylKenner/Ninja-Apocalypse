@@ -104,13 +104,13 @@ void GameMgr::LoadLevelOne(){
     temp = engine->entityMgr->CreateEntity(EntityType::TerrainBorder,
             Ogre::Vector3(-0.5 * mapWidth, surfaceHeight, 0),
             Ogre::Vector3(0.04 * mapWidth, borderWallThickness, 0.92 * mapHeight));
-    temp = engine->entityMgr->CreateEntity(EntityType::TerrainBorder,
+    temp = engine->entityMgr->CreateEntity(EntityType::TerrainRectangle,
             Ogre::Vector3(0.5 * mapWidth, surfaceHeight, 0),
             Ogre::Vector3(0.04 * mapWidth, borderWallThickness, 0.92 * mapHeight));
-    temp = engine->entityMgr->CreateEntity(EntityType::TerrainBorder,
+    temp = engine->entityMgr->CreateEntity(EntityType::TerrainRectangle,
             Ogre::Vector3(0, surfaceHeight, -0.5 * mapHeight),
             Ogre::Vector3(1.04 * mapWidth, borderWallThickness, 0.08 * mapHeight));
-    temp = engine->entityMgr->CreateEntity(EntityType::TerrainBorder,
+    temp = engine->entityMgr->CreateEntity(EntityType::TerrainRectangle,
             Ogre::Vector3(0, surfaceHeight, 0.5 * mapHeight),
             Ogre::Vector3(1.04 * mapWidth, borderWallThickness, 0.08 * mapHeight));
 
