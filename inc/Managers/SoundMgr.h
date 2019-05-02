@@ -120,6 +120,7 @@ namespace OgreSND {
 		//bool loadAndBindAudio(std::string filename, bool loop, ALuint &audioId); //return +ive audioId or -ive error code
 		bool loadStartBackground();
 		bool loadStartGunshot();
+		bool loadSound(WaveInfo *Info, ALuint *sourcepoint, ALuint *bufferpoint, ALuint buffer, ALuint source, std::string filename);
 		bool loadPlayerDamage();
 		bool stopBackground();
 		bool pauseBackground();

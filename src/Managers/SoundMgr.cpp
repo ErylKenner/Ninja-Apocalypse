@@ -102,22 +102,21 @@ void SoundMgr::initialize(void){
         }
 	std::cout << "background music loaded" << std::endl;
 
-
-
-
 //      default gunshot sound for all entities
     unsigned int gunshotsid;
     std::string gunshotfilename = "Sounds/gunshot.wav";
     if (this->reserveAudio(gunshotfilename, false, gunshotsid)){
             battleSoundSource = sourceInfo[gunshotsid].source;
-            this->loadStartGunshot(); ///////
+//            this->loadStartGunshot();
+//              this->loadSound(battleWaveInfo, *battleSoundSource, *battleSoundBuffer, battleSoundBuffer, battleSoundSource, battleSoundFilename); // @suppress("Invalid arguments")
         }
 
+//		default sound for when player takes damage
     unsigned int playerdamagesid;
     std::string playerdamagefilename = "Sounds/player_damage.wav";
     if (this->reserveAudio(playerdamagefilename, false, playerdamagesid)){
             playerDamageSource = sourceInfo[gunshotsid].source;
-            this->loadPlayerDamage(); ///////
+            this->loadPlayerDamage();
         }
 
 	return;
@@ -902,6 +901,75 @@ bool SoundMgr::loadPlayerDamage(){
 
 	return true;
 }
+
+bool SoundMgr::loadSound(WaveInfo *Info, ALuint *sourcepoint, ALuint *bufferpoint, ALuint buffer, ALuint source, std::string filename){
+	//WaveInfo *wave;
+
+	alGenSources((ALuint)1, sourcepoint);
+	printError("Cannot generate source with id 1");
+
+	alSourcef(source, AL_PITCH, 1);
+	printError("Source pitch");
+
+	alSourcef(source, AL_GAIN, 2);
+	printError("Source Gain");
+
+	alSource3f(source, AL_POSITION, 0, 0, 0);
+	printError("Source position");
+
+	alSource3f(source, AL_VELOCITY, 0, 0, 0);
+	printError("Source velocity");
+
+	alSourcei(source, AL_LOOPING, AL_FALSE);
+	printError("Source looping");
+
+	alGenBuffers(1, bufferpoint);
+	printError("Buffer generation");
+
+	std::string fqfn = getFQFNFromFilename(filename); //soundmgr filename
+	std::cout << "SoundManager backgroundMusic file: " << fqfn << " is being readied" << std::endl;
+	if(fqfn == "")
+		return false;
+
+	this->playerDamageInfo = WaveOpenFileForReading(fqfn.c_str());
+	if(!this->playerDamageInfo){
+		std::cerr << "ERROR: Cannot open wave file for reading" << std::endl;
+		return false;
+	}
+	int ret = WaveSeekFile(0, Info);
+	if (ret) {
+		std::cerr << "ERROR: Cannot seek" << std::endl;
+		return false;
+	}
+	char *tmpBuf = (char *) malloc(Info->dataSize);
+	if(!tmpBuf){
+		std::cerr << "ERROR: in malloc" << std::endl;
+		return false;
+	}
+	ret = WaveReadFile(tmpBuf, Info->dataSize, Info);
+	if(ret != (int) Info->dataSize){
+		std::cerr << "ERROR: short read " << ret << " wanted: " << Info->dataSize << std::endl;
+		return false;
+	}
+	alBufferData(buffer,
+			toALFormat(Info->channels, Info->bitsPerSample),
+			tmpBuf, Info->dataSize, Info->sampleRate);
+	if(printError("Failed to load bufferData") < 0){
+		return false;
+	}
+
+	free(tmpBuf);
+
+	alSourcei(source, AL_BUFFER, buffer);
+	printError("Source binding");
+
+	alSourcePlay(source);
+	printError("Playing");
+
+
+	return true;
+}
+
 
 
 
