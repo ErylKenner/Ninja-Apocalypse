@@ -825,7 +825,7 @@ bool SoundMgr::loadStartBackground(){
 	alSourcei(this->backgroundMusicSource, AL_BUFFER, this->backgroundMusicBuffer);
 	printError("Source binding");
 
-//	alSourcePlay(this->backgroundMusicSource);
+	alSourcePlay(this->backgroundMusicSource);
 	printError("Playing");
 
 

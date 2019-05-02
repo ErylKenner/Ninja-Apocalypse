@@ -21,7 +21,7 @@ Ray::~Ray(){
 
 }
 
-Collider* Ray::GetClosestIntersectedCollider() const{
+Collider* Ray::GetClosestIntersectedCollider(float *dist) const{
     Collider *closest = NULL;
     float closestDistSqr = Ogre::Math::POS_INFINITY;
     for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
@@ -38,6 +38,10 @@ Collider* Ray::GetClosestIntersectedCollider() const{
             }
         }
     }
+    if(closest != NULL && dist != NULL){
+        *dist = Ogre::Math::Sqrt(closestDistSqr);
+    }
     return closest;
 }
+
 

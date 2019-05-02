@@ -13,7 +13,7 @@ public:
     Ray(Ogre::Vector2 start, Ogre::Vector2 dir);
     Ray(Ogre::Vector3 start, Ogre::Vector2 dir);
     ~Ray();
-    Collider* GetClosestIntersectedCollider() const;
+    Collider* GetClosestIntersectedCollider(float *dist) const;
 
     Ogre::Vector2 origin;
     Ogre::Vector2 directionVector;

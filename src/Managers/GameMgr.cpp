@@ -11,11 +11,12 @@
 #include "EntityMgr.h"
 #include "Weapon.h"
 #include "WeaponHolder.h"
-
+#include "WeaponMgr.h"
 
 GameMgr::GameMgr(Engine *eng) :
         Mgr(eng),
-        MainPlayer(0){
+        MainPlayer(0), weaponMgr(0){
+    weaponMgr = new WeaponMgr(engine);
     mPlane = Ogre::Plane(Ogre::Vector3::UNIT_Y, surfaceHeight);
 
 }
@@ -25,11 +26,17 @@ GameMgr::~GameMgr(){
 }
 
 void GameMgr::Init(){
-
+    weaponMgr->Init();
 }
 
 void GameMgr::Tick(float dt){
+    timer -= dt;
+    if(timer <= 0){
+        timer = 0;
+        DrawLine(Ogre::Vector3(0, 0, 0), Ogre::Vector3(0, 0, 0));
+    }
     //std::cout << "FPS: " << (int)(1 / dt);
+    weaponMgr->Tick(dt);
 }
 
 void GameMgr::LoadLevel(){
@@ -58,13 +65,30 @@ void GameMgr::LoadLevel(){
     groundEntity->setMaterial(material);
     groundEntity->setCastShadows(false);
 
+    //Create line stump
+    line = engine->gfxMgr->mSceneMgr->createManualObject("line");
+    lineNode = engine->gfxMgr->mSceneMgr->getRootSceneNode()->createChildSceneNode(
+            "lineNode");
+    Ogre::MaterialPtr myManualObjectMaterial =
+            Ogre::MaterialManager::getSingleton().create("lineMaterial", "General");
+    myManualObjectMaterial->setReceiveShadows(false);
+    myManualObjectMaterial->getTechnique(0)->setLightingEnabled(true);
+    myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(0.2, 0.2, 0.2, 0);
+    myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(0, 0, 0);
+    myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(0.1, 0.1, 0.1);
+    lineNode->attachObject(line);
+    lineNode->setInheritScale(false);
+
     //Create player
     MainPlayer = static_cast<Player*>(engine->entityMgr->CreateEntityOfTypeAtPosition(
             EntityType::PlayerType, Ogre::Vector3(0, surfaceHeight, -400)));
+    //MainPlayer->ogreSceneNode->addChild(lineNode);
 
     //Create gun
-    engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
-            Ogre::Vector3(0, surfaceHeight, -300));
+    //engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
+            //Ogre::Vector3(0, surfaceHeight, -300));
+
+    weaponMgr->LoadLevel();
 
     LoadLevelOne();
 }
@@ -177,6 +201,14 @@ void GameMgr::LoadLevelOne(){
 }
 
 void GameMgr::Stop(){
-
+    weaponMgr->Stop();
 }
 
+void GameMgr::DrawLine(Ogre::Vector3 start, Ogre::Vector3 end){
+    timer = lineVisibleTime;
+    line->clear();
+    line->begin("lineMaterial", Ogre::RenderOperation::OT_LINE_LIST);
+    line->position(start.x, start.y + 1, start.z);
+    line->position(end.x, end.y + 1, end.z);
+    line->end();
+}
