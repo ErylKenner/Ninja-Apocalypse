@@ -57,7 +57,7 @@ void UiMgr::splashScreen(float dt){
 }
 
 void UiMgr::LoadLevel() {
-	waitTime = 3;
+	waitTime = 0;
 
 	mTrayMgr->showBackdrop("Backdrop");
 }
