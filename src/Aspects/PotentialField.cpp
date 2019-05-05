@@ -60,10 +60,14 @@ Ogre::Vector2 PotentialField::NodeInfluence(Ogre::Vector2 pos){
     const int closestPlayerNode = ai->GetClosestNode(mainPlayerPos);
 
     const double closestNodeDistance = pos.distance(ai->nodes[closestNode]);
+    const double closestNodePlayerdDistance = mainPlayerPos.distance(
+            ai->nodes[closestNode]);
     int parent = ai->ShortestPathTrees[closestPlayerNode][closestNode];
     const double parentDistance = pos.distance(ai->nodes[parent]);
 
-    if(pos.distance(mainPlayerPos) > closestNodeDistance){
+    //if(pos.distance(mainPlayerPos) > closestNodeDistance){
+    if(pos.distance(mainPlayerPos) >= closestNodePlayerdDistance
+            || closestNodeDistance >= closestNodePlayerdDistance){
         //Go to closest node rather than straight to player
         double c_rep = PotentialField::c_Enemy_Target_repulsion;
         double e_rep = PotentialField::e_Enemy_Target_repulsion;
