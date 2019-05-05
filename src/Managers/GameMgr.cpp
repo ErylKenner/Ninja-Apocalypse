@@ -12,6 +12,7 @@
 #include "Weapon.h"
 #include "WeaponHolder.h"
 #include "WeaponMgr.h"
+#include "AiMgr.h"
 
 GameMgr::GameMgr(Engine *eng) :
         Mgr(eng),
@@ -96,12 +97,18 @@ void GameMgr::LoadLevel(){
     weaponMgr->LoadLevel();
 
     LoadLevelOne();
+    /*for(int i = 0; i < engine->aiMgr->numNodes; ++i){
+        Ogre::Vector3 pos = Ogre::Vector3(engine->aiMgr->nodes[i].x, 0,
+                engine->aiMgr->nodes[i].y);
+        engine->entityMgr->CreateEntity(EntityType::Sphere, pos,
+                Ogre::Vector3(20, 1, 1));
+    }*/
 }
 
 void GameMgr::LoadLevelOne(){
     Entity381 *temp;
     //Borders
-    temp = engine->entityMgr->CreateEntity(EntityType::TerrainBorder,
+    temp = engine->entityMgr->CreateEntity(EntityType::TerrainRectangle,
             Ogre::Vector3(-0.5 * mapWidth, surfaceHeight, 0),
             Ogre::Vector3(0.04 * mapWidth, borderWallThickness, 0.92 * mapHeight));
     temp = engine->entityMgr->CreateEntity(EntityType::TerrainRectangle,

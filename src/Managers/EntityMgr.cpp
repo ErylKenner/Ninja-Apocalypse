@@ -37,6 +37,10 @@ Entity381* EntityMgr::CreateEntity(EntityType type, Ogre::Vector3 pos,
     Entity381 *newEntity;
     switch(type) {
         case EntityType::Sphere:
+            newEntity = new BasicSphereEntity381(id, pos, scale.x, engine);
+            entities.push_back(newEntity);
+            return newEntity;
+            break;
         case EntityType::TerrainSphere:
             newEntity = new SphereEntity381(id, pos, scale.x, engine);
             entities.push_back(newEntity);

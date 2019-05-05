@@ -38,6 +38,17 @@ Entity381::Entity381(int id, std::string mesh, Ogre::Vector3 pos, Engine * eng) 
 Entity381::~Entity381(){
 }
 
+BasicSphereEntity381::BasicSphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng) :
+        Entity381(id, "sphere.mesh", pos, eng),
+        radius(r){
+    scale = 0.01 * Ogre::Vector3(r, r, r);
+    ogreEntity->setMaterialName("Stone");
+    aspects.push_back(new Renderable(this));
+}
+
+BasicSphereEntity381::~BasicSphereEntity381(){
+}
+
 SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng) :
         Entity381(id, "sphere.mesh", pos, eng),
         radius(r){

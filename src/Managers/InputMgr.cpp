@@ -15,6 +15,7 @@
 #include "EntityMgr.h"
 #include "UiMgr.h"
 #include "GameMgr.h"
+#include "AiMgr.h"
 
 #include "Enemy.h"
 #include "Player.h"
@@ -99,9 +100,8 @@ void InputMgr::UpdatePlayer(float dt){
     static bool ctrlR_DownLastFrame = false;
     bool ctrlR = mKeyboard->isKeyDown(OIS::KC_LCONTROL)
             && mKeyboard->isKeyDown(OIS::KC_R);
-    Player * player = engine->gameMgr->MainPlayer;
+    Player *player = engine->gameMgr->MainPlayer;
 
-    // uses yghj
     Vector3 movement = Vector3::ZERO;
     if(mKeyboard->isKeyDown(OIS::KC_A)){
         movement.x -= 1;

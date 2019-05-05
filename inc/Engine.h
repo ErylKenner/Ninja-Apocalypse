@@ -1,18 +1,14 @@
 /*
- * Engine.h
- *
- *  Created on: Mar 4, 2018
- *      Author: sushil
+ * NAME: Eryl Kenner
+ * EMAIL: eryl.kenner@gmail.com
  */
 
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
 namespace OgreSND {
-
 class SoundMgr;
 }
-;
 
 using namespace OgreSND;
 
@@ -22,6 +18,7 @@ class GfxMgr;
 class InputMgr;
 class WaveMgr;
 class UiMgr;
+class AiMgr;
 
 class Engine{
 
@@ -33,9 +30,10 @@ public:
     GameMgr *gameMgr;
     GfxMgr *gfxMgr;
     InputMgr *inputMgr;
-    WaveMgr * waveMgr;
-    UiMgr * uiMgr;
-    SoundMgr * soundMgr;
+    WaveMgr *waveMgr;
+    UiMgr *uiMgr;
+    SoundMgr *soundMgr;
+    AiMgr *aiMgr;
 
     void Init();
     void Run();

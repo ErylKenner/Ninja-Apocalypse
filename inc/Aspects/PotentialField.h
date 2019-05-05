@@ -10,7 +10,7 @@
 #include <vector>
 
 enum PotentialFieldType{
-    Target, Obstacle, Enemy
+    PlayerTarget, Obstacle, Enemy
 };
 
 class PotentialField : public Aspect{
@@ -29,6 +29,11 @@ public:
     static double c_Enemy_Target_attraction;
     static double e_Enemy_Target_attraction;
 
+    static double c_Enemy_Player_repulsion;
+    static double e_Enemy_Player_repulsion;
+    static double c_Enemy_Player_attraction;
+    static double e_Enemy_Player_attraction;
+
     static double c_Enemy_Obstacle_repulsion;
     static double e_Enemy_Obstacle_repulsion;
     static double c_Enemy_Obstacle_attraction;
@@ -36,7 +41,10 @@ public:
 
     PotentialFieldType type;
     bool enabled;
+    int lastVisitedNode;
     static std::vector<PotentialField *> potentialFields;
+private:
+    Ogre::Vector2 NodeInfluence(Ogre::Vector2 pos);
 };
 
 #endif /* INC_ASPECTS_POTENTIALFIELD_H_ */

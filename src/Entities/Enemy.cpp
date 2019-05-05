@@ -19,6 +19,7 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 Enemy::Enemy(int id, Ogre::Vector3 pos, Engine * eng) :
         Entity381(id, "ninja.mesh", pos, eng),
@@ -51,6 +52,11 @@ void Enemy::OnDeath(){
     }
     Ogre::Vector3 newPos = Ogre::Vector3(0, 0, 25e6);
     position = newPos;
+    PotentialField *potentialField = GetAspect<PotentialField>();
+    if(potentialField != NULL){
+        aspects.erase(std::remove(aspects.begin(), aspects.end(), potentialField),
+                aspects.end());
+    }
     //GetAspect<UnitAI>()->SetCommand(new MoveTo(this, newPos));
     anim->DisableAnimation();
     engine->waveMgr->OnEnemyKilled(this);

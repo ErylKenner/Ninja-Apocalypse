@@ -58,6 +58,14 @@ private:
 protected:
 };
 
+class BasicSphereEntity381 : public Entity381{
+public:
+    BasicSphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng);
+    ~BasicSphereEntity381();
+private:
+    int radius;
+};
+
 class SphereEntity381 : public Entity381{
 public:
     SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng);

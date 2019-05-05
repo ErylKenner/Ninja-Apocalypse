@@ -5,26 +5,27 @@
  *      Author: sushil
  */
 
-#include <Engine.h>
-#include <EntityMgr.h>
-#include <GameMgr.h>
-#include <GfxMgr.h>
-#include <InputMgr.h>
-#include <SoundMgr.h>
+#include "Engine.h"
+#include "EntityMgr.h"
+#include "GameMgr.h"
+#include "GfxMgr.h"
+#include "InputMgr.h"
+#include "SoundMgr.h"
 #include "WaveMgr.h"
 #include "UiMgr.h"
+#include "AiMgr.h"
 
 Engine::Engine() :
+        entityMgr(0),
+        gameMgr(0),
+        gfxMgr(0),
+        inputMgr(0),
+        waveMgr(0),
+        uiMgr(0),
+        soundMgr(0),
+        aiMgr(0),
         fps(0){
-    entityMgr = 0;
-    gameMgr = 0;
-    gfxMgr = 0;
-    inputMgr = 0;
-    waveMgr = 0;
-    uiMgr = 0;
-    soundMgr = 0;
     timeInterval = 0;
-
     keepRunning = true;
     for(int i = 0; i < 10; ++i){
         fpsBuffer[i] = 0.0;
@@ -44,6 +45,7 @@ void Engine::Init(){
     waveMgr = new WaveMgr(this);
     uiMgr = new UiMgr(this);
     soundMgr = new OgreSND::SoundMgr(this);
+    aiMgr = new AiMgr(this);
 
     //--------------------------------------------------------------
     entityMgr->Init();
@@ -53,15 +55,17 @@ void Engine::Init(){
     waveMgr->Init();
     uiMgr->Init();
     soundMgr->init();
+    aiMgr->Init();
 
     //--------------------------------------------------------------
     entityMgr->LoadLevel();
     gfxMgr->LoadLevel();
     inputMgr->LoadLevel();
-    gameMgr->LoadLevel();
     waveMgr->LoadLevel();
     uiMgr->LoadLevel();
     soundMgr->loadLevel();
+    aiMgr->LoadLevel();
+    gameMgr->LoadLevel();
 }
 
 void Engine::UpdateFPS(float dt){
@@ -90,6 +94,7 @@ void Engine::TickAll(float dt){
     waveMgr->Tick(dt);
     uiMgr->Tick(dt);
     soundMgr->Tick(dt);
+    aiMgr->Tick(dt);
 }
 
 void Engine::Run(){
@@ -120,4 +125,5 @@ void Engine::Cleanup(){
     waveMgr->Stop();
     uiMgr->Stop();
     soundMgr->Stop();
+    aiMgr->Stop();
 }
