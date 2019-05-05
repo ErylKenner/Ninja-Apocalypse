@@ -78,7 +78,7 @@ void UiMgr::EnableHud(){
 
     playerHealth->setProgress(1);
 
-    fpsLabel = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "fpsLabel", "FPS: ", 75);
+    fpsLabel = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "fpsLabel", "FPS: ", 100);
     waveLabel = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "waveLabel", "Wave #", 130);
     timeLabel = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT, "timeLabel", "Time:", 130);
     weaponLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "weaponLabel", "Weapon",
@@ -112,7 +112,7 @@ void UiMgr::UpdateLabels(){
     }
     waveNum = std::to_string(engine->waveMgr->waveNumber);
     timeElapsed = std::to_string((int)engine->waveMgr->timeElapsed);
-    fps = std::to_string(engine->fps);
+    fps = std::string("FPS: ") + std::to_string(engine->fps);
 
     playerHealth->setProgress((float)currentHealth / 100);
     timeLabel->setCaption(timeElapsed);

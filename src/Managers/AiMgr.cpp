@@ -115,8 +115,8 @@ std::vector<int> AiMgr::GenerateShortestPathTree(int targetNode) const{
         }
     }
     return parentList;
-    for(int i = 1; i < numNodes; ++i){
+    /*for(int i = 1; i < numNodes; ++i){
         printf("%d - %d\n", i + 1, parentList[i] + 1);
-    }
+    }*/
 }
 
