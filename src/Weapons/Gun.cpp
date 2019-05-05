@@ -26,7 +26,8 @@ Gun::~Gun(){
 
 void Gun::Use(){
     if(CurrentBulletNumber > 0){
-    	engine->soundMgr->playGunshot();
+//    	engine->soundMgr->playGunshot();
+    	engine->soundMgr->playSelectedSound(gunshot);
         CurrentBulletNumber--;
         //std::cout << "Bang! " << CurrentBulletNumber << " bullets left." << std::endl;
         const Ogre::Vector2 playerPos = Ogre::Vector2(

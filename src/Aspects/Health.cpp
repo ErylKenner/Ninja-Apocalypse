@@ -33,7 +33,7 @@ bool Health::TakeDamage(int damageAmount){
         if(incomingDamagePerSecond != 0){
             timeSinceLastHit = 1 / (float)incomingDamagePerSecond;
         }
-        entity381->engine->soundMgr->playPlayerDamage();
+        entity381->engine->soundMgr->playSelectedSound(player_damage);
         CurrentHealth -= damageAmount;
         if(!IsAlive()){
             // health is never below zero

@@ -84,8 +84,6 @@ void SoundMgr::initialize(void){
         //initialize vectors
         for (int i = 0; i < 6; i++){
             for (int j = 0; j < soundPerEnt; j++){
-                //this->battleSoundsDictionary[i][j] = -1;
-                //this->creationSoundsDictionary[i][j] = -1;
                 this->selectionSoundsDictionary[i][j] = -1;
             }
         }
@@ -98,7 +96,7 @@ void SoundMgr::initialize(void){
 	if (this->reserveAudio(filename, true, sid)){
 		std::cout << "background music loaded" << std::endl;
                 backgroundMusicSource = sourceInfo[sid].source;
-                this->loadStartBackground();
+            this->loadAllSounds("backgroundmusic", "Sounds/Spacey.wav");
         }
 	std::cout << "background music loaded" << std::endl;
 
@@ -107,22 +105,20 @@ void SoundMgr::initialize(void){
     std::string gunshotfilename = "Sounds/gunshot.wav";
     if (this->reserveAudio(gunshotfilename, false, gunshotsid)){
             battleSoundSource = sourceInfo[gunshotsid].source;
-//            this->loadStartGunshot();
-//              this->loadSound(battleWaveInfo, *battleSoundSource, *battleSoundBuffer, battleSoundBuffer, battleSoundSource, battleSoundFilename); // @suppress("Invalid arguments")
+            this->loadAllSounds("gunshot", "Sounds/gunshot.wav");
         }
 
 //		default sound for when player takes damage
     unsigned int playerdamagesid;
     std::string playerdamagefilename = "Sounds/player_damage.wav";
     if (this->reserveAudio(playerdamagefilename, false, playerdamagesid)){
-            playerDamageSource = sourceInfo[gunshotsid].source;
-            this->loadPlayerDamage();
+            playerDamageSource = sourceInfo[playerdamagesid].source;
+            this->loadAllSounds("playerdamage", "Sounds/player_damage.wav");
         }
 
 	return;
 
 }
-
 
 void SoundMgr::enable(){
     isEnabled = true;
@@ -134,7 +130,6 @@ void SoundMgr::disable(){
     stopAllAudio();
     stopBackground();
 }
-
 
 bool SoundMgr::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
@@ -148,36 +143,19 @@ bool SoundMgr::frameEnded(const Ogre::FrameEvent& evt){
 	return true;
 }
 
-
-
 void SoundMgr::crosslink(void){
-//	syncListenerToCamera();
+
 	return;
 }
 
 void SoundMgr::loadLevel(void){
-//	syncListenerToCamera();
-	//load sounds, bind buffers, start background music
-	//read sound files
-
-	//load background, start, loop
-	//loadStartBackground();
-
 
 	return;
 }
-double static tmpT = 0.0;
-bool static paused = false;
 
-
-void SoundMgr::attachSelectedNodeToSoundIndex(Entity381 *ent, unsigned int index){
-
-}
 
 void SoundMgr::tick(double dtime){
 
-//	playGunshot();
-//	syncListenerToCamera();
 
         //selection sound
 		for(std::vector<Entity381 *>::const_iterator it = engine->entityMgr->entities.begin(); it != engine->entityMgr->entities.end(); ++it){
@@ -192,48 +170,27 @@ void SoundMgr::tick(double dtime){
 
 }
 
-        //this was for moving sound but playing sound for all moving objects does not seem to be a good idea
-        //copySoundState();
-
 
 
 bool SoundMgr::playSelectionSound(Entity381 et){
-        Ogre::Vector3 pos = et.position;
 
         if (et.soundFile == ""){
             std::cout << "There is no registered selection sounds for this entity type" << std::endl;
             return false; //there is no sound to play
         }
         this->playAudioSourceIndex(et.auioId);
-//        setSoundPosition(sourceInfo[et.auioId].source, pos);
 
         return true;
 }
 
 
 void SoundMgr::releaseLevel(void){
-	// release stuff loaded for this level
+
 	return;
 }
 
 void SoundMgr::cleanup(void){
 	return;
-}
-
-void SoundMgr::printAudioDevices(const ALCchar *devices){
-
-	const ALCchar *device = devices;
-	const ALCchar *next   = devices+1;
-	size_t len = 0;
-
-	std::cout << "Devices list:" << std::endl;
-	while(device && *device != '\0' && next && *next != '\0') {
-		std::cout << device << std::endl;
-		len = strlen(device);
-		device += len + 1;
-		next   += len + 2;
-	}
-	std::cout << "------------------" << std::endl;
 }
 
 int SoundMgr::printError(const char *ermsg){
@@ -246,6 +203,7 @@ int SoundMgr::printError(const char *ermsg){
 }
 
 inline ALenum SoundMgr::toALFormat(short channels, short samples) {
+
 	bool stereo = (channels > 1);
 	switch (samples){
 	case 16:
@@ -266,14 +224,12 @@ inline ALenum SoundMgr::toALFormat(short channels, short samples) {
 		return -1;
 
 	}
+
 }
 
 
 int SoundMgr::getBufferId(std::string filename){
-	// two cases
-	//1. sound is already in a buffer, then return the buffer's index
-	//2. sound is not already in a buffer, then load it into an unused buffer index and return it
-	//Case 1:
+
 	for (int i = 0; i < OgreSND::maxAudioBuffers; i++){
 		if (this->bufferInfo[i].bufferFilename == filename){
 			return i;
@@ -363,6 +319,7 @@ bool SoundMgr::reserveAudio(std::string filename, bool loop, unsigned int &sourc
 			return false;
 		}
 	}
+
 	/*******************************************************************************************/
 	sourceInfoIndex = index; // to be returned**************************************
 	/*******************************************************************************************/
@@ -372,6 +329,7 @@ bool SoundMgr::reserveAudio(std::string filename, bool loop, unsigned int &sourc
 		return false;
 	}
 	return true; //return error code
+
 }
 
 bool SoundMgr::resetSource(ALuint sourceId){
@@ -395,11 +353,6 @@ bool SoundMgr::resetSource(ALuint sourceId){
 	return true;
 }
 
-/**
- * Releases a source name. First finds it souceInfo, stopsAudio playing if any, then deletes the source
- *
- *
- */
 bool SoundMgr::releaseSourceIndex(int sid){
 
 	ALuint source = this->sourceInfo[sid].source;
@@ -468,6 +421,7 @@ bool SoundMgr::resumeBackground(){
 }
 
 bool SoundMgr::loadAudio(std::string filename, int index){
+
 	alGetError();//init errors
 	std::string fqfn = getFQFNFromFilename(filename);
 	std::cout << "SoundManager Music file: " << fqfn << " is being readied" << std::endl;
@@ -633,29 +587,6 @@ bool SoundMgr::resumeAllAudio( void ){
 	return true;
 }
 
-bool SoundMgr::setSoundPosition(ALuint audioId, Ogre::Vector3 position ){
-
-	alSourcef(audioId, AL_GAIN, 1.0);
-	if(printError("Source Gain") < 0)
-		return false;
-
-
-	alSource3f(audioId, AL_POSITION, position.x, position.y, position.z);
-	if (printError("SetSoundPosition::Source position") < 0) return false;
-	return true;;
-}
-
-
-bool SoundMgr::setSoundDisposition( ALuint audioId, Ogre::Vector3 position, Ogre::Vector3 velocity, Ogre::Vector3 direction ){
-	alSource3f(audioId, AL_POSITION, position.x, position.y, position.z);
-	if (printError("SetSoundDisPosition::Source position") < 0) return false;
-
-	alSource3f(audioId, AL_VELOCITY, velocity.x, velocity.y, velocity.z);
-	if (printError("SetSoundDisPosition::Source velocity") < 0) return false;
-
-	return true;
-}
-
 
 bool SoundMgr::setSound( ALuint audioID, Ogre::Vector3 position,
     Ogre::Vector3 velocity, Ogre::Vector3 direction, float maxDistance,
@@ -668,307 +599,107 @@ bool SoundMgr::setListenerDisposition( Ogre::Vector3 position, Ogre::Vector3 vel
 	return false;
 }
 
-bool SoundMgr::initActionSounds(Entity381* et){
-        //registering all sounds
-		std::string gunshotFilename = "Sounds/gunshot.wav";
-        std::string selection2Filename = "data/watercraft/sounds/GoodDay.wav";
-        //std::string createShipFilename = "data/watercraft/sounds/boatMoving.wav";
-        //std::string createBuildingFilename = "data/watercraft/sounds/clong.wav";
-            //this->registerBattleSound(et, battleFilename);
-                        this->registerSelection(*et, gunshotFilename);
+bool SoundMgr::loadAllSounds(std::string sound_type, std::string filename){
 
-                //this->registerCreate(et, createShipFilename);
+if(sound_type=="gunshot"){
+	std::cout<<"gunshot"<<std::endl;
+	sourcetemp = battleSoundSource;
+	buffertemp = battleSoundBuffer;
+	waveTemp = battleWaveInfo;}
 
+if(sound_type=="playerdamage"){
+	std::cout<<"pd"<<std::endl;
+	sourcetemp = playerDamageSource;
+	buffertemp = playerDamageBuffer;
+	waveTemp = playerDamageInfo;}
 
-        return true;
-}
-void SoundMgr::playGunshot(){
-	alSourcePlay(this->battleSoundSource);
-//	stopAudio(this->battleSoundSource);
-}
+if(sound_type=="backgroundmusic"){
+	std::cout<<"bm"<<std::endl;
+	sourcetemp = backgroundMusicSource;
+	buffertemp = backgroundMusicBuffer;
+	waveTemp = backgroundWaveInfo;}
 
-void SoundMgr::playPlayerDamage(){
-	alSourcePlay(this->playerDamageSource);
-//	stopAudio(this->battleSoundSource);
-}
-
-
-bool SoundMgr::loadStartGunshot(){
-	//WaveInfo *wave;
-
-	alGenSources((ALuint)1, &this->battleSoundSource);
+std::cout<<"one initialzied"<<std::endl;
+	alGenSources((ALuint)1, &this->sourcetemp);
 	printError("Cannot generate source with id 1");
 
-	alSourcef(this->battleSoundSource, AL_PITCH, .95);
+	alSourcef(this->sourcetemp, AL_PITCH, .95);
 	printError("Source pitch");
 
-	alSourcef(this->battleSoundSource, AL_GAIN, 2);
+	alSourcef(this->sourcetemp, AL_GAIN, 2);
 	printError("Source Gain");
 
-	alSource3f(this->battleSoundSource, AL_POSITION, 0, 0, 0);
+	alSource3f(this->sourcetemp, AL_POSITION, 0, 0, 0);
 	printError("Source position");
 
-	alSource3f(this->battleSoundSource, AL_VELOCITY, 0, 0, 0);
+	alSource3f(this->sourcetemp, AL_VELOCITY, 0, 0, 0);
 	printError("Source velocity");
 
-	alSourcei(this->battleSoundSource, AL_LOOPING, AL_FALSE);
+	alSourcei(this->sourcetemp, AL_LOOPING, AL_FALSE);
 	printError("Source looping");
 
-	alGenBuffers(1, &this->battleSoundBuffer);  /////
+	alGenBuffers(1, &this->buffertemp);  /////
 	printError("Buffer generation");
 
-	std::string fqfn = getFQFNFromFilename(OgreSND::battleSoundFilename);
+	std::string fqfn = getFQFNFromFilename(filename);
 	std::cout << "SoundManager battleSound file: " << fqfn << " is being readied" << std::endl;
 	if(fqfn == "")
 		return false;
 
-	this->battleWaveInfo = WaveOpenFileForReading(fqfn.c_str());
-	if(!this->battleWaveInfo){
+	this->waveTemp = WaveOpenFileForReading(fqfn.c_str());
+	if(!this->waveTemp){
 		std::cerr << "ERROR: Cannot open wave file for reading" << std::endl;
 		return false;
 	}
-	int ret = WaveSeekFile(0, this->battleWaveInfo);
+	int ret = WaveSeekFile(0, this->waveTemp);
 	if (ret) {
 		std::cerr << "ERROR: Cannot seek" << std::endl;
 		return false;
 	}
-	char *tmpBuf = (char *) malloc(this->battleWaveInfo->dataSize);
-	//this->backgroundBufferData = (char *) malloc(this->backgroundWaveInfo->dataSize);
+	char *tmpBuf = (char *) malloc(this->waveTemp->dataSize);
 	if(!tmpBuf){
 		std::cerr << "ERROR: in malloc" << std::endl;
 		return false;
 	}
-	ret = WaveReadFile(tmpBuf, this->battleWaveInfo->dataSize, this->battleWaveInfo);
-	if(ret != (int) this->battleWaveInfo->dataSize){
-		std::cerr << "ERROR: short read " << ret << " wanted: " << this->battleWaveInfo->dataSize << std::endl;
+	ret = WaveReadFile(tmpBuf, this->waveTemp->dataSize, this->waveTemp);
+	if(ret != (int) this->waveTemp->dataSize){
+		std::cerr << "ERROR: short read " << ret << " wanted: " << this->waveTemp->dataSize << std::endl;
 		return false;
 	}
-	alBufferData(this->battleSoundBuffer,
-			toALFormat(this->battleWaveInfo->channels, this->battleWaveInfo->bitsPerSample),
-			tmpBuf, this->battleWaveInfo->dataSize, this->battleWaveInfo->sampleRate);
+	alBufferData(this->buffertemp,
+			toALFormat(this->waveTemp->channels, this->waveTemp->bitsPerSample),
+			tmpBuf, this->waveTemp->dataSize, this->waveTemp->sampleRate);
 	if(printError("Failed to load bufferData") < 0){
 		return false;
 	}
 
 	free(tmpBuf);
 
-	alSourcei(this->battleSoundSource, AL_BUFFER, this->battleSoundBuffer);
+	alSourcei(this->sourcetemp, AL_BUFFER, this->buffertemp);
 	printError("Source binding");
 
 	printError("Playing");
-//	printError("Playing");
-
-
+		if(sound_type=="backgroundmusic"){
+			playSelectedSound(background_music);}
 	return true;
 }
 
-bool SoundMgr::loadStartBackground(){
-	//WaveInfo *wave;
-
-
-	alGenSources((ALuint)1, &this->backgroundMusicSource);
-	printError("Cannot generate source with id 1");
-
-	alSourcef(this->backgroundMusicSource, AL_PITCH, 1);
-	printError("Source pitch");
-
-	alSourcef(this->backgroundMusicSource, AL_GAIN, 2);
-	printError("Source Gain");
-
-	alSource3f(this->backgroundMusicSource, AL_POSITION, 0, 0, 0);
-	printError("Source position");
-
-	alSource3f(this->backgroundMusicSource, AL_VELOCITY, 0, 0, 0);
-	printError("Source velocity");
-
-	alSourcei(this->backgroundMusicSource, AL_LOOPING, AL_TRUE);
-	printError("Source looping");
-
-	alGenBuffers(1, &this->backgroundMusicBuffer);
-	printError("Buffer generation");
-
-	std::string fqfn = getFQFNFromFilename(OgreSND::backgroundMusicFilename);
-	std::cout << "SoundManager backgroundMusic file: " << fqfn << " is being readied" << std::endl;
-	if(fqfn == "")
-		return false;
-
-	this->backgroundWaveInfo = WaveOpenFileForReading(fqfn.c_str());
-	if(!this->backgroundWaveInfo){
-		std::cerr << "ERROR: Cannot open wave file for reading" << std::endl;
-		return false;
+void SoundMgr::playSelectedSound(SoundTypes sound_type){
+	switch(sound_type){
+	case gunshot:
+		alSourcePlay(battleSoundSource);
+		break;
+	case player_damage:
+		alSourcePlay(playerDamageSource);
+		break;
+	case background_music:
+		alSourcePlay(backgroundMusicSource);
+		break;
 	}
-	int ret = WaveSeekFile(0, this->backgroundWaveInfo);
-	if (ret) {
-		std::cerr << "ERROR: Cannot seek" << std::endl;
-		return false;
-	}
-	char *tmpBuf = (char *) malloc(this->backgroundWaveInfo->dataSize);
-	//this->backgroundBufferData = (char *) malloc(this->backgroundWaveInfo->dataSize);
-	if(!tmpBuf){
-		std::cerr << "ERROR: in malloc" << std::endl;
-		return false;
-	}
-	ret = WaveReadFile(tmpBuf, this->backgroundWaveInfo->dataSize, this->backgroundWaveInfo);
-	if(ret != (int) this->backgroundWaveInfo->dataSize){
-		std::cerr << "ERROR: short read " << ret << " wanted: " << this->backgroundWaveInfo->dataSize << std::endl;
-		return false;
-	}
-	alBufferData(this->backgroundMusicBuffer,
-			toALFormat(this->backgroundWaveInfo->channels, this->backgroundWaveInfo->bitsPerSample),
-			tmpBuf, this->backgroundWaveInfo->dataSize, this->backgroundWaveInfo->sampleRate);
-	if(printError("Failed to load bufferData") < 0){
-		return false;
-	}
-
-	free(tmpBuf);
-
-	alSourcei(this->backgroundMusicSource, AL_BUFFER, this->backgroundMusicBuffer);
-	printError("Source binding");
-
-	alSourcePlay(this->backgroundMusicSource);
-	printError("Playing");
-
-
-	return true;
 }
 
-bool SoundMgr::loadPlayerDamage(){
-	//WaveInfo *wave;
 
 
-	alGenSources((ALuint)1, &this->playerDamageSource);
-	printError("Cannot generate source with id 1");
-
-	alSourcef(this->playerDamageSource, AL_PITCH, 1);
-	printError("Source pitch");
-
-	alSourcef(this->playerDamageSource, AL_GAIN, 2);
-	printError("Source Gain");
-
-	alSource3f(this->playerDamageSource, AL_POSITION, 0, 0, 0);
-	printError("Source position");
-
-	alSource3f(this->playerDamageSource, AL_VELOCITY, 0, 0, 0);
-	printError("Source velocity");
-
-	alSourcei(this->playerDamageSource, AL_LOOPING, AL_FALSE);
-	printError("Source looping");
-
-	alGenBuffers(1, &this->playerDamageBuffer);
-	printError("Buffer generation");
-
-	std::string fqfn = getFQFNFromFilename(OgreSND::playerDamageFilename);
-	std::cout << "SoundManager backgroundMusic file: " << fqfn << " is being readied" << std::endl;
-	if(fqfn == "")
-		return false;
-
-	this->playerDamageInfo = WaveOpenFileForReading(fqfn.c_str());
-	if(!this->playerDamageInfo){
-		std::cerr << "ERROR: Cannot open wave file for reading" << std::endl;
-		return false;
-	}
-	int ret = WaveSeekFile(0, this->playerDamageInfo);
-	if (ret) {
-		std::cerr << "ERROR: Cannot seek" << std::endl;
-		return false;
-	}
-	char *tmpBuf = (char *) malloc(this->playerDamageInfo->dataSize);
-	//this->backgroundBufferData = (char *) malloc(this->playerDamageInfo->dataSize);
-	if(!tmpBuf){
-		std::cerr << "ERROR: in malloc" << std::endl;
-		return false;
-	}
-	ret = WaveReadFile(tmpBuf, this->playerDamageInfo->dataSize, this->playerDamageInfo);
-	if(ret != (int) this->playerDamageInfo->dataSize){
-		std::cerr << "ERROR: short read " << ret << " wanted: " << this->playerDamageInfo->dataSize << std::endl;
-		return false;
-	}
-	alBufferData(this->playerDamageBuffer,
-			toALFormat(this->playerDamageInfo->channels, this->playerDamageInfo->bitsPerSample),
-			tmpBuf, this->playerDamageInfo->dataSize, this->playerDamageInfo->sampleRate);
-	if(printError("Failed to load bufferData") < 0){
-		return false;
-	}
-
-	free(tmpBuf);
-
-	alSourcei(this->playerDamageSource, AL_BUFFER, this->playerDamageBuffer);
-	printError("Source binding");
-
-	alSourcePlay(this->playerDamageSource);
-	printError("Playing");
-
-
-	return true;
-}
-
-bool SoundMgr::loadSound(WaveInfo *Info, ALuint *sourcepoint, ALuint *bufferpoint, ALuint buffer, ALuint source, std::string filename){
-	//WaveInfo *wave;
-
-	alGenSources((ALuint)1, sourcepoint);
-	printError("Cannot generate source with id 1");
-
-	alSourcef(source, AL_PITCH, 1);
-	printError("Source pitch");
-
-	alSourcef(source, AL_GAIN, 2);
-	printError("Source Gain");
-
-	alSource3f(source, AL_POSITION, 0, 0, 0);
-	printError("Source position");
-
-	alSource3f(source, AL_VELOCITY, 0, 0, 0);
-	printError("Source velocity");
-
-	alSourcei(source, AL_LOOPING, AL_FALSE);
-	printError("Source looping");
-
-	alGenBuffers(1, bufferpoint);
-	printError("Buffer generation");
-
-	std::string fqfn = getFQFNFromFilename(filename); //soundmgr filename
-	std::cout << "SoundManager backgroundMusic file: " << fqfn << " is being readied" << std::endl;
-	if(fqfn == "")
-		return false;
-
-	this->playerDamageInfo = WaveOpenFileForReading(fqfn.c_str());
-	if(!this->playerDamageInfo){
-		std::cerr << "ERROR: Cannot open wave file for reading" << std::endl;
-		return false;
-	}
-	int ret = WaveSeekFile(0, Info);
-	if (ret) {
-		std::cerr << "ERROR: Cannot seek" << std::endl;
-		return false;
-	}
-	char *tmpBuf = (char *) malloc(Info->dataSize);
-	if(!tmpBuf){
-		std::cerr << "ERROR: in malloc" << std::endl;
-		return false;
-	}
-	ret = WaveReadFile(tmpBuf, Info->dataSize, Info);
-	if(ret != (int) Info->dataSize){
-		std::cerr << "ERROR: short read " << ret << " wanted: " << Info->dataSize << std::endl;
-		return false;
-	}
-	alBufferData(buffer,
-			toALFormat(Info->channels, Info->bitsPerSample),
-			tmpBuf, Info->dataSize, Info->sampleRate);
-	if(printError("Failed to load bufferData") < 0){
-		return false;
-	}
-
-	free(tmpBuf);
-
-	alSourcei(source, AL_BUFFER, buffer);
-	printError("Source binding");
-
-	alSourcePlay(source);
-	printError("Playing");
-
-
-	return true;
-}
 
 
 

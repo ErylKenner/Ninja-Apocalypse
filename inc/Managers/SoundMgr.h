@@ -18,6 +18,7 @@
 #include <OgreFrameListener.h>
 
 #include <Entity381.h>
+#include <SoundTypes.h>
 
 #include <wave.h>
 #include <al.h>
@@ -65,21 +66,19 @@ namespace OgreSND {
 		//Special treatment for background source and buffer
 		ALuint backgroundMusicBuffer, backgroundMusicSource;
         ALuint battleSoundSource, battleSoundBuffer; //gunshot sounds
-        ALuint playerDamageSource, playerDamageBuffer; //gunshot sounds
-		WaveInfo *backgroundWaveInfo, *battleWaveInfo, *playerDamageInfo;
+        ALuint playerDamageSource, playerDamageBuffer; //oof sounds
+        ALuint sourcetemp, buffertemp;
+		WaveInfo *backgroundWaveInfo, *battleWaveInfo, *playerDamageInfo, *waveTemp;
 		//unsigned int scvId;
                 //unsigned int soundDictionary[FastEcslent::NENTITYTYPES];
                 std::vector <std::string> sourceDictionary;
 
                 //First dimension holds types and inner one holds different sounds for that type
-                //int creationSoundsDictionary[FastEcslent::NENTITYTYPES][soundPerEnt];
                 int selectionSoundsDictionary[6][soundPerEnt];
-                //int battleSoundsDictionary[FastEcslent::NENTITYTYPES][soundPerEnt];
 
 		//other formats with time
 		std::string getFQFNFromFilename(std::string filename);
 		int getBufferId(std::string filename);
-		//int firstIndexNotInUse(bool inUse[], int size);
 		int getEmptySourceIndex();
 		bool resetSource(ALuint sid);
 
@@ -110,17 +109,12 @@ namespace OgreSND {
 		inline ALenum toALFormat(short channels, short samples);
 		void syncListenerToCamera();
                 void attachSelectedNodeToSoundIndex(Entity381* ent, unsigned int index);
-                //bool playEntityBornSound(FastEcslent::EntityType et, OgreGFX::GFXNode *gfxNode);
-                //bool playExplosionSound(FastEcslent::EntityType et, OgreGFX::GFXNode *gfxNode);
-                //bool playExplosionSound(OgreGFX::GFXNode *gfxNode);
                 bool playSelectionSound(Entity381 et);
 
 		//specific for sound managers everywhere
 		bool loadAudio(std::string filename, int sid);
-		//bool loadAndBindAudio(std::string filename, bool loop, ALuint &audioId); //return +ive audioId or -ive error code
 		bool loadStartBackground();
 		bool loadStartGunshot();
-		bool loadSound(WaveInfo *Info, ALuint *sourcepoint, ALuint *bufferpoint, ALuint buffer, ALuint source, std::string filename);
 		bool loadPlayerDamage();
 		bool stopBackground();
 		bool pauseBackground();
@@ -128,8 +122,6 @@ namespace OgreSND {
 
 		//bool registerCreate(FastEcslent::EntityType et, std::string filename);
                 bool registerSelection(Entity381 et, std::string filename);
-                //bool registerBattleSound(FastEcslent::EntityType et, std::string filename);
-                //bool isEntityShip(FastEcslent::EntityType et);
                 bool initActionSounds(Entity381* et);
 
 		bool reserveAudio(std::string filename, bool loop, unsigned int &alSourceInfoIndex);
@@ -168,8 +160,8 @@ namespace OgreSND {
 
         bool setListenerDisposition( Ogre::Vector3 position, Ogre::Vector3 velocity, Ogre::Quaternion orientation );
 
-        void playGunshot();
-        void playPlayerDamage();
+        bool loadAllSounds(std::string sound_type, std::string filename);
+        void playSelectedSound(SoundTypes sound_type);
 
 	};
 

@@ -10,6 +10,7 @@
 "${workspace_loc:/${ProjName}/inc/Weapons}"
 /usr/include/audio
 /usr/include/AL
+${workspace_loc:/${ProjName}/Sounds}
 
 #Libraries
 OgreMain
