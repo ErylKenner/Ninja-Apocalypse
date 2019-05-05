@@ -49,6 +49,7 @@ PotentialField::~PotentialField(){
 }
 
 Ogre::Vector2 PotentialField::NodeInfluence(Ogre::Vector2 pos){
+    const int radiusThreshold = 200;
     Ogre::Vector2 ret = Ogre::Vector2::ZERO;
     AiMgr *ai = entity381->engine->aiMgr;
 
@@ -68,7 +69,7 @@ Ogre::Vector2 PotentialField::NodeInfluence(Ogre::Vector2 pos){
         double e_rep = PotentialField::e_Enemy_Target_repulsion;
         double c_attr = PotentialField::c_Enemy_Target_attraction;
         double e_attr = PotentialField::e_Enemy_Target_attraction;
-        if(closestNodeDistance > 100 && lastVisitedNode != closestNode){
+        if(closestNodeDistance > radiusThreshold && lastVisitedNode != closestNode){
             //Go to closestNode
             const double attr = c_attr * Ogre::Math::Pow(closestNodeDistance, e_attr);
             const double rep = c_rep * Ogre::Math::Pow(closestNodeDistance, e_rep);
