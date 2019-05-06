@@ -17,10 +17,6 @@ CircleCollider::CircleCollider(Entity381 *entity, int rad) :
         radius(rad){
 }
 
-CircleCollider::~CircleCollider(){
-
-}
-
 bool CircleCollider::IsColliding(Collider *other) const{
     CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
     if(castToCircle != NULL){
@@ -88,40 +84,21 @@ WeaponCollider::WeaponCollider(Entity381 *entity, int rad) :
         std::cerr << "Throwable not attached to a Weapon!" << std::endl;
     }
 }
-WeaponCollider::~WeaponCollider(){
-
-}
 
 void WeaponCollider::OnCollision(Collider *other) const{
     CircleCollider::OnCollision(other);
 
     PlayerMovableCircleCollider * castToPlayer =
             dynamic_cast<PlayerMovableCircleCollider *>(other);
-
-    if(!throwable->Thrown){
-
-        if(castToPlayer != NULL){
-            WeaponHolder * holder = castToPlayer->entity381->GetAspect<WeaponHolder>();
-            if(holder != NULL){
-                if(holder->heldWeapon == NULL){
-                    holder->SetWeapon(attachedWeapon);
-                }
-            } else{
-                std::cerr << "Player does not have a WeaponHolder Aspect!" << std::endl;
+    if(!throwable->Thrown && castToPlayer != NULL){
+        WeaponHolder *holder = castToPlayer->entity381->GetAspect<WeaponHolder>();
+        if(holder != NULL){
+            if(holder->heldWeapon == NULL){
+                holder->SetWeapon(attachedWeapon);
             }
+        } else{
+            std::cerr << "Player does not have a WeaponHolder Aspect!" << std::endl;
         }
-    } else if(!other->IsTrigger && castToPlayer == NULL){
-        EnemyMovableCircleCollider * castToEnemy =
-                dynamic_cast<EnemyMovableCircleCollider *>(other);
-        if(castToEnemy != NULL){
-            //Health * enemyHealth = castToEnemy->entity381->GetAspect<Health>();
-            Enemy * enemy = static_cast<Enemy *>(castToEnemy->entity381);
-            enemy->OnDeath();
-        }
-
-        entity381->position = Ogre::Vector3(0, 0, 25e6);
-        entity381->GetAspect<Throwable>()->Thrown = false;
-
     }
 }
 
@@ -129,10 +106,6 @@ void WeaponCollider::OnCollision(Collider *other) const{
 
 MovableCircleCollider::MovableCircleCollider(Entity381 *entity, int rad) :
         CircleCollider(entity, rad){
-}
-
-MovableCircleCollider::~MovableCircleCollider(){
-
 }
 
 void MovableCircleCollider::OnCollision(Collider *other) const{
@@ -173,10 +146,6 @@ PlayerMovableCircleCollider::PlayerMovableCircleCollider(Entity381 *entity, int 
         MovableCircleCollider(entity, rad){
 }
 
-PlayerMovableCircleCollider::~PlayerMovableCircleCollider(){
-
-}
-
 void PlayerMovableCircleCollider::OnCollision(Collider *other) const{
 
     EnemyMovableCircleCollider *castToEnemy =
@@ -200,16 +169,26 @@ EnemyMovableCircleCollider::EnemyMovableCircleCollider(Entity381 *entity, int ra
         MovableCircleCollider(entity, rad){
 }
 
-EnemyMovableCircleCollider::~EnemyMovableCircleCollider(){
-
-}
-
 void EnemyMovableCircleCollider::OnCollision(Collider *other) const{
     RectangleBorderCollider *castToBorder = dynamic_cast<RectangleBorderCollider *>(other);
     EnemyMovableCircleCollider *castToEnemy =
             dynamic_cast<EnemyMovableCircleCollider *>(other);
     if(castToBorder == NULL && castToEnemy == NULL){
         MovableCircleCollider::OnCollision(other);
+    }
+
+    WeaponCollider *castToWeapon = dynamic_cast<WeaponCollider *>(other);
+    if(castToWeapon != NULL){
+        Throwable *throwable = castToWeapon->entity381->GetAspect<Throwable>();
+        if(throwable != NULL && throwable->Thrown){
+            Enemy * enemy = static_cast<Enemy *>(entity381);
+            if(!enemy->GetAspect<Health>()->TakeDamage(
+                    castToWeapon->attachedWeapon->ThrownDamageAmount)){
+                enemy->OnDeath();
+            }
+            castToWeapon->entity381->position = Ogre::Vector3(0, 0, 25e6);
+            castToWeapon->entity381->GetAspect<Throwable>()->Thrown = false;
+        }
     }
 }
 

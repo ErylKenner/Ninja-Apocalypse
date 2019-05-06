@@ -16,7 +16,7 @@ class Ray;
 class Collider : public Aspect{
 public:
     Collider(Entity381 *entity);
-    ~Collider();
+    virtual ~Collider();
     void Tick(float dt);
 
     virtual bool IsColliding(Collider *other) const = 0;

@@ -26,7 +26,8 @@ Collider* Ray::GetClosestIntersectedCollider(float *dist) const{
     float closestDist = Ogre::Math::POS_INFINITY;
     for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
         Collider *cur = Collider::colliders[i];
-        if(!cur->IsTrigger && dynamic_cast<PlayerMovableCircleCollider *>(cur) == NULL){
+        if(cur != NULL && !cur->IsTrigger
+                && dynamic_cast<PlayerMovableCircleCollider *>(cur) == NULL){
             float dist = Ogre::Math::POS_INFINITY;
             bool collided = cur->GetClosestPoint(*this, &dist);
             if(collided && dist < closestDist){

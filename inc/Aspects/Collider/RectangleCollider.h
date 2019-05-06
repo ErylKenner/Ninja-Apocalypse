@@ -11,7 +11,6 @@
 class RectangleCollider : public Collider{
 public:
     RectangleCollider(Entity381 *entity, int w, int l);
-    ~RectangleCollider();
 
     virtual void OnCollision(Collider *other) const;
     virtual bool IsColliding(Collider *other) const;
@@ -43,7 +42,6 @@ private:
 class RectangleBorderCollider : public RectangleCollider{
 public:
     RectangleBorderCollider(Entity381 *entity, int w, int l);
-    ~RectangleBorderCollider();
 
     virtual void OnCollision(Collider *other) const;
 private:

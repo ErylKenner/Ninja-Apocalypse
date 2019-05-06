@@ -14,10 +14,6 @@ RectangleCollider::RectangleCollider(Entity381 *entity, int w, int l) :
         length(l){
 }
 
-RectangleCollider::~RectangleCollider(){
-
-}
-
 void RectangleCollider::OnCollision(Collider *other) const{
 }
 
@@ -231,10 +227,6 @@ bool RectangleCollider::Contains(Ogre::Vector3 centerPoint) const{
 
 RectangleBorderCollider::RectangleBorderCollider(Entity381 *entity, int w, int l) :
         RectangleCollider(entity, w, l){
-
-}
-
-RectangleBorderCollider::~RectangleBorderCollider(){
 
 }
 
