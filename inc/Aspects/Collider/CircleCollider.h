@@ -13,7 +13,6 @@
 class CircleCollider : public Collider{
 public:
     CircleCollider(Entity381 *entity, int rad);
-    ~CircleCollider();
 
     virtual void OnCollision(Collider *other) const;
     virtual bool IsColliding(Collider *other) const;
@@ -29,7 +28,6 @@ private:
 class WeaponCollider : public CircleCollider{
 public:
     WeaponCollider(Entity381 *entity, int rad);
-    ~WeaponCollider();
 
     virtual void OnCollision(Collider *other) const;
 
@@ -40,7 +38,6 @@ public:
 class MovableCircleCollider : public CircleCollider{
 public:
     MovableCircleCollider(Entity381 *entity, int rad);
-    ~MovableCircleCollider();
 
     virtual void OnCollision(Collider *other) const;
 };
@@ -48,7 +45,6 @@ public:
 class PlayerMovableCircleCollider : public MovableCircleCollider{
 public:
     PlayerMovableCircleCollider(Entity381 *entity, int rad);
-    ~PlayerMovableCircleCollider();
 
     virtual void OnCollision(Collider *other) const;
 };
@@ -56,7 +52,6 @@ public:
 class EnemyMovableCircleCollider : public MovableCircleCollider{
 public:
     EnemyMovableCircleCollider(Entity381 *entity, int rad);
-    ~EnemyMovableCircleCollider();
 
     virtual void OnCollision(Collider *other) const;
 };

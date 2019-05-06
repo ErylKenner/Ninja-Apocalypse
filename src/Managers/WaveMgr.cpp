@@ -63,8 +63,8 @@ void WaveMgr::SpawnEnemy(){
     bool continueTrying;
     do{
         // Figures out where to spawn the enemy
-        int deltaX = deltaValue(500, 500);
-        int deltaZ = deltaValue(500, 500);
+        int deltaX = deltaValue(800, 500);
+        int deltaZ = deltaValue(800, 500);
         spawnPosition = engine->gameMgr->MainPlayer->position;
         spawnPosition.x += deltaX;
         spawnPosition.z += deltaZ;
@@ -73,17 +73,26 @@ void WaveMgr::SpawnEnemy(){
                 || spawnPosition.z >= 0.5 * engine->gameMgr->mapHeight
                 || spawnPosition.z <= -0.5 * engine->gameMgr->mapHeight;
         for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
-            if(Collider::colliders[i]->Contains(spawnPosition)){
+            if(Collider::colliders[i] != NULL
+                    && Collider::colliders[i]->Contains(spawnPosition)){
                 continueTrying = true;
                 break;
             }
         }
     } while(continueTrying);
 
-    Enemy * newEnemy = static_cast<Enemy *>(engine->entityMgr->CreateEntity(
-            EntityType::EnemyType, spawnPosition));
-    // Adds it to spawned enemy list
-    spawnedEnemyList.push_back(newEnemy);
+    if(deadList.empty()){
+        Enemy * newEnemy = static_cast<Enemy *>(engine->entityMgr->CreateEntity(
+                EntityType::EnemyType, spawnPosition));
+        // Adds it to spawned enemy list
+        spawnedEnemyList.push_back(newEnemy);
+    } else{
+        Enemy *newEnemy = deadList.back();
+        deadList.pop_back();
+        newEnemy->position = spawnPosition;
+        newEnemy->InitAspects();
+        spawnedEnemyList.push_back(newEnemy);
+    }
 }
 void WaveMgr::OnEnemyKilled(Enemy * enemy){
     // Decrements enemiesRemaining
@@ -91,6 +100,7 @@ void WaveMgr::OnEnemyKilled(Enemy * enemy){
             != spawnedEnemyList.end()){
         spawnedEnemyList.erase(
                 std::remove(spawnedEnemyList.begin(), spawnedEnemyList.end(), enemy));
+        deadList.push_back(enemy);
         enemiesRemaining--;
         // Checks if <= 0, and decides to start the next wave
         if(enemiesRemaining <= 0){

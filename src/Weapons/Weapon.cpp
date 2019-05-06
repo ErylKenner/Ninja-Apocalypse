@@ -11,11 +11,12 @@
 #include "Throwable.h"
 
 Weapon::Weapon(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos,
-               Engine * eng, float useRate, int damageAmount) :
+               Engine * eng, float useRate, int damageAmount, int thrownDamageAmount) :
         Entity381(id, meshName, pos, eng),
         UseRate(useRate),
         DamageAmount(damageAmount),
-        spawnedFrom(0){
+        spawnedFrom(0),
+        ThrownDamageAmount(thrownDamageAmount){
     scale = _scale / 100.0f;
     aspects.push_back(new Throwable(this, 600));
     aspects.push_back(new WeaponCollider(this, 25));
