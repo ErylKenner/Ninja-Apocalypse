@@ -39,14 +39,12 @@ public:
     virtual void OnCollision(Collider *other) const;
 };
 
-/*
- class BodyBossCollider : public BossCircleCollider{
- public:
- BodyBossCollider(Entity381 *entity, int r);
- ~BodyBossCollider();
+class BossWeakpointCircleCollider : public BossCircleCollider{
+public:
+    BossWeakpointCircleCollider(Entity381 *entity, Boss * boss, int r, float mult);
+    ~BossWeakpointCircleCollider();
 
- virtual void OnCollision(Collider *other) const;
- };
- */
+    float damageMultiplier;
+};
 
 #endif /* INC_ASPECTS_COLLIDER_BOSSCOLLIDER_H_ */

@@ -11,7 +11,9 @@
 #include "Aspect.h"
 #include "OgreSceneNode.h"
 
-enum ParameterMode { None, Helicopter, Clap };
+enum ParameterMode{
+    None, Helicopter, Clap
+};
 
 class FirstBossLimbs : public Aspect{
 public:
@@ -23,6 +25,10 @@ public:
     ParameterMode mode;
     bool repeat;
     float armMovementSpeed;
+
+    float param = 0;
+    ParameterMode nextMode = None;
+    bool limbAnimEnabled = false;
 
     void SetParameterMode(ParameterMode _mode);
     void SetNextParameterMode(ParameterMode _nextMode);
@@ -41,20 +47,19 @@ private:
     const int limbForward = 125;
     const int limbSides = 125;
 
-    const int limbAngle = 60;
+    const int limbAngle = -16;
 
     const int limbDamageAmount = 5;
 
     const int weakPointRadius = 20;
     const int weakPointForward = 105;
 
+    const float weakPointDamageMultiplier = 2;
+
     float GetLimbAngle(float t, float zeroAngle);
     Ogre::Vector3 GetLimbPosition(float angle, Ogre::Vector2 center);
     float ComputeClapParam(float param, float clapAmount);
 
-    float param = 0;
-    ParameterMode nextMode = None;
-    bool limbAnimEnabled = false;
 };
 
 #endif /* INC_ASPECTS_FIRSTBOSSLIMBS_H_ */

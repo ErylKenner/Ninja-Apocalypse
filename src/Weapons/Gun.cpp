@@ -57,8 +57,14 @@ void Gun::Use(){
             BossRectangleCollider * bossRectCol = dynamic_cast<BossRectangleCollider *>(closest);
             if(bossCircleCol != NULL || bossRectCol != NULL) {
                 Boss * boss;
+                float multiplier = 1;
                 if(bossCircleCol != NULL) {
                     boss = bossCircleCol->bossEntity;
+                    BossWeakpointCircleCollider * weakPoint = dynamic_cast<BossWeakpointCircleCollider *>(bossCircleCol);
+                    if(weakPoint != NULL) {
+                        multiplier = weakPoint->damageMultiplier;
+                    }
+
                 }
 
                 if(bossRectCol != NULL) {
@@ -66,7 +72,7 @@ void Gun::Use(){
                 }
 
                 // TODO: Add BossWeakPointCollider and multiply the damageAmount by the multiple member
-                boss->GetAspect<Health>()->TakeDamage(DamageAmount);
+                boss->GetAspect<Health>()->TakeDamage(multiplier * DamageAmount);
                 //std::cout << "Damaged boss!" << std::endl;
             }
         }

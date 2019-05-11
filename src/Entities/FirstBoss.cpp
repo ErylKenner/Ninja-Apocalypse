@@ -12,17 +12,19 @@
 #include "Entity381.h"
 #include "FirstBossLimbs.h"
 #include "BossCollider.h"
+#include "BossAI.h"
 
 FirstBoss::FirstBoss(int id, Ogre::Vector3 pos, Engine * eng) :
         Boss(id, "sphere.mesh", Ogre::Vector3(1, 0.8, 1.3), // scale
-        pos, "Googalog", 1000, // Health
-                50, 45, 300, // OrientedPhysics values
+        pos, "Googalog", 5000, // Health
+                500, 45, 1000, // OrientedPhysics values
                 eng){
     ogreEntity->setMaterialName("Stone");
-    GetAspect<UnitAI>()->SetCommand(new Intercept(this, eng->gameMgr->MainPlayer));
+    //GetAspect<UnitAI>()->SetCommand(new Intercept(this, eng->gameMgr->MainPlayer));
 
     aspects.push_back(new BossCircleCollider(this, this, scale.x * 100));
     aspects.push_back(new FirstBossLimbs(this));
+    aspects.push_back(new BossAI(this, engine->gameMgr->MainPlayer));
 
 }
 FirstBoss::~FirstBoss(){

@@ -60,6 +60,17 @@ FirstBossLimbs::FirstBossLimbs(Entity381 * entity) :
 
     weakPoint->position = Ogre::Vector3(weakPointForward, 0, 0);
 
+    // replace default weakPoint Collider with WeakPointCollider
+    Collider * defaultWeakCol = weakPoint->GetAspect<Collider>();
+    weakPoint->aspects.erase(
+            std::remove(weakPoint->aspects.begin(), weakPoint->aspects.end(),
+                    defaultWeakCol));
+    delete defaultWeakCol;
+    defaultWeakCol = NULL;
+    weakPoint->aspects.push_back(
+            new BossWeakpointCircleCollider(weakPoint, static_cast<Boss*>(entity381),
+                    weakPointRadius, weakPointDamageMultiplier));
+
 }
 FirstBossLimbs::~FirstBossLimbs(){
 
@@ -174,9 +185,9 @@ Ogre::Vector3 FirstBossLimbs::GetLimbPosition(float angle, Ogre::Vector2 center)
 
 float FirstBossLimbs::ComputeClapParam(float param, float clapAmount){
     if(param < 0.5){
-        return 2 * clapAmount * param;
+        return 1 - 2 * clapAmount * param;
     } else{
-        return 2 * clapAmount - 2 * clapAmount * param;
+        return 2 * clapAmount * param - 2 * clapAmount + 1;
     }
 }
 
