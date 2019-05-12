@@ -39,9 +39,10 @@ void WaveMgr::Tick(float dt){
         timeSinceLastSpawn = 0;
         // SpawnEnemy
         SpawnEnemy();
+        std::cout << "# of spawned enemies: " << spawnedEnemyList.size() << std::endl;
     }
     /*std::cout << " # enemies: " << spawnedEnemyList.size() << ", fps: " << (int)(1 / dt)
-            << std::endl;*/
+     << std::endl;*/
 }
 void WaveMgr::LoadLevel(){
 }
@@ -58,32 +59,54 @@ int WaveMgr::deltaValue(int minimum, int radius){
 }
 
 void WaveMgr::SpawnEnemy(){
-    // Figures out where to spawn the enemy
-    int deltaX = deltaValue(500, 500);
-    int deltaZ = deltaValue(500, 500);
-    //std::cout << deltaX << ", " << deltaZ << std::endl;
-    // Spawns enemy
-    Ogre::Vector3 spawnPosition = engine->gameMgr->MainPlayer->position;
-    spawnPosition.x += deltaX;
-    spawnPosition.z += deltaZ;
-    Enemy * newEnemy =
-            static_cast<Enemy *>(engine->entityMgr->CreateEntityOfTypeAtPosition(
-                    EntityType::EnemyType, spawnPosition));
-    // Adds it to spawned enemy list
-    spawnedEnemyList.push_back(newEnemy);
+    Ogre::Vector3 spawnPosition;
+    bool continueTrying;
+    do{
+        // Figures out where to spawn the enemy
+        int deltaX = deltaValue(800, 500);
+        int deltaZ = deltaValue(800, 500);
+        spawnPosition = engine->gameMgr->MainPlayer->position;
+        spawnPosition.x += deltaX;
+        spawnPosition.z += deltaZ;
+        continueTrying = spawnPosition.x >= 0.5 * engine->gameMgr->mapWidth
+                || spawnPosition.x <= -0.5 * engine->gameMgr->mapWidth
+                || spawnPosition.z >= 0.5 * engine->gameMgr->mapHeight
+                || spawnPosition.z <= -0.5 * engine->gameMgr->mapHeight;
+        for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
+            if(Collider::colliders[i] != NULL
+                    && Collider::colliders[i]->Contains(spawnPosition)){
+                continueTrying = true;
+                break;
+            }
+        }
+    } while(continueTrying);
+
+    if(deadList.empty()){
+        Enemy * newEnemy = static_cast<Enemy *>(engine->entityMgr->CreateEntity(
+                EntityType::EnemyType, spawnPosition));
+        // Adds it to spawned enemy list
+        spawnedEnemyList.push_back(newEnemy);
+    } else{
+        Enemy *newEnemy = deadList.back();
+        deadList.pop_back();
+        newEnemy->position = spawnPosition;
+        newEnemy->InitAspects();
+        spawnedEnemyList.push_back(newEnemy);
+    }
 }
 void WaveMgr::OnEnemyKilled(Enemy * enemy){
     // Decrements enemiesRemaining
-    if(std::find(spawnedEnemyList.begin(), spawnedEnemyList.end(), enemy) != spawnedEnemyList.end()) {
+    if(std::find(spawnedEnemyList.begin(), spawnedEnemyList.end(), enemy)
+            != spawnedEnemyList.end()){
         spawnedEnemyList.erase(
-                    std::remove(spawnedEnemyList.begin(), spawnedEnemyList.end(), enemy));
-            enemiesRemaining--;
-            // Checks if <= 0, and decides to start the next wave
-            if(enemiesRemaining <= 0){
-                NextWave();
-            }
+                std::remove(spawnedEnemyList.begin(), spawnedEnemyList.end(), enemy));
+        deadList.push_back(enemy);
+        enemiesRemaining--;
+        // Checks if <= 0, and decides to start the next wave
+        if(enemiesRemaining <= 0){
+            NextWave();
+        }
     }
-
 
 }
 void WaveMgr::NextWave(){

@@ -40,6 +40,7 @@ private:
     float timeSinceLastSpawn;
 
     int deltaValue(int minimum, int radius);
+    std::vector<Enemy *> deadList;
 };
 
 #endif /* INC_MANAGERS_WAVEMGR_H_ */

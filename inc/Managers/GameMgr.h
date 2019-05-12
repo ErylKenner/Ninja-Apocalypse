@@ -29,18 +29,19 @@ public:
     Boss * LevelBoss;
 
     void DrawLine(Ogre::Vector3 start, Ogre::Vector3 end);
+    void ResetLevel();
+
+    const float mapWidth = 5000;
+    const float mapHeight = 2500;
 protected:
 private:
     void LoadLevelOne();
-
 
     Ogre::ManualObject* line;
     Ogre::SceneNode* lineNode;
     float timer = 0;
     float lineVisibleTime = 0.1;
 
-    const float mapWidth = 5000;
-    const float mapHeight = 2500;
     const float borderWallThickness = 200;
 };
 

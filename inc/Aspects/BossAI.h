@@ -9,7 +9,7 @@
 #define INC_ASPECTS_BOSSAI_H_
 
 #include "Aspect.h"
-#include "OrientedPhysics3D.h"
+#include "OrientedPhysics.h"
 #include "FirstBossLimbs.h"
 
 enum BossState {Track, ClapA, ClapB, ClapC, HeliA, HeliB, HeliC};
@@ -22,7 +22,7 @@ public:
 
     Entity381 * player;
     BossState currentState;
-    OrientedPhysics3D * bossPhysics;
+    OrientedPhysics * bossPhysics;
     FirstBossLimbs * bossLimbs;
 
     int weakPointHits;

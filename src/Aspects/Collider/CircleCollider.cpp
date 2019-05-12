@@ -18,10 +18,6 @@ CircleCollider::CircleCollider(Entity381 *entity, int rad) :
         radius(rad){
 }
 
-CircleCollider::~CircleCollider(){
-
-}
-
 bool CircleCollider::IsColliding(Collider *other) const{
     CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
     if(castToCircle != NULL){
@@ -42,35 +38,48 @@ bool CircleCollider::IsColliding(Collider *other) const{
     return false;
 }
 
-bool CircleCollider::GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const{
+bool CircleCollider::GetClosestPoint(const Ray ray, float *dist) const{
     const Ogre::Vector3 globalPosition =
             entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
                     entity381->position);
-    const Ogre::Vector2 circlePos = Ogre::Vector2(globalPosition.x, globalPosition.z);
-    const Ogre::Vector2 diff = circlePos - ray.origin;
-    const Ogre::Vector2 projection = (diff.dotProduct(ray.directionVector)
-            / ray.directionVector.squaredLength()) * ray.directionVector;
-    if(circlePos.squaredDistance(ray.origin + projection) <= radius * radius){
-        if(pos != NULL){
-            //*pos = Ogre::Vector2(entity381->position.x, entity381->position.z);
-            Ogre::Vector3 pos3D = GetClosestPoint(
-                    Ogre::Vector3(ray.origin.x, 0, ray.origin.y));
-            *pos = Ogre::Vector2(pos3D.x, pos3D.z);
+    const Ogre::Vector2 diff = Ogre::Vector2(globalPosition.x, globalPosition.z)
+            - ray.origin;
+    const double a = ray.directionVector.squaredLength();
+    const double b = 2 * (ray.directionVector).dotProduct(diff);
+    const double c = diff.squaredLength() - radius * radius;
+    double discriminant = b * b - 4 * a * c;
+
+    if(discriminant >= 0){
+        if(dist != NULL){
+            double t = (2 * c) / (b + Ogre::Math::Sqrt(discriminant));
+            if(t >= 0){
+                *dist = t * Ogre::Math::Sqrt(a);
+                return true;
+            }
         }
-        return true;
-    } else{
-        pos = NULL;
-        return false;
     }
+    if(dist != NULL){
+        *dist = Ogre::Math::POS_INFINITY;
+    }
+    return false;
 }
 
 Ogre::Vector3 CircleCollider::GetClosestPoint(Ogre::Vector3 point) const{
     const Ogre::Vector3 globalPosition =
             entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
                     entity381->position);
-    const Ogre::Vector3 offset =
-            (point - Ogre::Vector3(globalPosition.x, point.y, globalPosition.z)).normalisedCopy();
-    return globalPosition + radius * offset;
+    const Ogre::Vector3 offset = point
+            - Ogre::Vector3(globalPosition.x, point.y, globalPosition.z);
+    return globalPosition + radius * offset.normalisedCopy();
+}
+
+bool CircleCollider::Contains(Ogre::Vector3 centerPoint) const{
+    const Ogre::Vector3 globalPosition =
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
+                    entity381->position);
+    Ogre::Vector2 diff = Ogre::Vector2(centerPoint.x - globalPosition.x,
+            centerPoint.z - globalPosition.z);
+    return diff.squaredLength() <= radius * radius;
 }
 
 void CircleCollider::OnCollision(Collider *other) const{
@@ -89,40 +98,21 @@ WeaponCollider::WeaponCollider(Entity381 *entity, int rad) :
         std::cerr << "Throwable not attached to a Weapon!" << std::endl;
     }
 }
-WeaponCollider::~WeaponCollider(){
-
-}
 
 void WeaponCollider::OnCollision(Collider *other) const{
     CircleCollider::OnCollision(other);
 
     PlayerMovableCircleCollider * castToPlayer =
             dynamic_cast<PlayerMovableCircleCollider *>(other);
-
-    if(!throwable->Thrown){
-
-        if(castToPlayer != NULL){
-            WeaponHolder * holder = castToPlayer->entity381->GetAspect<WeaponHolder>();
-            if(holder != NULL){
-                if(holder->heldWeapon == NULL){
-                    holder->SetWeapon(attachedWeapon);
-                }
-            } else{
-                std::cerr << "Player does not have a WeaponHolder Aspect!" << std::endl;
+    if(!throwable->Thrown && castToPlayer != NULL){
+        WeaponHolder *holder = castToPlayer->entity381->GetAspect<WeaponHolder>();
+        if(holder != NULL){
+            if(holder->heldWeapon == NULL){
+                holder->SetWeapon(attachedWeapon);
             }
+        } else{
+            std::cerr << "Player does not have a WeaponHolder Aspect!" << std::endl;
         }
-    } else if(!other->IsTrigger && castToPlayer == NULL){
-        EnemyMovableCircleCollider * castToEnemy =
-                dynamic_cast<EnemyMovableCircleCollider *>(other);
-        if(castToEnemy != NULL){
-            //Health * enemyHealth = castToEnemy->entity381->GetAspect<Health>();
-            Enemy * enemy = static_cast<Enemy *>(castToEnemy->entity381);
-            enemy->OnDeath();
-        }
-
-        entity381->position = Ogre::Vector3(0, 0, 25e6);
-        entity381->GetAspect<Throwable>()->Thrown = false;
-
     }
 }
 
@@ -130,10 +120,6 @@ void WeaponCollider::OnCollision(Collider *other) const{
 
 MovableCircleCollider::MovableCircleCollider(Entity381 *entity, int rad) :
         CircleCollider(entity, rad){
-}
-
-MovableCircleCollider::~MovableCircleCollider(){
-
 }
 
 void MovableCircleCollider::OnCollision(Collider *other) const{
@@ -149,9 +135,16 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
                             - castToCircle->entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
                                     castToCircle->entity381->position);
             diff.y = 0;
-            entity381->position +=
-                    entity381->ogreSceneNode->getParent()->convertWorldToLocalPosition(
-                            ((radius + castToCircle->radius) / diff.length() - 1) * diff);
+            const float dist = diff.length();
+            if(dist <= 0.0001){
+                entity381->position +=
+                        entity381->ogreSceneNode->getParent()->convertWorldToLocalPosition(
+                                Ogre::Vector3(0, 0, radius + castToCircle->radius));
+            } else{
+                entity381->position +=
+                        entity381->ogreSceneNode->getParent()->convertWorldToLocalPosition(
+                                ((radius + castToCircle->radius) / dist - 1) * diff);
+            }
         }
 
         RectangleCollider *castToRect = dynamic_cast<RectangleCollider *>(other);
@@ -159,14 +152,15 @@ void MovableCircleCollider::OnCollision(Collider *other) const{
             Ogre::Vector3 diff = globalPosition
                     - castToRect->GetClosestPoint(globalPosition);
             diff.y = 0;
-            if(castToRect->PointInRectangle(globalPosition)){
+            const float dist = diff.length();
+            if(castToRect->Contains(globalPosition)){
                 entity381->position -=
                         entity381->ogreSceneNode->getParent()->convertWorldToLocalPosition(
                                 diff);
-            } else{
+            } else if(dist >= 0.0001){
                 entity381->position +=
                         entity381->ogreSceneNode->getParent()->convertWorldToLocalPosition(
-                                (radius / diff.length() - 1) * diff);
+                                (radius / dist - 1) * diff);
             }
         }
     }
@@ -179,16 +173,13 @@ PlayerMovableCircleCollider::PlayerMovableCircleCollider(Entity381 *entity, int 
         MovableCircleCollider(entity, rad){
 }
 
-PlayerMovableCircleCollider::~PlayerMovableCircleCollider(){
-
-}
-
 void PlayerMovableCircleCollider::OnCollision(Collider *other) const{
-    MovableCircleCollider::OnCollision(other);
 
     EnemyMovableCircleCollider *castToEnemy =
             dynamic_cast<EnemyMovableCircleCollider *>(other);
-    if(castToEnemy != NULL){
+    if(castToEnemy == NULL){
+        MovableCircleCollider::OnCollision(other);
+    } else{
         Player *player = dynamic_cast<Player *>(entity381);
         Enemy *enemy = dynamic_cast<Enemy *>(other->entity381);
         if(player != NULL && enemy != NULL){
@@ -214,16 +205,26 @@ EnemyMovableCircleCollider::EnemyMovableCircleCollider(Entity381 *entity, int ra
         MovableCircleCollider(entity, rad){
 }
 
-EnemyMovableCircleCollider::~EnemyMovableCircleCollider(){
-
-}
-
 void EnemyMovableCircleCollider::OnCollision(Collider *other) const{
     RectangleBorderCollider *castToBorder = dynamic_cast<RectangleBorderCollider *>(other);
-    if(castToBorder != NULL){
-
-    } else{
+    EnemyMovableCircleCollider *castToEnemy =
+            dynamic_cast<EnemyMovableCircleCollider *>(other);
+    if(castToBorder == NULL && castToEnemy == NULL){
         MovableCircleCollider::OnCollision(other);
+    }
+
+    WeaponCollider *castToWeapon = dynamic_cast<WeaponCollider *>(other);
+    if(castToWeapon != NULL){
+        Throwable *throwable = castToWeapon->entity381->GetAspect<Throwable>();
+        if(throwable != NULL && throwable->Thrown){
+            Enemy * enemy = static_cast<Enemy *>(entity381);
+            if(!enemy->GetAspect<Health>()->TakeDamage(
+                    castToWeapon->attachedWeapon->ThrownDamageAmount)){
+                enemy->OnDeath();
+            }
+            castToWeapon->entity381->position = Ogre::Vector3(0, 0, 25e6);
+            castToWeapon->entity381->GetAspect<Throwable>()->Thrown = false;
+        }
     }
 }
 

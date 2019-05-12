@@ -13,12 +13,12 @@
 class CircleCollider : public Collider{
 public:
     CircleCollider(Entity381 *entity, int rad);
-    ~CircleCollider();
 
     virtual void OnCollision(Collider *other) const;
     virtual bool IsColliding(Collider *other) const;
-    virtual bool GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const;
+    virtual bool GetClosestPoint(const Ray ray, float *dist) const;
     virtual Ogre::Vector3 GetClosestPoint(Ogre::Vector3 point) const;
+    virtual bool Contains(Ogre::Vector3 centerPoint) const;
 
     int radius;
 protected:
@@ -28,7 +28,6 @@ private:
 class WeaponCollider : public CircleCollider{
 public:
     WeaponCollider(Entity381 *entity, int rad);
-    ~WeaponCollider();
 
     virtual void OnCollision(Collider *other) const;
 
@@ -39,7 +38,6 @@ public:
 class MovableCircleCollider : public CircleCollider{
 public:
     MovableCircleCollider(Entity381 *entity, int rad);
-    ~MovableCircleCollider();
 
     virtual void OnCollision(Collider *other) const;
 };
@@ -47,7 +45,6 @@ public:
 class PlayerMovableCircleCollider : public MovableCircleCollider{
 public:
     PlayerMovableCircleCollider(Entity381 *entity, int rad);
-    ~PlayerMovableCircleCollider();
 
     virtual void OnCollision(Collider *other) const;
 };
@@ -55,7 +52,6 @@ public:
 class EnemyMovableCircleCollider : public MovableCircleCollider{
 public:
     EnemyMovableCircleCollider(Entity381 *entity, int rad);
-    ~EnemyMovableCircleCollider();
 
     virtual void OnCollision(Collider *other) const;
 };

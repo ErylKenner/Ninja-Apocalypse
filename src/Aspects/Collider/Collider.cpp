@@ -14,13 +14,26 @@ Collider::Collider(Entity381 *entity) :
 }
 
 Collider::~Collider(){
-    colliders.erase(std::remove(colliders.begin(), colliders.end(), this));
+    auto it = std::find(colliders.begin(), colliders.end(), this);
+    if(it != colliders.end()){
+        colliders[std::distance(colliders.begin(), it)] = NULL;
+    }
+    std::cout << "Collider removed" << std::endl;
 }
 
 void Collider::Tick(float dt){
-    for(unsigned int i = 0; i < colliders.size(); ++i){
-        if(colliders[i] != this && IsColliding(colliders[i])){
+    const unsigned int size = colliders.size();
+    for(unsigned int i = 0; i < size; ++i){
+        if(colliders[i] != NULL && colliders[i] != this && IsColliding(colliders[i])){
             colliders[i]->OnCollision(this);
+        }
+    }
+    //Clean up deleted colliders
+    if(!colliders.empty()){
+        for(int i = colliders.size() - 1; i >= 0; --i){
+            if(colliders[i] == NULL){
+                colliders.erase(colliders.begin() + i);
+            }
         }
     }
 }

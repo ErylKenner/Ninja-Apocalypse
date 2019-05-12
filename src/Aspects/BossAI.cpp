@@ -17,7 +17,7 @@ BossAI::BossAI(Entity381 *entity, Entity381 * plyr) :
         player(plyr),
         currentState(Track),
         weakPointHits(0){
-    bossPhysics = entity->GetAspect<OrientedPhysics3D>();
+    bossPhysics = entity->GetAspect<OrientedPhysics>();
     bossLimbs = entity->GetAspect<FirstBossLimbs>();
     std::srand(std::time(nullptr));
 }

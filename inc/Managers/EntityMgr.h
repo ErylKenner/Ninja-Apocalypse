@@ -36,8 +36,8 @@ public:
     void LoadLevel();
     void Stop();
 
-    Entity381* CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector3 pos,
-                                            Ogre::Vector3 scale = Ogre::Vector3(1, 1, 1));
+    Entity381* CreateEntity(EntityType type, Ogre::Vector3 pos, Ogre::Vector3 scale =
+                                    Ogre::Vector3(1, 1, 1));
 
     std::vector<Entity381*> entities;
     int currentEntity;

@@ -12,6 +12,7 @@
 #include "Animation.h"
 #include "CircleCollider.h"
 #include "WeaponHolder.h"
+#include "PotentialField.h"
 
 Player::Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engine * eng) :
         Entity381(id, "ninja.mesh", pos, eng),
@@ -19,9 +20,10 @@ Player::Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engin
     aspects.push_back(new Health(this, 100, 2));
     anim = new Animation(this);
     aspects.push_back(anim);
-    aspects.push_back(new CameraTether(this, 3000, camera));
+    aspects.push_back(new CameraTether(this, 1300, camera));
     aspects.push_back(new WeaponHolder(this));
     aspects.push_back(new PlayerMovableCircleCollider(this, 50));
+    aspects.push_back(new PotentialField(this, PotentialFieldType::PlayerTarget));
     aspects.push_back(new Renderable(this, 90));
 }
 Player::~Player(){
@@ -49,7 +51,7 @@ void Player::OnDeath(){
     engine->keepRunning = false;
 }
 
-float Player::GetCurrentAngle() {
+float Player::GetCurrentAngle(){
     return ogreSceneNode->getOrientation().getYaw().valueDegrees()
             + GetAspect<Renderable>()->AngleOffset;
 }

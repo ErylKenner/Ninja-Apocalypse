@@ -703,7 +703,7 @@ bool SoundMgr::loadStartGunshot(){
 	alSourcef(this->battleSoundSource, AL_PITCH, .95);
 	printError("Source pitch");
 
-	alSourcef(this->battleSoundSource, AL_GAIN, 2);
+	alSourcef(this->battleSoundSource, AL_GAIN, 0.2);
 	printError("Source Gain");
 
 	alSource3f(this->battleSoundSource, AL_POSITION, 0, 0, 0);
@@ -755,9 +755,6 @@ bool SoundMgr::loadStartGunshot(){
 
 	alSourcei(this->battleSoundSource, AL_BUFFER, this->battleSoundBuffer);
 	printError("Source binding");
-
-	printError("Playing");
-//	printError("Playing");
 
 
 	return true;
@@ -895,9 +892,6 @@ bool SoundMgr::loadPlayerDamage(){
 
 	alSourcei(this->playerDamageSource, AL_BUFFER, this->playerDamageBuffer);
 	printError("Source binding");
-
-	alSourcePlay(this->playerDamageSource);
-	printError("Playing");
 
 
 	return true;

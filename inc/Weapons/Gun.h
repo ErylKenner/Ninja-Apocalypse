@@ -13,7 +13,8 @@
 class Gun : public Weapon{
 public:
     Gun(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos,
-        Engine * eng, float useRate, int damageAmount, int bulletMax);
+        Engine * eng, float useRate, int damageAmount, int bulletMax,
+        int thrownDamageAmount);
     virtual ~Gun();
     virtual void Use();
 

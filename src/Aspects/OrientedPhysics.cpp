@@ -3,25 +3,22 @@
  * EMAIL: eryl.kenner@gmail.com
  */
 
-#include "OrientedPhysics3D.h"
+#include <OrientedPhysics.h>
 #include "Entity381.h"
 
-OrientedPhysics3D::OrientedPhysics3D(Entity381 *entity, float accel, float turning,
-                                     float maxSp) :
+OrientedPhysics::OrientedPhysics(Entity381 *entity, float accel, float turning,
+                                 float maxSp) :
         Aspect(entity),
         desiredSpeed(0),
         desiredHeading(entity->ogreSceneNode->getOrientation().getYaw().valueDegrees()),
-        desiredAltitude(entity->position.y),
         acceleration(accel),
         turningRate(turning),
-        climbRate(0),
         maxSpeed(maxSp),
         speed(0),
-        heading(entity->ogreSceneNode->getOrientation().getYaw().valueDegrees()),
-        altitude(entity->position.y){
+        heading(entity->ogreSceneNode->getOrientation().getYaw().valueDegrees()){
 }
 
-void OrientedPhysics3D::UpdateSpeed(float dt){
+void OrientedPhysics::UpdateSpeed(float dt){
     if(speed < desiredSpeed){
         speed += acceleration * dt;
     } else{
@@ -36,7 +33,7 @@ void OrientedPhysics3D::UpdateSpeed(float dt){
     }
 }
 
-void OrientedPhysics3D::UpdateOrientation(float dt){
+void OrientedPhysics::UpdateOrientation(float dt){
     //Fix desired heading
     if(desiredHeading < 0){
         desiredHeading += 360;
@@ -65,18 +62,17 @@ void OrientedPhysics3D::UpdateOrientation(float dt){
     }
 }
 
-void OrientedPhysics3D::Tick(float dt){
+void OrientedPhysics::Tick(float dt){
     UpdateSpeed(dt);
     UpdateOrientation(dt);
 
-    velocity.x = speed * cos(heading * 3.1416 / 180);
-    velocity.y = (desiredAltitude - altitude) < 0 ? -climbRate : climbRate;
-    velocity.z = speed * -sin(-heading * 3.1416 / 180);
+    velocity.x = speed * cos(heading * Ogre::Math::fDeg2Rad);
+    velocity.y = 0;
+    velocity.z = speed * -sin(-heading * Ogre::Math::fDeg2Rad);
 
     entity381->position += velocity * dt;
-    //entity381->position.y = altitude;
 }
 
-OrientedPhysics3D::~OrientedPhysics3D(){
+OrientedPhysics::~OrientedPhysics(){
 }
 

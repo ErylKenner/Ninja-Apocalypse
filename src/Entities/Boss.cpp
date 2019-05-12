@@ -7,7 +7,7 @@
 
 #include "Boss.h"
 #include "Health.h"
-#include "OrientedPhysics3D.h"
+#include "OrientedPhysics.h"
 #include "UnitAI.h"
 #include "Renderable.h"
 
@@ -16,7 +16,7 @@ Boss::Boss(int id, std::string meshName, Ogre::Vector3 sca, Ogre::Vector3 pos, s
     scale = sca;
     aspects.push_back(new Health(this, health, -1));
     aspects.push_back(new UnitAI(this));
-    aspects.push_back(new OrientedPhysics3D(this, accel, turning, maxSp));
+    aspects.push_back(new OrientedPhysics(this, accel, turning, maxSp));
     aspects.push_back(new Renderable(this));
 }
 Boss::~Boss(){

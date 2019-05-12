@@ -10,21 +10,21 @@
 
 #include "Aspect.h"
 
-class Health : public Aspect {
+class Health : public Aspect{
 public:
 	int CurrentHealth;
 	int StartingHealth;
 
-	Health(Entity381 * entity, int startingHealth = 100, int dps = 10);
-	~Health();
+    Health(Entity381 * entity, int startingHealth = 100, int dps = 10);
+    ~Health();
 
-	bool IsAlive();
-	bool TakeDamage(int damageAmount);
+    bool IsAlive();
+    bool TakeDamage(int damageAmount);
 
-	virtual void Tick(float dt);
+    virtual void Tick(float dt);
 private:
-	const int incomingDamagePerSecond;
-	float timeSinceLastHit;
+    const int incomingDamagePerSecond;
+    float timeSinceLastHit;
 };
 
 #endif /* INC_ASPECTS_HEALTH_H_ */

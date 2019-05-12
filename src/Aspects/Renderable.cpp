@@ -1,6 +1,6 @@
+#include <OrientedPhysics.h>
 #include "Renderable.h"
 #include "Entity381.h"
-#include "OrientedPhysics3D.h"
 
 Renderable::Renderable(Entity381 *entity, float AngleOff) :
         Aspect(entity),
@@ -10,7 +10,7 @@ Renderable::Renderable(Entity381 *entity, float AngleOff) :
 void Renderable::Tick(float dt){
     entity381->ogreSceneNode->setPosition(entity381->position);
     entity381->ogreSceneNode->setScale(entity381->scale);
-    OrientedPhysics3D *physics = entity381->GetAspect<OrientedPhysics3D>();
+    OrientedPhysics *physics = entity381->GetAspect<OrientedPhysics>();
     if(physics != NULL){
         entity381->ogreSceneNode->resetOrientation();
         entity381->ogreSceneNode->yaw(Ogre::Degree(-physics->heading - AngleOffset),
