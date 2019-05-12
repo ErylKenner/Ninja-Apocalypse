@@ -17,7 +17,7 @@
 FirstBoss::FirstBoss(int id, Ogre::Vector3 pos, Engine * eng) :
         Boss(id, "sphere.mesh", Ogre::Vector3(1, 0.8, 1.3), // scale
         pos, "Googalog", 5000, // Health
-                500, 45, 1000, // OrientedPhysics values
+                2000, 90, 1000, // OrientedPhysics values
                 eng){
     ogreEntity->setMaterialName("Stone");
     //GetAspect<UnitAI>()->SetCommand(new Intercept(this, eng->gameMgr->MainPlayer));

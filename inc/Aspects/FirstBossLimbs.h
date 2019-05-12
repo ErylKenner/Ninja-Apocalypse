@@ -44,12 +44,12 @@ private:
     const int limbLength = 400;
     const int limbHeight = 50;
 
-    const int limbForward = 125;
-    const int limbSides = 125;
+    const int limbForward = 145;
+    const int limbSides = 135;
 
     const int limbAngle = -16;
 
-    const int limbDamageAmount = 5;
+    const int limbDamageAmount = 10;
 
     const int weakPointRadius = 20;
     const int weakPointForward = 105;

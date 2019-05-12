@@ -15,7 +15,8 @@
 BossAI::BossAI(Entity381 *entity, Entity381 * plyr) :
         Aspect(entity),
         player(plyr),
-        currentState(Track){
+        currentState(Track),
+        weakPointHits(0){
     bossPhysics = entity->GetAspect<OrientedPhysics3D>();
     bossLimbs = entity->GetAspect<FirstBossLimbs>();
     std::srand(std::time(nullptr));
@@ -29,35 +30,53 @@ void BossAI::Tick(float dt){
             timer += dt;
             TrackPlayer();
             bossLimbs->mode = None;
+            bossLimbs->param = 0;
             bossPhysics->desiredSpeed = trackingSpeed;
+
             if(CheckTimer(changeStateFromTrackAfter)){
                 int rand = std::rand() % 4;
-                if(rand < 2){
+                if(rand == 0){
+                    // 1/4 chance of helicopter
                     currentState = HeliA;
                     currentHeliSpeed = 0;
-                    // 1/2 chance of helicopter
                 } else{
-                    // 1/2 chance of clap
+                    // 3/4 chance of clap
                     currentState = ClapA;
+                    weakPointHits = 0;
                 }
             }
+
+            if(entity381->position.distance(player->position) < heliCloseDistance){
+                // TODO: create new state in which it just heli's in place once
+                currentState = HeliA;
+                currentHeliSpeed = heliSpeed;
+                timer = 0;
+            }
+
             break;
         case ClapA:
-            // TODO: reset to track if weakpoint is hit enough
             TrackPlayer();
             bossPhysics->desiredSpeed = 0;
             bossLimbs->mode = Clap;
             bossLimbs->param += windUpSpeed * dt;
 
+            if(weakPointHits >= weakPointCancel){
+                currentState = ClapC;
+            }
+
             if(bossLimbs->param >= 0.5){
                 currentState = ClapB;
             }
+
             break;
         case ClapB:
-            // TODO: reset to track if weakpoint is hit enough
             TrackPlayer();
             bossPhysics->desiredSpeed = bossPhysics->maxSpeed;
             bossLimbs->mode = Clap;
+
+            if(weakPointHits >= weakPointCancel){
+                currentState = ClapC;
+            }
 
             if(entity381->position.distance(player->position) < clapDistance){
                 currentState = ClapC;
@@ -110,7 +129,7 @@ void BossAI::Tick(float dt){
             bossPhysics->desiredSpeed = 0;
             currentHeliSpeed -= heliDischargeSpeed * dt;
 
-            if(currentHeliSpeed < minHeliResetSpeed) {
+            if(currentHeliSpeed < minHeliResetSpeed){
                 currentHeliSpeed = minHeliResetSpeed;
             }
 
@@ -119,7 +138,7 @@ void BossAI::Tick(float dt){
 
             if(bossLimbs->param >= 1){
                 bossLimbs->param = 0;
-                if(currentHeliSpeed == minHeliResetSpeed) {
+                if(currentHeliSpeed == minHeliResetSpeed){
                     currentState = Track;
                 }
             }

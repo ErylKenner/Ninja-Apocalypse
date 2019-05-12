@@ -15,6 +15,8 @@
 #include "SoundMgr.h"
 #include "BossCollider.h"
 #include "Boss.h"
+#include "Entity381.h"
+#include "BossAI.h"
 
 Gun::Gun(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3 pos,
          Engine * eng, float useRate, int damageAmount, int bulletMax) :
@@ -63,6 +65,7 @@ void Gun::Use(){
                     BossWeakpointCircleCollider * weakPoint = dynamic_cast<BossWeakpointCircleCollider *>(bossCircleCol);
                     if(weakPoint != NULL) {
                         multiplier = weakPoint->damageMultiplier;
+                        boss->GetAspect<BossAI>()->weakPointHits++;
                     }
 
                 }

@@ -25,19 +25,23 @@ public:
     OrientedPhysics3D * bossPhysics;
     FirstBossLimbs * bossLimbs;
 
+    int weakPointHits;
+
 private:
     float timer = 0;
     bool CheckTimer(float target);
 
     const int changeStateFromTrackAfter = 5;
     const int trackingSpeed = 50;
+    const int heliCloseDistance = 300;
 
-    const int clapDistance = 550;
+    const int clapDistance = 575;
     const float windUpSpeed = 0.5;
     const int clapSpeed = 5;
+    const int weakPointCancel = 10;
 
-    const float heliChargeSpeed = 5;
-    const float heliDischargeSpeed = 3;
+    const float heliChargeSpeed = 10;
+    const float heliDischargeSpeed = 8;
     const float minHeliResetSpeed = 0.5;
     const float heliSpeed = 5;
     const int rushDuration = 2;
