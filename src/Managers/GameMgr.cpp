@@ -95,11 +95,11 @@ void GameMgr::LoadLevel(){
     //engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
     //Ogre::Vector3(0, surfaceHeight, -300));
 
-    //LevelBoss = static_cast<Boss *>(engine->entityMgr->CreateEntity(EntityType::FirstBossType, Ogre::Vector3(-1000, surfaceHeight + 100, -400)));
+    LevelBoss = static_cast<Boss *>(engine->entityMgr->CreateEntity(EntityType::FirstBossType, Ogre::Vector3(-1000, surfaceHeight + 100, -400)));
 
     weaponMgr->LoadLevel();
 
-    LoadLevelOne();
+    //LoadLevelOne();
 
     /*for(int i = 0; i < engine->aiMgr->numNodes; ++i){
         Ogre::Vector3 pos = Ogre::Vector3(engine->aiMgr->nodes[i].x, 0,
