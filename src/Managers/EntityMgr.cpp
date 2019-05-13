@@ -98,6 +98,7 @@ void EntityMgr::RemoveAllEnemies(){
         Enemy *enemy = dynamic_cast<Enemy *>(entities[i]);
         if(enemy != NULL){
             enemy->OnDeath();
+            engine->waveMgr->enemiesRemaining++;
         }
     }
 }

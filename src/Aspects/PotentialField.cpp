@@ -24,7 +24,7 @@ double PotentialField::e_Enemy_Player_attraction = /*0*/-1;
 
 double PotentialField::c_Enemy_Target_repulsion = 0;
 double PotentialField::e_Enemy_Target_repulsion = 1;
-double PotentialField::c_Enemy_Target_attraction = 2000;
+double PotentialField::c_Enemy_Target_attraction = 2500;
 double PotentialField::e_Enemy_Target_attraction = -0.5;
 
 double PotentialField::c_Enemy_Obstacle_repulsion = 50000;

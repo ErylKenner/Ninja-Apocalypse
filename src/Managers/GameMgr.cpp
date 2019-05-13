@@ -224,7 +224,6 @@ void GameMgr::LoadLevelOne(){
 
 void GameMgr::LoadLevelBoss(){
     ResetLevel();
-    engine->aiMgr->ResetNodes();
     engine->aiMgr->LoadLevel("LevelOneNodes.txt");
     engine->waveMgr->disabledSpawning = true;
 
@@ -250,7 +249,6 @@ void GameMgr::LoadLevelBoss(){
 
 void GameMgr::LoadLevelTwo(){
     ResetLevel();
-    engine->aiMgr->ResetNodes();
     engine->aiMgr->LoadLevel("LevelOneNodes.txt");
     engine->waveMgr->disabledSpawning = false;
 
