@@ -16,6 +16,8 @@ public:
          float accel, float turning, float maxSp, Engine * eng);
     virtual ~Boss();
 
+    virtual void OnDeath() = 0;
+
     std::string name;
 };
 

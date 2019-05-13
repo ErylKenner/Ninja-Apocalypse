@@ -29,3 +29,8 @@ FirstBoss::FirstBoss(int id, Ogre::Vector3 pos, Engine * eng) :
 }
 FirstBoss::~FirstBoss(){
 }
+
+void FirstBoss::OnDeath() {
+    //TODO: do what happens when boss dies
+    std::cout << "Boss died!" << std::endl;
+}

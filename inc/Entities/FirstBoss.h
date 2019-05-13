@@ -14,6 +14,8 @@ class FirstBoss : public Boss {
 public:
     FirstBoss(int id, Ogre::Vector3 pos, Engine * eng);
     virtual ~FirstBoss();
+
+    virtual void OnDeath();
 };
 
 

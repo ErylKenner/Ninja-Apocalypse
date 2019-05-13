@@ -80,8 +80,9 @@ void Gun::Use(){
                     boss = bossRectCol->bossEntity;
                 }
 
-                boss->GetAspect<Health>()->TakeDamage(multiplier * DamageAmount);
-                //std::cout << "Damaged boss!" << std::endl;
+                if(!boss->GetAspect<Health>()->TakeDamage(multiplier * DamageAmount)) {
+                    boss->OnDeath();
+                }
             }
         }
     }
