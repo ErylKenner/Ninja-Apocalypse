@@ -71,6 +71,8 @@ FirstBossLimbs::FirstBossLimbs(Entity381 * entity) :
             new BossWeakpointCircleCollider(weakPoint, static_cast<Boss*>(entity381),
                     weakPointRadius, weakPointDamageMultiplier));
 
+    weakPoint->ogreEntity->setMaterialName("RedStone");
+
 }
 FirstBossLimbs::~FirstBossLimbs(){
 

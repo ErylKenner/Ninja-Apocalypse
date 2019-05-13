@@ -12,7 +12,7 @@
 #include "OrientedPhysics.h"
 #include "FirstBossLimbs.h"
 
-enum BossState {Track, ClapA, ClapB, ClapC, HeliA, HeliB, HeliC};
+enum BossState {NoState, Track, ClapA, ClapB, ClapC, HeliA, HeliB, HeliC};
 
 class BossAI : public Aspect{
 public:

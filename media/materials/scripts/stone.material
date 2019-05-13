@@ -12,3 +12,20 @@ material Stone
 		}
 	}
 }
+
+material RedStone
+{
+	technique
+	{
+		pass
+		{
+			ambient 1 0 0 1
+			diffuse 1 0 0 1
+			texture_unit
+			{
+				texture rockwall.tga
+				env_map spherical
+			}
+		}
+	}
+}

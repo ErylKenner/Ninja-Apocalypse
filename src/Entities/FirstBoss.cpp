@@ -32,5 +32,6 @@ FirstBoss::~FirstBoss(){
 
 void FirstBoss::OnDeath() {
     //TODO: do what happens when boss dies
-    std::cout << "Boss died!" << std::endl;
+    position = Ogre::Vector3(1e6, 0, 0);
+    GetAspect<BossAI>()->currentState = NoState;
 }

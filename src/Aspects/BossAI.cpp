@@ -26,6 +26,10 @@ BossAI::~BossAI(){
 void BossAI::Tick(float dt){
 
     switch(currentState) {
+        case NoState:
+            bossPhysics->desiredSpeed = 0;
+            bossPhysics->speed = 0;
+            break;
         case Track:
             timer += dt;
             TrackPlayer();
