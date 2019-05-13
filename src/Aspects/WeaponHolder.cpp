@@ -72,7 +72,6 @@ void WeaponHolder::ThrowWeapon(){
 
         heldWeapon->ogreSceneNode->setInheritScale(false);
 
-        //std::cout << heldWeapon->position << std::endl;
 
         heldWeapon->GetAspect<Throwable>()->Throw(
                 entity381->engine->gameMgr->MainPlayer->GetCurrentAngle());

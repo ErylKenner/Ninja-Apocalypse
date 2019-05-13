@@ -55,20 +55,20 @@ void UiMgr::stop(){
 }
 
 void UiMgr::LoadLevel() {
-	waitTime = 3;
+	waitTime = 40000;
+//	splashScreen(.001);
 	mTrayMgr->showBackdrop("Backdrop");
-	StartButton = mTrayMgr->createButton(OgreBites::TL_LEFT, "StartButton",
+	StartButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "StartButton",
 			"Start Game");
 }
 
 
 void UiMgr::splashScreen(float dt){
-    currentTime += dt;
-    if(currentTime >= waitTime){
-        mTrayMgr->hideBackdrop();
-        EnableHud();
-        splashScreenDisable = true;
-    }
+	mTrayMgr->showBackdrop("initialSplashScreen");
+	while(currentTime < waitTime){
+		currentTime = currentTime + dt;
+	};
+    mTrayMgr->hideBackdrop();
 }
 
 
@@ -158,7 +158,6 @@ void UiMgr::UpdateLabels(){
     playerHealth->setProgress((float)currentHealth / 100);
     timeLabel->setCaption(std::string("Time: ") +  timeElapsed);
     waveLabel->setCaption(std::string("Wave: ") + waveNum);
-//	weaponLabel->setCaption("timeElapsed");
 	ammoLabel->setCaption(std::string("Ammo: ") + ammoNum);
 
 	Boss * levelBoss = engine->gameMgr->LevelBoss;
@@ -171,7 +170,6 @@ void UiMgr::UpdateLabels(){
 }
 
 void UiMgr::windowResized(Ogre::RenderWindow* rw){
-
 
     unsigned int width, height, depth;
     int left, top;

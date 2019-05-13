@@ -25,7 +25,7 @@ class UiMgr : public Mgr,
               public OgreBites::SdkTrayListener{
 private:
     float waitTime;
-    float currentTime;
+    float currentTime = 0;
     std::string waveNum, ammoNum, timeElapsed, fps;
     int currentHealth;
     OgreBites::ProgressBar* playerHealth;
