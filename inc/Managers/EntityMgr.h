@@ -35,6 +35,9 @@ public:
     void LoadLevel();
     void Stop();
 
+    void RemoveEntity(Entity381 *entity);
+    void RemoveAllEnemies();
+
     Entity381* CreateEntity(EntityType type, Ogre::Vector3 pos, Ogre::Vector3 scale =
                                     Ogre::Vector3(1, 1, 1));
 

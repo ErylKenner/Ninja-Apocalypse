@@ -17,8 +17,11 @@ public:
 
     void Init();
     void Tick(float dt);
-    void LoadLevel();
+    void LoadLevel(std::string inputFile = "LevelOneNodes.txt");
     void Stop();
+
+    void ResetNodes();
+
     int GetClosestNode(Ogre::Vector2 point) const;
     int GetClosestNode(Ogre::Vector3 point) const;
 

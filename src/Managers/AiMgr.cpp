@@ -24,9 +24,9 @@ void AiMgr::Init(){
 void AiMgr::Tick(float dt){
 
 }
-void AiMgr::LoadLevel(){
+void AiMgr::LoadLevel(std::string inputFile){
     std::fstream infile;
-    infile.open("LevelOneNodes.txt", std::ios::in);
+    infile.open(inputFile, std::ios::in);
     infile >> numNodes;
     //nodes.resize(numNodes);
 
@@ -66,6 +66,12 @@ void AiMgr::LoadLevel(){
         ShortestPathTrees.push_back(GenerateShortestPathTree(i));
         //std::cout << "------------------------" << std::endl;
     }
+}
+
+void AiMgr::ResetNodes(){
+    nodes.clear();
+    ShortestPathTrees.clear();
+    adjacenyList.clear();
 }
 
 int AiMgr::GetClosestNode(Ogre::Vector2 point) const{
@@ -116,7 +122,7 @@ std::vector<int> AiMgr::GenerateShortestPathTree(int targetNode) const{
     }
     return parentList;
     /*for(int i = 1; i < numNodes; ++i){
-        printf("%d - %d\n", i + 1, parentList[i] + 1);
-    }*/
+     printf("%d - %d\n", i + 1, parentList[i] + 1);
+     }*/
 }
 

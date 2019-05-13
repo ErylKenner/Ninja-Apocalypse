@@ -52,6 +52,7 @@ void Enemy::ResetAspects(){
     }
     aspects.clear();
     aspects.push_back(renderable);
+    anim = NULL;
 }
 
 void Enemy::OnDeath(){
@@ -61,7 +62,9 @@ void Enemy::OnDeath(){
     }
     Ogre::Vector3 newPos = Ogre::Vector3(0, 0, 25e6);
     position = newPos;
-    anim->DisableAnimation();
+    if(anim != NULL){
+        anim->DisableAnimation();
+    }
     ResetAspects();
     engine->waveMgr->OnEnemyKilled(this);
 }

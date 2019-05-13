@@ -36,6 +36,12 @@ Entity381::Entity381(int id, std::string mesh, Ogre::Vector3 pos, Engine * eng) 
 }
 
 Entity381::~Entity381(){
+    for(unsigned int i = 0; i < aspects.size(); ++i){
+        delete aspects[i];
+    }
+    ogreSceneNode->removeAndDestroyAllChildren();
+    engine->gfxMgr->mSceneMgr->destroySceneNode(ogreSceneNode);
+    engine->entityMgr->RemoveEntity(this);
 }
 
 BasicSphereEntity381::BasicSphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng) :
@@ -44,9 +50,6 @@ BasicSphereEntity381::BasicSphereEntity381(int id, Ogre::Vector3 pos, int r, Eng
     scale = 0.01 * Ogre::Vector3(r, r, r);
     ogreEntity->setMaterialName("Stone");
     aspects.push_back(new Renderable(this));
-}
-
-BasicSphereEntity381::~BasicSphereEntity381(){
 }
 
 SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng) :
@@ -58,9 +61,6 @@ SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng)
     aspects.push_back(new CircleCollider(this, radius));
     aspects.push_back(new PotentialField(this, PotentialFieldType::Obstacle));
     aspects.push_back(new Renderable(this));
-}
-
-SphereEntity381::~SphereEntity381(){
 }
 
 RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 sc,
@@ -82,9 +82,6 @@ RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 
     aspects.push_back(new Renderable(this));
 }
 
-RectangleEntity381::~RectangleEntity381(){
-}
-
 RectangleBorderEntity381::RectangleBorderEntity381(int id, Ogre::Vector3 pos,
                                                    Ogre::Vector3 sc, Engine * eng) :
         RectangleEntity381(id, pos, sc, eng){
@@ -94,7 +91,3 @@ RectangleBorderEntity381::RectangleBorderEntity381(int id, Ogre::Vector3 pos,
     aspects.push_back(new RectangleBorderCollider(this, width, length));
     aspects.push_back(new Renderable(this));
 }
-
-RectangleBorderEntity381::~RectangleBorderEntity381(){
-}
-

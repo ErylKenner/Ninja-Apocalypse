@@ -25,7 +25,7 @@ public:
     float walkAnimSpeed = 2;
 
     Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engine *eng);
-    ~Player();
+    virtual ~Player();
 
     void LookAt(Vector3 pos);
     void Move(Vector3 direction, float dt);

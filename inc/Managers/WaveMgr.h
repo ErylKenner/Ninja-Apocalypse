@@ -15,7 +15,7 @@
 class WaveMgr : public Mgr{
 
 public:
-
+    bool disabledSpawning;
     int enemiesPerWave;
     int enemiesRemaining;
     int waveNumber;

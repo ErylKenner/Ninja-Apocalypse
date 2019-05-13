@@ -18,7 +18,6 @@ Collider::~Collider(){
     if(it != colliders.end()){
         colliders[std::distance(colliders.begin(), it)] = NULL;
     }
-    std::cout << "Collider removed" << std::endl;
 }
 
 void Collider::Tick(float dt){
