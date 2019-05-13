@@ -218,6 +218,10 @@ void GameMgr::LoadLevelTwo(){
     engine->waveMgr->disabledSpawning = false;
 }
 
+bool GameMgr::InBounds(Ogre::Vector3 pos) {
+    return Ogre::Math::Abs(pos.x) < mapWidth / 2 && Ogre::Math::Abs(pos.z) < mapHeight / 2;
+}
+
 void GameMgr::Stop(){
     weaponMgr->Stop();
 }

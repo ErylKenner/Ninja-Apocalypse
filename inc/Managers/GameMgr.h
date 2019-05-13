@@ -34,6 +34,8 @@ public:
     void LoadLevelOne();
     void LoadLevelTwo();
 
+    bool InBounds(Ogre::Vector3 pos);
+
     const float mapWidth = 5000;
     const float mapHeight = 2500;
 protected:
