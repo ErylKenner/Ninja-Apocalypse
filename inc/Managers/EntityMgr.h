@@ -17,6 +17,8 @@
 enum EntityType{
     Sphere,
     Rectangle,
+    TerrainSphere2,
+    TerrainRectangle2,
     PlayerType,
     EnemyType,
     HandgunType,

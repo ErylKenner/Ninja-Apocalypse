@@ -63,6 +63,36 @@ SphereEntity381::SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng)
     aspects.push_back(new Renderable(this));
 }
 
+SphereEntity381Dark::SphereEntity381Dark(int id, Ogre::Vector3 pos, int r, Engine * eng) :
+        Entity381(id, "sphere.mesh", pos, eng),
+        radius(r){
+    scale = 0.01 * Ogre::Vector3(r, r, r);
+    ogreEntity->setMaterialName("RustySteel");
+    aspects.push_back(new UnitAI(this));
+    aspects.push_back(new CircleCollider(this, radius));
+    aspects.push_back(new PotentialField(this, PotentialFieldType::Obstacle));
+    aspects.push_back(new Renderable(this));
+}
+
+RectangleEntity381Dark::RectangleEntity381Dark(int id, Ogre::Vector3 pos, Ogre::Vector3 sc,
+                                       Engine * eng) :
+        Entity381(id, "cube.mesh", pos, eng),
+        width(sc.x),
+        height(sc.y),
+        length(sc.z){
+    scale = 0.01 * sc;
+    Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().getByName(
+            "Examples/RustySteel")->clone(
+            std::to_string(width) + "_" + std::to_string(height));
+    material->getTechnique(0)->getPass(0)->getTextureUnitState(0)->setTextureScale(
+            156.0 / width, 156.0 / length);
+    ogreEntity->setMaterial(material);
+    aspects.push_back(new UnitAI(this));
+    aspects.push_back(new RectangleCollider(this, width, length));
+    aspects.push_back(new PotentialField(this, PotentialFieldType::Obstacle));
+    aspects.push_back(new Renderable(this));
+}
+
 RectangleEntity381::RectangleEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 sc,
                                        Engine * eng) :
         Entity381(id, "cube.mesh", pos, eng),

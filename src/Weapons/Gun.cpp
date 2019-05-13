@@ -33,7 +33,7 @@ Gun::~Gun(){
 void Gun::Use(){
     if(CurrentBulletNumber > 0){
 
-    	engine->soundMgr->playSelectedSound(gunshot);
+        engine->soundMgr->playSelectedSound(gunshot);
 
         CurrentBulletNumber--;
         const Ogre::Vector2 mousePos = Ogre::Vector2(
@@ -41,8 +41,7 @@ void Gun::Use(){
                 engine->inputMgr->mouseLocation.second.z);
         const Ogre::Vector3 gunPos =
                 engine->gameMgr->MainPlayer->ogreSceneNode->convertLocalToWorldPosition(
-                        Ogre::Vector3(50 * Ogre::Math::Sin(20) * scale.x, 0,
-                                -50 * Ogre::Math::Cos(20) * scale.z) + position);
+                        Ogre::Vector3(0, 0, -50 * scale.z) + position);
         const Ogre::Vector2 dir = mousePos - Ogre::Vector2(gunPos.x, gunPos.z);
         Ray ray(gunPos, dir);
         float dist = Ogre::Math::POS_INFINITY;
@@ -64,26 +63,29 @@ void Gun::Use(){
                 }
             }
 
-            BossCircleCollider * bossCircleCol = dynamic_cast<BossCircleCollider *>(closest);
-            BossRectangleCollider * bossRectCol = dynamic_cast<BossRectangleCollider *>(closest);
-            if(bossCircleCol != NULL || bossRectCol != NULL) {
+            BossCircleCollider * bossCircleCol =
+                    dynamic_cast<BossCircleCollider *>(closest);
+            BossRectangleCollider * bossRectCol =
+                    dynamic_cast<BossRectangleCollider *>(closest);
+            if(bossCircleCol != NULL || bossRectCol != NULL){
                 Boss * boss;
                 float multiplier = 1;
-                if(bossCircleCol != NULL) {
+                if(bossCircleCol != NULL){
                     boss = bossCircleCol->bossEntity;
-                    BossWeakpointCircleCollider * weakPoint = dynamic_cast<BossWeakpointCircleCollider *>(bossCircleCol);
-                    if(weakPoint != NULL) {
+                    BossWeakpointCircleCollider * weakPoint =
+                            dynamic_cast<BossWeakpointCircleCollider *>(bossCircleCol);
+                    if(weakPoint != NULL){
                         multiplier = weakPoint->damageMultiplier;
                         boss->GetAspect<BossAI>()->weakPointHits++;
                     }
 
                 }
 
-                if(bossRectCol != NULL) {
+                if(bossRectCol != NULL){
                     boss = bossRectCol->bossEntity;
                 }
 
-                if(!boss->GetAspect<Health>()->TakeDamage(multiplier * DamageAmount)) {
+                if(!boss->GetAspect<Health>()->TakeDamage(multiplier * DamageAmount)){
                     boss->OnDeath();
                 }
             }
@@ -93,10 +95,10 @@ void Gun::Use(){
 
 Handgun::Handgun(int id, Ogre::Vector3 pos, Engine * eng) :
 
-        Gun(id, "Cube.010v4.mesh", Ogre::Vector3(85, 10, 100), pos, eng, 1 / 10.0, 20, 60, 200){
+        Gun(id, "Cube.010v4.mesh", Ogre::Vector3(85, 10, 100), pos, eng, 1 / 10.0, 20, 60,
+                300){
     ogreEntity->setMaterialName("Examples/Chrome");
 //    ogreEntity->setMaterialName("Examples/BumpyMetal");
-
 
 }
 Handgun::~Handgun(){

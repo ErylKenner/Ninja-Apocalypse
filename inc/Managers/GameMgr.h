@@ -22,17 +22,18 @@ public:
     void LoadLevel();
     void Stop();
 
+    Boss * LevelBoss;
     WeaponMgr * weaponMgr;
     Ogre::Plane mPlane;
     const float surfaceHeight = 0;
     Player * MainPlayer;
-    Boss * LevelBoss;
 
     void DrawLine(Ogre::Vector3 start, Ogre::Vector3 end);
     void ResetLevel();
 
     void LoadLevelOne();
     void LoadLevelTwo();
+    void LoadLevelBoss();
 
     bool InBounds(Ogre::Vector3 pos);
 
@@ -40,6 +41,8 @@ public:
     const float mapHeight = 2500;
 protected:
 private:
+    Ogre::SceneNode *groundNode;
+    Ogre::Entity *groundEntity;
     Ogre::ManualObject* line;
     Ogre::SceneNode* lineNode;
     float timer = 0;

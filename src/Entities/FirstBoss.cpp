@@ -14,10 +14,11 @@
 #include "BossCollider.h"
 #include "BossAI.h"
 #include "CameraTether.h"
+#include "UiMgr.h"
 
 FirstBoss::FirstBoss(int id, Ogre::Vector3 pos, Engine * eng) :
         Boss(id, "sphere.mesh", Ogre::Vector3(1, 0.8, 1.3), // scale
-        pos, "Googalog", 5000, // Health
+        pos, "Googalog", 4000, // Health
                 2000, 90, 1000, // OrientedPhysics values
                 eng){
     ogreEntity->setMaterialName("Stone");
@@ -37,4 +38,6 @@ void FirstBoss::OnDeath() {
     position = Ogre::Vector3(1e6, 0, 0);
     GetAspect<BossAI>()->currentState = NoState;
     engine->gameMgr->LoadLevelTwo();
+    engine->uiMgr->mTrayMgr->destroyWidget(engine->uiMgr->bossHealth);
+    engine->uiMgr->bossHealth = NULL;
 }

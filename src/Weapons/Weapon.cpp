@@ -18,7 +18,7 @@ Weapon::Weapon(int id, std::string meshName, Ogre::Vector3 _scale, Ogre::Vector3
         spawnedFrom(0),
         ThrownDamageAmount(thrownDamageAmount){
     scale = _scale / 100.0f;
-    aspects.push_back(new Throwable(this, 600));
+    aspects.push_back(new Throwable(this, 1000));
     aspects.push_back(new WeaponCollider(this, 25));
     aspects.push_back(new Renderable(this));
 

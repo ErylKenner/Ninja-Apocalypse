@@ -16,6 +16,7 @@
 class BossCircleCollider : public CircleCollider{
 public:
     BossCircleCollider(Entity381 *entity, Boss * boss, int r);
+    virtual void OnCollision(Collider *other) const;
     ~BossCircleCollider();
 
     Boss * bossEntity;

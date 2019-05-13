@@ -9,6 +9,7 @@
 #include "EntityMgr.h"
 #include "GameMgr.h"
 #include "GfxMgr.h"
+#include "AiMgr.h"
 #include "CameraTether.h"
 #include <algorithm>
 #include <cstdlib>
@@ -17,7 +18,7 @@
 WaveMgr::WaveMgr(Engine *eng) :
         Mgr(eng),
         disabledSpawning(false),
-        enemiesPerWave(20),
+        enemiesPerWave(15),
         waveNumber(1),
         spawnDelay(1),
         timeElapsed(0),
@@ -47,7 +48,7 @@ void WaveMgr::Tick(float dt){
     }
 
     if(waveNumber == bossWave && !bossSpawned){
-        engine->gameMgr->ResetLevel();
+        engine->gameMgr->LoadLevelBoss();
         engine->entityMgr->RemoveAllEnemies();
         engine->gameMgr->LevelBoss = static_cast<Boss *>(engine->entityMgr->CreateEntity(
                 EntityType::FirstBossType,
@@ -75,6 +76,7 @@ int WaveMgr::deltaValue(int minimum, int radius){
 }
 
 void WaveMgr::SpawnEnemy(){
+    const int maxNumTries = 50;
     Ogre::Vector3 spawnPosition;
     bool continueTrying;
     int numTries = 0;
@@ -99,7 +101,10 @@ void WaveMgr::SpawnEnemy(){
             }
         }
         numTries++;
-    } while(continueTrying && numTries < 20);
+    } while(continueTrying && numTries < maxNumTries);
+    if(numTries >= maxNumTries){
+        return;
+    }
 
     if(deadList.empty()){
         Enemy * newEnemy = static_cast<Enemy *>(engine->entityMgr->CreateEntity(

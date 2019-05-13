@@ -48,9 +48,19 @@ Entity381* EntityMgr::CreateEntity(EntityType type, Ogre::Vector3 pos,
             entities.push_back(newEntity);
             return newEntity;
             break;
+        case EntityType::TerrainSphere2:
+            newEntity = new SphereEntity381Dark(id, pos, scale.x, engine);
+            entities.push_back(newEntity);
+            return newEntity;
+            break;
         case EntityType::Rectangle:
         case EntityType::TerrainRectangle:
             newEntity = new RectangleEntity381(id, pos, scale, engine);
+            entities.push_back(newEntity);
+            return newEntity;
+            break;
+        case EntityType::TerrainRectangle2:
+            newEntity = new RectangleEntity381Dark(id, pos, scale, engine);
             entities.push_back(newEntity);
             return newEntity;
             break;

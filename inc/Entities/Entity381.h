@@ -81,6 +81,22 @@ protected:
     int length;
 };
 
+class SphereEntity381Dark : public Entity381{
+public:
+    SphereEntity381Dark(int id, Ogre::Vector3 pos, int r, Engine * eng);
+private:
+    int radius;
+};
+
+class RectangleEntity381Dark : public Entity381{
+public:
+    RectangleEntity381Dark(int id, Ogre::Vector3 pos, Ogre::Vector3 sc, Engine * eng);
+protected:
+    int width;
+    int height;
+    int length;
+};
+
 class RectangleBorderEntity381 : public RectangleEntity381{
 public:
     RectangleBorderEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 sc, Engine * eng);

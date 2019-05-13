@@ -87,15 +87,15 @@ void UiMgr::EnableHud(){
 			"Wave #", 130);
 
 	timeLabel = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT, "timeLabel",
-			"Time:", 130);
+			"Time:", 120);
 
 	weaponLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "weaponLabel",
-			"Weapon", 75);
+			"Weapon:", 120);
 
 	ammoLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "ammoLabel",
-			"Ammo", 75);
-	fpsLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "fpsLabel",
-			"FPS", 75);
+			"Ammo", 120);
+	fpsLabel = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT, "fpsLabel",
+			"FPS", 120);
 
 }
 
@@ -105,9 +105,9 @@ void UiMgr::ClosingScreen() {
 	mTrayMgr->destroyAllWidgets();
 	mTrayMgr->showBackdrop("ClosingScreen");
 
-	time_survived = mTrayMgr->createLabel(OgreBites::TL_CENTER,"timesurvived","Time Elapsed " + timeElapsed,200);
+	time_survived = mTrayMgr->createLabel(OgreBites::TL_CENTER,"timesurvived","Time Elapsed: " + timeElapsed,200);
 
-	waves_survived = mTrayMgr->createLabel(OgreBites::TL_CENTER,"wavesurvived","Waves Survived " + waveNum,200);
+	waves_survived = mTrayMgr->createLabel(OgreBites::TL_CENTER,"wavesurvived","Waves Survived: " + waveNum,200);
 
 	EndButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "EndButton", "End Game",200);
 
@@ -126,12 +126,14 @@ void UiMgr::Tick(float dt) {
 			gameStarted = true;
 			EnableHud();
 			mTrayMgr->hideBackdrop();
-			StartButton->hide();
+			mTrayMgr->destroyWidget(StartButton);
 		}
-	if (screenClosed == false){
-		mTrayMgr->refreshCursor();
-		UpdateLabels();
-	}
+        if (screenClosed == false){
+            mTrayMgr->refreshCursor();
+            UpdateLabels();
+        } else{
+            mTrayMgr->refreshCursor();
+        }
 	}
 }
 
@@ -154,13 +156,13 @@ void UiMgr::UpdateLabels(){
     fps = std::string("FPS: ") + std::to_string(engine->fps);
 
     playerHealth->setProgress((float)currentHealth / 100);
-    timeLabel->setCaption(timeElapsed);
-    waveLabel->setCaption(waveNum);
+    timeLabel->setCaption(std::string("Time: ") +  timeElapsed);
+    waveLabel->setCaption(std::string("Wave: ") + waveNum);
 //	weaponLabel->setCaption("timeElapsed");
-	ammoLabel->setCaption(ammoNum);
+	ammoLabel->setCaption(std::string("Ammo: ") + ammoNum);
 
 	Boss * levelBoss = engine->gameMgr->LevelBoss;
-	if(levelBoss != NULL) {
+	if(levelBoss != NULL && bossHealth != NULL) {
 	    Health * bossHealthAspect = levelBoss->GetAspect<Health>();
 	    //std::cout << bossHealthAspect->CurrentHealth / (float)bossHealthAspect->StartingHealth << std::endl;
 	    bossHealth->setProgress(bossHealthAspect->CurrentHealth / (float)bossHealthAspect->StartingHealth);
