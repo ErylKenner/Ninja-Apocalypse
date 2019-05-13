@@ -13,6 +13,7 @@
 #include "FirstBossLimbs.h"
 #include "BossCollider.h"
 #include "BossAI.h"
+#include "CameraTether.h"
 
 FirstBoss::FirstBoss(int id, Ogre::Vector3 pos, Engine * eng) :
         Boss(id, "sphere.mesh", Ogre::Vector3(1, 0.8, 1.3), // scale
@@ -32,6 +33,7 @@ FirstBoss::~FirstBoss(){
 
 void FirstBoss::OnDeath() {
     //TODO: do what happens when boss dies
+    engine->gameMgr->MainPlayer->GetAspect<CameraTether>()->Height = 1300;
     position = Ogre::Vector3(1e6, 0, 0);
     GetAspect<BossAI>()->currentState = NoState;
     engine->gameMgr->LoadLevelTwo();

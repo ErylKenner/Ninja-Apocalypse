@@ -9,6 +9,7 @@
 #include "EntityMgr.h"
 #include "GameMgr.h"
 #include "GfxMgr.h"
+#include "CameraTether.h"
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
@@ -20,7 +21,8 @@ WaveMgr::WaveMgr(Engine *eng) :
         waveNumber(1),
         spawnDelay(1),
         timeElapsed(0),
-        timeSinceLastSpawn(0){
+        timeSinceLastSpawn(0),
+        bossWave(4) {
     enemiesRemaining = enemiesPerWave;
 }
 WaveMgr::~WaveMgr(){
@@ -50,6 +52,7 @@ void WaveMgr::Tick(float dt){
         engine->gameMgr->LevelBoss = static_cast<Boss *>(engine->entityMgr->CreateEntity(
                 EntityType::FirstBossType,
                 Ogre::Vector3(-1000, engine->gameMgr->surfaceHeight + 100, -400)));
+        engine->gameMgr->MainPlayer->GetAspect<CameraTether>()->Height = 2000;
         bossSpawned = true;
 
     }

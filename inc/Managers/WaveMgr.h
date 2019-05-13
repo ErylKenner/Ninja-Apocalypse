@@ -42,7 +42,7 @@ private:
     int deltaValue(int minimum, int radius);
     std::vector<Enemy *> deadList;
 
-    const int bossWave = 4;
+    const int bossWave;
 
     bool bossSpawned = false;
 };
