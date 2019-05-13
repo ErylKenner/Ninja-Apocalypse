@@ -66,7 +66,11 @@ void Engine::TickAll(float dt){
     inputMgr->Tick(dt);
     entityMgr->Tick(dt);
     gameMgr->Tick(dt);
-    waveMgr->Tick(dt);
+    if(uiMgr->startGame==false){
+    float newdt = 0;
+    waveMgr->Tick(newdt);}
+    else{
+    waveMgr->Tick(dt);}
     uiMgr->Tick(dt);
     soundMgr->Tick(dt);
 }

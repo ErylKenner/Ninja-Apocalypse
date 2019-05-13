@@ -56,8 +56,10 @@ void Gun::Use(){
 }
 
 Handgun::Handgun(int id, Ogre::Vector3 pos, Engine * eng) :
-        Gun(id, "cube.mesh", Ogre::Vector3(10, 10, 40), pos, eng, 1 / 10.0, 20, 60){
-    ogreEntity->setMaterialName("Examples/BumpyMetal");
+        Gun(id, "Cube.010v4.mesh", Ogre::Vector3(85, 10, 100), pos, eng, 1 / 10.0, 20, 60){
+    ogreEntity->setMaterialName("Examples/Chrome");
+//    ogreEntity->setMaterialName("Examples/BumpyMetal");
+
 
 }
 Handgun::~Handgun(){

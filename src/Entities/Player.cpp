@@ -12,6 +12,7 @@
 #include "Animation.h"
 #include "CircleCollider.h"
 #include "WeaponHolder.h"
+#include "UiMgr.h"
 
 Player::Player(float speed, Ogre::SceneNode * camera, int id, Vector3 pos, Engine * eng) :
         Entity381(id, "ninja.mesh", pos, eng),
@@ -46,7 +47,9 @@ void Player::Move(Vector3 direction, float dt){
 }
 
 void Player::OnDeath(){
-    engine->keepRunning = false;
+
+	engine->uiMgr->ClosingScreen();
+//    engine->keepRunning = false;
 }
 
 float Player::GetCurrentAngle() {

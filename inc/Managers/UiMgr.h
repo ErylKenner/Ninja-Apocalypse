@@ -23,7 +23,6 @@ class UiMgr : public Mgr, public OIS::KeyListener, public OIS::MouseListener, pu
 private:
 	float waitTime;
 	float currentTime;
-	bool splashScreenDisable = false;
 	std::string waveNum, ammoNum, timeElapsed;
 	int currentHealth;
 	OgreBites::ProgressBar* playerHealth;
@@ -53,14 +52,27 @@ public:
 
 	void splashScreen(float dt);
 	void UpdateLabels();
+	void ClosingScreen();
+	void Menu();
+	bool splashScreenDisable = false;
+	bool gameStarted = false, screenClosed = false;
+	bool startGame = false;
+
 
 	OgreBites::InputContext mInputContext;
 	OgreBites::SdkTrayManager* mTrayMgr;
+	OgreBites::SdkTrayManager* closingScreenMgr;
+	OgreBites::Label *you_died;
+	OgreBites::Label *time_survived;
+	OgreBites::Label *waves_survived;
 	Ogre::OverlaySystem* mOverlaySystem;
 	OgreBites::Label *waveLabel;
 	OgreBites::Label *timeLabel;
 	OgreBites::Label *weaponLabel;
 	OgreBites::Label *ammoLabel;
+	OgreBites::Button *StartButton;
+	OgreBites::Button *EndButton;
+
 };
 
 #endif /* INC_UIMGR_H_ */

@@ -30,7 +30,7 @@ UiMgr::~UiMgr() { // before gfxMgr destructor
 
 void UiMgr::Init() {
 
-    // UiMgr Init MUST be called after GfxMgr Init because mOverlaySystem is created there (see GfxMgr Init comment for info)
+	// UiMgr Init MUST be called after GfxMgr Init because mOverlaySystem is created there (see GfxMgr Init comment for info)
 	engine->gfxMgr->mSceneMgr->addRenderQueueListener(mOverlaySystem);
 
 	// init sdktrays
@@ -39,79 +39,105 @@ void UiMgr::Init() {
 	mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName",
 			engine->gfxMgr->mWindow, mInputContext, this);
 
-
 }
 
 void UiMgr::stop() {
 
 }
 
-void UiMgr::splashScreen(float dt){
-	currentTime += dt;
-	if(currentTime >= waitTime){
-		mTrayMgr->hideBackdrop();
-		EnableHud();
-		splashScreenDisable = true;
-	}
-}
-
 void UiMgr::LoadLevel() {
 	waitTime = 3;
-
 	mTrayMgr->showBackdrop("Backdrop");
+	StartButton = mTrayMgr->createButton(OgreBites::TL_LEFT, "StartButton",
+			"Start Game");
 }
 
-void UiMgr::EnableHud(){
+void UiMgr::EnableHud() {
+
+//	StartButton->hide();
+	StartButton->cleanup();
+
 	OgreBites::ProgressBar * bossHealth;
-	bossHealth = mTrayMgr->createProgressBar(OgreBites::TL_TOP, "BHealthBar", "Boss Health",
-			300, 170);
+	bossHealth = mTrayMgr->createProgressBar(OgreBites::TL_TOP, "BHealthBar",
+			"Boss Health", 300, 170);
 	bossHealth->setProgress(100);
 
-	//OgreBites::ProgressBar playerHealth;
-	playerHealth = mTrayMgr->createProgressBar(OgreBites::TL_BOTTOMRIGHT, "PHealthBar", "Player Health",
-			250, 120);
+	playerHealth = mTrayMgr->createProgressBar(OgreBites::TL_BOTTOMRIGHT,
+			"PHealthBar", "Player Health", 250, 120);
 
 	playerHealth->setProgress(1);
 
-	waveLabel = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT,"waveLabel","Wave #",130);
+	waveLabel = mTrayMgr->createLabel(OgreBites::TL_TOPLEFT, "waveLabel",
+			"Wave #", 130);
 
-	timeLabel = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT,"timeLabel","Time:",130);
+	timeLabel = mTrayMgr->createLabel(OgreBites::TL_TOPRIGHT, "timeLabel",
+			"Time:", 130);
 
-	weaponLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT,"weaponLabel","Weapon",75);
+	weaponLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "weaponLabel",
+			"Weapon", 75);
 
-	ammoLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT,"ammoLabel","Ammo",75);
+	ammoLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "ammoLabel",
+			"Ammo", 75);
+
+}
+
+void UiMgr::ClosingScreen() {
+	screenClosed = true;
+	mTrayMgr->destroyAllWidgets();
+	mTrayMgr->showBackdrop("ClosingScreen");
+
+	time_survived = mTrayMgr->createLabel(OgreBites::TL_CENTER,"timesurvived","Time Elapsed " + timeElapsed,200);
+
+	waves_survived = mTrayMgr->createLabel(OgreBites::TL_CENTER,"wavesurvived","Waves Survived " + waveNum,200);
+
+	EndButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "EndButton", "End Game",200);
+
+}
+
+void UiMgr::Menu() {
 
 }
 
 void UiMgr::Tick(float dt) {
-	mTrayMgr->refreshCursor();
-	if(!splashScreenDisable){
-		splashScreen(dt);
-	}
-	else{
+	if (startGame == false) {
+		mTrayMgr->showBackdrop("Backdrop");
+		mTrayMgr->refreshCursor();
+	} else {
+		if (gameStarted == false) {
+			gameStarted = true;
+			EnableHud();
+			mTrayMgr->hideBackdrop();
+		}
+		mTrayMgr->refreshCursor();
 		UpdateLabels();
 	}
 }
 
-void UiMgr::UpdateLabels(){
-	currentHealth = engine->gameMgr->MainPlayer->GetAspect<Health>()->CurrentHealth;
-	Weapon* heldWeapon = engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->heldWeapon;
-	if(heldWeapon != NULL){
+void UiMgr::UpdateLabels() {
+if(screenClosed == true){
+	return;
+}
+	currentHealth =
+			engine->gameMgr->MainPlayer->GetAspect<Health>()->CurrentHealth;
+	Weapon* heldWeapon =
+			engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->heldWeapon;
+
+	if (heldWeapon != NULL) {
 		Gun* gun = dynamic_cast<Gun*>(heldWeapon);
-		if(gun != NULL){
+		if (gun != NULL) {
 			ammoNum = std::to_string(gun->CurrentBulletNumber);
-		}
-		else{
+		} else {
 			ammoNum = "inf";
 		}
-	}
-	else{
-			ammoNum = "0";
+	} else {
+		ammoNum = "0";
 	}
 	waveNum = std::to_string(engine->waveMgr->waveNumber);
-	timeElapsed = std::to_string((int)engine->waveMgr->timeElapsed);
-
-	playerHealth->setProgress((float) currentHealth/100);
+	timeElapsed = std::to_string((int) engine->waveMgr->timeElapsed);
+	if (currentHealth < 0) {
+		currentHealth = 0;
+	}
+	playerHealth->setProgress((float) currentHealth / 100);
 	timeLabel->setCaption(timeElapsed);
 	waveLabel->setCaption(waveNum);
 //	weaponLabel->setCaption("timeElapsed");
@@ -120,13 +146,13 @@ void UiMgr::UpdateLabels(){
 
 void UiMgr::windowResized(Ogre::RenderWindow* rw) {
 
-	 unsigned int width, height, depth;
-	 int left, top;
-	 rw->getMetrics(width, height, depth, left, top);
+	unsigned int width, height, depth;
+	int left, top;
+	rw->getMetrics(width, height, depth, left, top);
 
-	 const OIS::MouseState &ms = engine->inputMgr->mMouse->getMouseState();
-	 ms.width = width;
-	 ms.height = height;
+	const OIS::MouseState &ms = engine->inputMgr->mMouse->getMouseState();
+	ms.width = width;
+	ms.height = height;
 
 }
 
@@ -159,10 +185,22 @@ bool UiMgr::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
 	return false;
 }
 
-void UiMgr::buttonHit(OgreBites::Button *b){
+void UiMgr::itemSelected(OgreBites::SelectMenu *m) {
 
 }
 
-void UiMgr::itemSelected(OgreBites::SelectMenu *m) {
+void UiMgr::buttonHit(OgreBites::Button *b) {
+	if (b->getName() == "StartButton") {
+		if (startGame == false) {
+			startGame = true;
+		}
+		if (startGame == true) {
 
+		}
+
+	}
+
+	if (b->getName() == "EndButton") {
+			engine->keepRunning = false;
+	}
 }

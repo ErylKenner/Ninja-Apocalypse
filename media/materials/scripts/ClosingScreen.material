@@ -1,4 +1,4 @@
-material Backdrop
+material ClosingScreen
 {
 	technique
 	{
@@ -6,7 +6,7 @@ material Backdrop
 		{
 			texture_unit
 			{
-				texture menuscreenJPG.jpg
+				texture DIED.jpg
 			}
 		}
 	}
