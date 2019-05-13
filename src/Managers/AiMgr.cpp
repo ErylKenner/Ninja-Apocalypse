@@ -26,7 +26,7 @@ void AiMgr::Tick(float dt){
 }
 void AiMgr::LoadLevel(std::string inputFile){
     std::fstream infile;
-    infile.open(inputFile, std::ios::in);
+    infile.open("LevelOneNodes.txt", std::ios::in);
     infile >> numNodes;
     //nodes.resize(numNodes);
 
