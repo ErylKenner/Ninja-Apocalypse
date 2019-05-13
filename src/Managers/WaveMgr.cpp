@@ -22,7 +22,7 @@ WaveMgr::WaveMgr(Engine *eng) :
         spawnDelay(1),
         timeElapsed(0),
         timeSinceLastSpawn(0),
-        bossWave(4) {
+        bossWave(1) {
     enemiesRemaining = enemiesPerWave;
 }
 WaveMgr::~WaveMgr(){

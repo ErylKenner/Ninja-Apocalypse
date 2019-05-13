@@ -11,6 +11,7 @@
 
 #include "BossAI.h"
 #include "Entity381.h"
+#include "GameMgr.h"
 
 BossAI::BossAI(Entity381 *entity, Entity381 * plyr) :
         Aspect(entity),
@@ -31,11 +32,17 @@ void BossAI::Tick(float dt){
             bossPhysics->speed = 0;
             break;
         case Track:
-            timer += dt;
+
             TrackPlayer();
             bossLimbs->mode = None;
             bossLimbs->param = 0;
             bossPhysics->desiredSpeed = trackingSpeed;
+
+            if(entity381->engine->gameMgr->InBounds(entity381->position)){
+                timer += dt;
+            } else{
+                bossPhysics->desiredSpeed = 0.75 * bossPhysics->maxSpeed;
+            }
 
             if(CheckTimer(changeStateFromTrackAfter)){
                 int rand = std::rand() % 4;
