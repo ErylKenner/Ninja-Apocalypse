@@ -8,9 +8,10 @@
 #include "Enemy.h"
 #include "Weapon.h"
 #include "Gun.h"
+#include "FirstBoss.h"
 #include "Engine.h"
 #include "GfxMgr.h"
-
+#include "WaveMgr.h"
 
 EntityMgr::EntityMgr(Engine *eng) :
         Mgr(eng),
@@ -32,12 +33,16 @@ void EntityMgr::Tick(float dt){
     }
 }
 
-Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector3 pos,
-                                                   Ogre::Vector3 scale){
+Entity381* EntityMgr::CreateEntity(EntityType type, Ogre::Vector3 pos,
+                                   Ogre::Vector3 scale){
     int id = entities.size();
     Entity381 *newEntity;
     switch(type) {
         case EntityType::Sphere:
+            newEntity = new BasicSphereEntity381(id, pos, scale.x, engine);
+            entities.push_back(newEntity);
+            return newEntity;
+            break;
         case EntityType::TerrainSphere:
             newEntity = new SphereEntity381(id, pos, scale.x, engine);
             entities.push_back(newEntity);
@@ -67,10 +72,28 @@ Entity381* EntityMgr::CreateEntityOfTypeAtPosition(EntityType type, Ogre::Vector
             newEntity = new Handgun(id, pos, engine);
             entities.push_back(newEntity);
             return newEntity;
+        case EntityType::FirstBossType:
+            newEntity = new FirstBoss(id, pos, engine);
+            entities.push_back(newEntity);
+            return newEntity;
         default:
             return NULL;
             break;
     }
+}
+
+void EntityMgr::RemoveAllEnemies(){
+    engine->waveMgr->disabledSpawning = true;
+    for(unsigned int i = 0; i < entities.size(); ++i){
+        Enemy *enemy = dynamic_cast<Enemy *>(entities[i]);
+        if(enemy != NULL){
+            enemy->OnDeath();
+        }
+    }
+}
+
+void EntityMgr::RemoveEntity(Entity381 *entity){
+    entities.erase(std::remove(entities.begin(), entities.end(), entity), entities.end());
 }
 
 void EntityMgr::LoadLevel(){

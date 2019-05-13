@@ -678,9 +678,11 @@ std::cout<<"one initialzied"<<std::endl;
 	alSourcei(this->sourcetemp, AL_BUFFER, this->buffertemp);
 	printError("Source binding");
 
+
 	printError("Playing");
 		if(sound_type=="backgroundmusic"){
 			playSelectedSound(background_music);}
+
 	return true;
 }
 
@@ -697,8 +699,6 @@ void SoundMgr::playSelectedSound(SoundTypes sound_type){
 		break;
 	}
 }
-
-
 
 
 

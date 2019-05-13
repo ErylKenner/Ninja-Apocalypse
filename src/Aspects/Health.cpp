@@ -14,6 +14,7 @@
 Health::Health(Entity381 * entity, int startingHealth, int dps) :
         Aspect(entity),
         CurrentHealth(startingHealth),
+        StartingHealth(startingHealth),
         incomingDamagePerSecond(dps),
         timeSinceLastHit(0){
     if(incomingDamagePerSecond <= 0){

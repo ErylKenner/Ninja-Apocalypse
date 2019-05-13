@@ -18,18 +18,21 @@
 
 #include <SdkTrays.h>
 
-class UiMgr : public Mgr, public OIS::KeyListener, public OIS::MouseListener, public Ogre::WindowEventListener, public OgreBites::SdkTrayListener
-{
+class UiMgr : public Mgr,
+              public OIS::KeyListener,
+              public OIS::MouseListener,
+              public Ogre::WindowEventListener,
+              public OgreBites::SdkTrayListener{
 private:
-	float waitTime;
-	float currentTime;
-	std::string waveNum, ammoNum, timeElapsed;
-	int currentHealth;
-	OgreBites::ProgressBar* playerHealth;
+    float waitTime;
+    float currentTime;
+    std::string waveNum, ammoNum, timeElapsed, fps;
+    int currentHealth;
+    OgreBites::ProgressBar* playerHealth;
 
 protected:
-	virtual void windowResized(Ogre::RenderWindow *rw);
-	virtual void windowClosed(Ogre::RenderWindow *rw);
+    virtual void windowResized(Ogre::RenderWindow *rw);
+    virtual void windowClosed(Ogre::RenderWindow *rw);
 
     virtual bool keyPressed(const OIS::KeyEvent &arg);
     virtual bool keyReleased(const OIS::KeyEvent &arg);
@@ -43,20 +46,20 @@ protected:
 
 public:
 
-	UiMgr(Engine *engine);
-	~UiMgr();
-	virtual void Init();
-	virtual void Tick(float dt);
-	virtual void LoadLevel();
-	virtual void stop();
+    UiMgr(Engine *engine);
+    ~UiMgr();
+    virtual void Init();
+    virtual void Tick(float dt);
+    virtual void LoadLevel();
+    virtual void stop();
 
-	void splashScreen(float dt);
-	void UpdateLabels();
+    bool splashScreenDisable = false;
 	void ClosingScreen();
 	void Menu();
-	bool splashScreenDisable = false;
 	bool gameStarted = false, screenClosed = false;
 	bool startGame = false;
+    void splashScreen(float dt);
+    void UpdateLabels();
 
 
 	OgreBites::InputContext mInputContext;
@@ -70,8 +73,11 @@ public:
 	OgreBites::Label *timeLabel;
 	OgreBites::Label *weaponLabel;
 	OgreBites::Label *ammoLabel;
+
 	OgreBites::Button *StartButton;
 	OgreBites::Button *EndButton;
+	OgreBites::Label *fpsLabel;
+	OgreBites::ProgressBar * bossHealth;
 
 };
 

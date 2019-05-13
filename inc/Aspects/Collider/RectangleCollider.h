@@ -11,13 +11,12 @@
 class RectangleCollider : public Collider{
 public:
     RectangleCollider(Entity381 *entity, int w, int l);
-    ~RectangleCollider();
 
     virtual void OnCollision(Collider *other) const;
     virtual bool IsColliding(Collider *other) const;
-    virtual bool GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const;
+    virtual bool GetClosestPoint(const Ray ray, float *dist) const;
     virtual Ogre::Vector3 GetClosestPoint(Ogre::Vector3 point) const;
-    bool PointInRectangle(Ogre::Vector3 centerPoint) const;
+    virtual bool Contains(Ogre::Vector3 centerPoint) const;
 protected:
     int width;
     int length;
@@ -43,7 +42,6 @@ private:
 class RectangleBorderCollider : public RectangleCollider{
 public:
     RectangleBorderCollider(Entity381 *entity, int w, int l);
-    ~RectangleBorderCollider();
 
     virtual void OnCollision(Collider *other) const;
 private:

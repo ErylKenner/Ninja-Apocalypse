@@ -12,7 +12,9 @@
 
 using Ogre::Vector3;
 
-WeaponMgr::WeaponMgr(Engine *eng) : Mgr(eng), weaponCooldown(30) {
+WeaponMgr::WeaponMgr(Engine *eng) :
+        Mgr(eng),
+        weaponCooldown(30){
 
 }
 WeaponMgr::~WeaponMgr(){
@@ -22,26 +24,30 @@ WeaponMgr::~WeaponMgr(){
 void WeaponMgr::Init(){
 }
 void WeaponMgr::Tick(float dt){
-    for(unsigned int i = 0; i < spawnPoints.size(); i++) {
+    for(unsigned int i = 0; i < spawnPoints.size(); i++){
         spawnPoints[i]->Tick(dt);
     }
 }
 void WeaponMgr::LoadLevel(){
     float ground = engine->gameMgr->surfaceHeight;
-    spawnPoints.push_back(new WeaponSpawnPoint(Vector3(-2000, ground, 0), weaponCooldown, engine));
-    spawnPoints.push_back(new WeaponSpawnPoint(Vector3(2000, ground, 0), weaponCooldown, engine));
-    spawnPoints.push_back(new WeaponSpawnPoint(Vector3(0, ground, 1000), weaponCooldown, engine));
-    spawnPoints.push_back(new WeaponSpawnPoint(Vector3(0, ground, -1000), weaponCooldown, engine));
+    spawnPoints.push_back(
+            new WeaponSpawnPoint(Vector3(-2000, ground, 0), weaponCooldown, engine));
+    spawnPoints.push_back(
+            new WeaponSpawnPoint(Vector3(2000, ground, 0), weaponCooldown, engine));
+    spawnPoints.push_back(
+            new WeaponSpawnPoint(Vector3(0, ground, 1000), weaponCooldown, engine));
+    spawnPoints.push_back(
+            new WeaponSpawnPoint(Vector3(0, ground, -1000), weaponCooldown, engine));
 }
 void WeaponMgr::Stop(){
 }
 
 WeaponSpawnPoint::WeaponSpawnPoint(Ogre::Vector3 pos, float coolDown, Engine * eng) :
+        spawnedWeapon(0),
         position(pos),
         respawnCooldown(coolDown),
         engine(eng),
-        currentTimer(0),
-        spawnedWeapon(0){
+        currentTimer(0){
     SpawnWeapon();
 }
 
@@ -57,12 +63,12 @@ void WeaponSpawnPoint::Tick(float dt){
 
 void WeaponSpawnPoint::SpawnWeapon(){
     currentTimer = 0;
-    spawnedWeapon = static_cast<Weapon*>(engine->entityMgr->CreateEntityOfTypeAtPosition(
+    spawnedWeapon = static_cast<Weapon*>(engine->entityMgr->CreateEntity(
             EntityType::HandgunType, position));
     spawnedWeapon->spawnedFrom = this;
 }
 
-void WeaponSpawnPoint::ClearWeapon() {
+void WeaponSpawnPoint::ClearWeapon(){
     spawnedWeapon = NULL;
     currentTimer = 0;
 }

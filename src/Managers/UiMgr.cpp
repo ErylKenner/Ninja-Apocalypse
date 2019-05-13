@@ -17,31 +17,40 @@
 #include "WeaponHolder.h"
 #include "Gun.h"
 #include "WaveMgr.h"
+#include "Boss.h"
 
 UiMgr::UiMgr(Engine* eng) :
-		Mgr(eng) {
-
-	//Ogre::WindowEventUtilities::addWindowEventListener(engine->gfxMgr->ogreRenderWindow, this);
+        Mgr(eng),
+        waitTime(0),
+        currentTime(0),
+        splashScreenDisable(false){
+    waveNum = "";
+    ammoNum = "";
+    timeElapsed = "";
+    fps = "";
+    //Ogre::WindowEventUtilities::addWindowEventListener(engine->gfxMgr->ogreRenderWindow, this);
 }
 
-UiMgr::~UiMgr() { // before gfxMgr destructor
-
-}
-
-void UiMgr::Init() {
-
-	// UiMgr Init MUST be called after GfxMgr Init because mOverlaySystem is created there (see GfxMgr Init comment for info)
-	engine->gfxMgr->mSceneMgr->addRenderQueueListener(mOverlaySystem);
-
-	// init sdktrays
-	mInputContext.mKeyboard = engine->inputMgr->mKeyboard;
-	mInputContext.mMouse = engine->inputMgr->mMouse;
-	mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName",
-			engine->gfxMgr->mWindow, mInputContext, this);
+UiMgr::~UiMgr(){ // before gfxMgr destructor
 
 }
 
-void UiMgr::stop() {
+void UiMgr::Init(){
+
+
+    // UiMgr Init MUST be called after GfxMgr Init because mOverlaySystem is created there (see GfxMgr Init comment for info)
+    engine->gfxMgr->mSceneMgr->addRenderQueueListener(mOverlaySystem);
+
+    // init sdktrays
+    mInputContext.mKeyboard = engine->inputMgr->mKeyboard;
+    mInputContext.mMouse = engine->inputMgr->mMouse;
+    mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName", engine->gfxMgr->mWindow,
+            mInputContext, this);
+
+
+}
+
+void UiMgr::stop(){
 
 }
 
@@ -52,15 +61,22 @@ void UiMgr::LoadLevel() {
 			"Start Game");
 }
 
-void UiMgr::EnableHud() {
 
-//	StartButton->hide();
-	StartButton->cleanup();
+void UiMgr::splashScreen(float dt){
+    currentTime += dt;
+    if(currentTime >= waitTime){
+        mTrayMgr->hideBackdrop();
+        EnableHud();
+        splashScreenDisable = true;
+    }
+}
 
-	OgreBites::ProgressBar * bossHealth;
-	bossHealth = mTrayMgr->createProgressBar(OgreBites::TL_TOP, "BHealthBar",
-			"Boss Health", 300, 170);
-	bossHealth->setProgress(100);
+
+void UiMgr::EnableHud(){
+
+	bossHealth = mTrayMgr->createProgressBar(OgreBites::TL_TOP, "BHealthBar", "Boss Health",
+			300, 170);
+	bossHealth->setProgress(1);
 
 	playerHealth = mTrayMgr->createProgressBar(OgreBites::TL_BOTTOMRIGHT,
 			"PHealthBar", "Player Health", 250, 120);
@@ -78,10 +94,13 @@ void UiMgr::EnableHud() {
 
 	ammoLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "ammoLabel",
 			"Ammo", 75);
+	fpsLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMLEFT, "fpsLabel",
+			"FPS", 75);
 
 }
 
 void UiMgr::ClosingScreen() {
+
 	screenClosed = true;
 	mTrayMgr->destroyAllWidgets();
 	mTrayMgr->showBackdrop("ClosingScreen");
@@ -107,87 +126,95 @@ void UiMgr::Tick(float dt) {
 			gameStarted = true;
 			EnableHud();
 			mTrayMgr->hideBackdrop();
+			StartButton->hide();
 		}
+	if (screenClosed == false){
 		mTrayMgr->refreshCursor();
 		UpdateLabels();
 	}
+	}
 }
 
-void UiMgr::UpdateLabels() {
-if(screenClosed == true){
-	return;
-}
-	currentHealth =
-			engine->gameMgr->MainPlayer->GetAspect<Health>()->CurrentHealth;
-	Weapon* heldWeapon =
-			engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->heldWeapon;
+void UiMgr::UpdateLabels(){
+    currentHealth = engine->gameMgr->MainPlayer->GetAspect<Health>()->CurrentHealth;
+    Weapon* heldWeapon =
+            engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->heldWeapon;
+    if(heldWeapon != NULL){
+        Gun* gun = dynamic_cast<Gun*>(heldWeapon);
+        if(gun != NULL){
+            ammoNum = std::to_string(gun->CurrentBulletNumber);
+        } else{
+            ammoNum = "inf";
+        }
+    } else{
+        ammoNum = "0";
+    }
+    waveNum = std::to_string(engine->waveMgr->waveNumber);
+    timeElapsed = std::to_string((int)engine->waveMgr->timeElapsed);
+    fps = std::string("FPS: ") + std::to_string(engine->fps);
 
-	if (heldWeapon != NULL) {
-		Gun* gun = dynamic_cast<Gun*>(heldWeapon);
-		if (gun != NULL) {
-			ammoNum = std::to_string(gun->CurrentBulletNumber);
-		} else {
-			ammoNum = "inf";
-		}
-	} else {
-		ammoNum = "0";
-	}
-	waveNum = std::to_string(engine->waveMgr->waveNumber);
-	timeElapsed = std::to_string((int) engine->waveMgr->timeElapsed);
-	if (currentHealth < 0) {
-		currentHealth = 0;
-	}
-	playerHealth->setProgress((float) currentHealth / 100);
-	timeLabel->setCaption(timeElapsed);
-	waveLabel->setCaption(waveNum);
+    playerHealth->setProgress((float)currentHealth / 100);
+    timeLabel->setCaption(timeElapsed);
+    waveLabel->setCaption(waveNum);
 //	weaponLabel->setCaption("timeElapsed");
 	ammoLabel->setCaption(ammoNum);
+
+	Boss * levelBoss = engine->gameMgr->LevelBoss;
+	if(levelBoss != NULL) {
+	    Health * bossHealthAspect = levelBoss->GetAspect<Health>();
+	    //std::cout << bossHealthAspect->CurrentHealth / (float)bossHealthAspect->StartingHealth << std::endl;
+	    bossHealth->setProgress(bossHealthAspect->CurrentHealth / (float)bossHealthAspect->StartingHealth);
+	}
+    fpsLabel->setCaption(fps);
 }
 
-void UiMgr::windowResized(Ogre::RenderWindow* rw) {
+void UiMgr::windowResized(Ogre::RenderWindow* rw){
 
-	unsigned int width, height, depth;
-	int left, top;
-	rw->getMetrics(width, height, depth, left, top);
 
-	const OIS::MouseState &ms = engine->inputMgr->mMouse->getMouseState();
-	ms.width = width;
-	ms.height = height;
+    unsigned int width, height, depth;
+    int left, top;
+    rw->getMetrics(width, height, depth, left, top);
 
-}
+    const OIS::MouseState &ms = engine->inputMgr->mMouse->getMouseState();
+    ms.width = width;
+    ms.height = height;
 
-void UiMgr::windowClosed(Ogre::RenderWindow* rw) {
 
 }
 
-bool UiMgr::keyPressed(const OIS::KeyEvent &arg) {
-	std::cout << "Key Pressed: " << arg.key << std::endl;
-	return true;
+void UiMgr::windowClosed(Ogre::RenderWindow* rw){
+
 }
-bool UiMgr::keyReleased(const OIS::KeyEvent &arg) {
-	return true;
+
+bool UiMgr::keyPressed(const OIS::KeyEvent &arg){
+    std::cout << "Key Pressed: " << arg.key << std::endl;
+    return true;
 }
-bool UiMgr::mouseMoved(const OIS::MouseEvent &arg) {
-	if (mTrayMgr->injectMouseMove(arg))
-		return true;
-	return false;
+bool UiMgr::keyReleased(const OIS::KeyEvent &arg){
+    return true;
 }
-bool UiMgr::mousePressed(const OIS::MouseEvent &me, OIS::MouseButtonID mid) {
-	std::cout << "mouse clicked" << std::endl;
-	if (mTrayMgr->injectMouseDown(me, mid))
-		return true;
-	return false;
+bool UiMgr::mouseMoved(const OIS::MouseEvent &arg){
+    if(mTrayMgr->injectMouseMove(arg))
+        return true;
+    return false;
 }
-bool UiMgr::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id) {
-	if (mTrayMgr->injectMouseUp(arg, id))
-		return true;
-	/* normal mouse processing here... */
-	return false;
+bool UiMgr::mousePressed(const OIS::MouseEvent &me, OIS::MouseButtonID mid){
+    std::cout << "mouse clicked" << std::endl;
+    if(mTrayMgr->injectMouseDown(me, mid))
+        return true;
+    return false;
+}
+bool UiMgr::mouseReleased(const OIS::MouseEvent &arg, OIS::MouseButtonID id){
+    if(mTrayMgr->injectMouseUp(arg, id))
+        return true;
+    /* normal mouse processing here... */
+    return false;
 }
 
 void UiMgr::itemSelected(OgreBites::SelectMenu *m) {
 
 }
+
 
 void UiMgr::buttonHit(OgreBites::Button *b) {
 	if (b->getName() == "StartButton") {

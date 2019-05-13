@@ -14,10 +14,6 @@ RectangleCollider::RectangleCollider(Entity381 *entity, int w, int l) :
         length(l){
 }
 
-RectangleCollider::~RectangleCollider(){
-
-}
-
 void RectangleCollider::OnCollision(Collider *other) const{
 }
 
@@ -25,12 +21,18 @@ bool RectangleCollider::IsColliding(Collider *other) const{
     CircleCollider *castToCircle = dynamic_cast<CircleCollider *>(other);
     if(castToCircle != NULL){
         //Sanity check because no intersection possible if the two are too far apart
-        if((castToCircle->entity381->position).distance(entity381->position)
+        const Ogre::Vector3 globalPosition =
+                entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
+                        entity381->position);
+        const Ogre::Vector3 circleGlobalPosition =
+                castToCircle->entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
+                        castToCircle->entity381->position);
+        if((circleGlobalPosition).distance(globalPosition)
                 > 0.5 * width + 0.5 * length + castToCircle->radius){
             return false;
         }
-        Ogre::Vector2 circleCenter = Ogre::Vector2(castToCircle->entity381->position.x,
-                castToCircle->entity381->position.z);
+        Ogre::Vector2 circleCenter = Ogre::Vector2(circleGlobalPosition.x,
+                circleGlobalPosition.z);
         const Ogre::Vector2 A = GetTopLeft();
         const Ogre::Vector2 B = GetTopRight();
         const Ogre::Vector2 C = GetBottomRight();
@@ -55,7 +57,7 @@ bool RectangleCollider::IsColliding(Collider *other) const{
     return false;
 }
 
-bool RectangleCollider::GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const{
+bool RectangleCollider::GetClosestPoint(const Ray ray, float *dist) const{
     const Ogre::Vector2 A = GetTopLeft();
     const Ogre::Vector2 B = GetTopRight();
     const Ogre::Vector2 C = GetBottomRight();
@@ -69,14 +71,15 @@ bool RectangleCollider::GetClosestPoint(const Ray ray, Ogre::Vector2 *pos) const
     bool hit3 = RectangleCollider::RayLineIntersection(ray, C, D, &intersectDist3);
     bool hit4 = RectangleCollider::RayLineIntersection(ray, D, A, &intersectDist4);
     if(hit1 || hit2 || hit3 || hit4){
-        if(pos != NULL){
-            const float min = std::min(intersectDist1,
+        if(dist != NULL){
+            *dist = std::min(intersectDist1,
                     std::min(intersectDist2, std::min(intersectDist3, intersectDist4)));
-            *pos = ray.origin + min * ray.directionVector;
         }
         return true;
     }
-    pos = NULL;
+    if(dist != NULL){
+        *dist = Ogre::Math::POS_INFINITY;
+    }
     return false;
 }
 
@@ -87,50 +90,71 @@ bool RectangleCollider::RayLineIntersection(Ray ray, Ogre::Vector2 A, Ogre::Vect
     Ogre::Vector2 v3 = Ogre::Vector2(-ray.directionVector.y, ray.directionVector.x);
     float dot = v2.dotProduct(v3);
     if(Ogre::Math::Abs(dot) < 0.0001){
-        intersectDist = NULL;
+        //Lines are parallel
+        if(intersectDist != NULL){
+            *intersectDist = Ogre::Math::POS_INFINITY;
+        }
         return false;
     }
     float t1 = v2.crossProduct(v1) / dot;
     float t2 = v1.dotProduct(v3) / dot;
     if(t1 >= 0.0 && t2 >= 0.0 && t2 <= 1.0){
         if(intersectDist != NULL){
-            *intersectDist = t1;
+            *intersectDist = t1 * ray.directionVector.length();
         }
         return true;
     }
-    intersectDist = NULL;
+    if(intersectDist != NULL){
+        *intersectDist = Ogre::Math::POS_INFINITY;
+    }
     return false;
 }
 
 inline Ogre::Vector2 RectangleCollider::GetTopLeft() const{
-    const Ogre::Vector2 pos = Ogre::Vector2(entity381->position.x, entity381->position.z);
+    const Ogre::Vector3 globalPosition =
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
+                    entity381->position);
+    const Ogre::Vector2 pos = Ogre::Vector2(globalPosition.x, globalPosition.z);
     const Ogre::Vector2 original = Ogre::Vector2(-width * 0.5, -length * 0.5);
     const float angle =
-            entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldOrientation(
+                    entity381->ogreSceneNode->getOrientation()).getYaw().valueRadians();
     return pos + RotateVectorClockwise(original, -angle);
 }
 
 inline Ogre::Vector2 RectangleCollider::GetTopRight() const{
-    const Ogre::Vector2 pos = Ogre::Vector2(entity381->position.x, entity381->position.z);
+    const Ogre::Vector3 globalPosition =
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
+                    entity381->position);
+    const Ogre::Vector2 pos = Ogre::Vector2(globalPosition.x, globalPosition.z);
     const Ogre::Vector2 original = Ogre::Vector2(width * 0.5, -length * 0.5);
     const float angle =
-            entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldOrientation(
+                    entity381->ogreSceneNode->getOrientation()).getYaw().valueRadians();
     return pos + RotateVectorClockwise(original, -angle);
 }
 
 inline Ogre::Vector2 RectangleCollider::GetBottomLeft() const{
-    const Ogre::Vector2 pos = Ogre::Vector2(entity381->position.x, entity381->position.z);
+    const Ogre::Vector3 globalPosition =
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
+                    entity381->position);
+    const Ogre::Vector2 pos = Ogre::Vector2(globalPosition.x, globalPosition.z);
     const Ogre::Vector2 original = Ogre::Vector2(-width * 0.5, length * 0.5);
     const float angle =
-            entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldOrientation(
+                    entity381->ogreSceneNode->getOrientation()).getYaw().valueRadians();
     return pos + RotateVectorClockwise(original, -angle);
 }
 
 inline Ogre::Vector2 RectangleCollider::GetBottomRight() const{
-    const Ogre::Vector2 pos = Ogre::Vector2(entity381->position.x, entity381->position.z);
+    const Ogre::Vector3 globalPosition =
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldPosition(
+                    entity381->position);
+    const Ogre::Vector2 pos = Ogre::Vector2(globalPosition.x, globalPosition.z);
     const Ogre::Vector2 original = Ogre::Vector2(width * 0.5, length * 0.5);
     const float angle =
-            entity381->ogreSceneNode->getOrientation().getYaw().valueRadians();
+            entity381->ogreSceneNode->getParent()->convertLocalToWorldOrientation(
+                    entity381->ogreSceneNode->getOrientation()).getYaw().valueRadians();
     return pos + RotateVectorClockwise(original, -angle);
 }
 
@@ -215,7 +239,7 @@ Ogre::Vector3 RectangleCollider::GetClosestPoint(Ogre::Vector3 point) const{
     }
 }
 
-bool RectangleCollider::PointInRectangle(Ogre::Vector3 centerPoint) const{
+bool RectangleCollider::Contains(Ogre::Vector3 centerPoint) const{
     const Ogre::Vector2 center = Ogre::Vector2(centerPoint.x, centerPoint.z);
     return RectangleCollider::InsideRectangle(center, GetTopLeft(), GetTopRight(),
             GetBottomLeft());
@@ -225,10 +249,6 @@ bool RectangleCollider::PointInRectangle(Ogre::Vector3 centerPoint) const{
 
 RectangleBorderCollider::RectangleBorderCollider(Entity381 *entity, int w, int l) :
         RectangleCollider(entity, w, l){
-
-}
-
-RectangleBorderCollider::~RectangleBorderCollider(){
 
 }
 

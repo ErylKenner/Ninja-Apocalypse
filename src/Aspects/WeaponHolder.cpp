@@ -38,10 +38,9 @@ void WeaponHolder::SetWeapon(Weapon * weapon){
     //Ogre::Quaternion resultOrientation = entity381->ogreSceneNode->convertWorldToLocalOrientation(heldWeapon->ogreSceneNode->getOrientation());
 
     // if the picked up weapon had a spawnPoint
-    if(heldWeapon->spawnedFrom != NULL) {
+    if(heldWeapon->spawnedFrom != NULL){
         heldWeapon->spawnedFrom->ClearWeapon();
     }
-
 
     timeSinceLastShot = heldWeapon->UseRate;
     heldWeapon->ogreSceneNode->getParentSceneNode()->removeChild(
@@ -51,7 +50,6 @@ void WeaponHolder::SetWeapon(Weapon * weapon){
     heldWeapon->position = Ogre::Vector3(45, 35, -15);
     heldWeapon->ogreSceneNode->yaw(Ogre::Degree(-90));
     heldWeapon->ogreSceneNode->pitch(Ogre::Degree(-90));
-
 
     heldWeapon->ogreSceneNode->setInheritScale(false);
 }
@@ -82,7 +80,7 @@ void WeaponHolder::ThrowWeapon(){
 
         // for testing purposes
         //entity381->engine->entityMgr->CreateEntityOfTypeAtPosition(EntityType::HandgunType,
-                        //Ogre::Vector3(0, entity381->engine->gameMgr->surfaceHeight, -300));
+        //Ogre::Vector3(0, entity381->engine->gameMgr->surfaceHeight, -300));
     }
 }
 

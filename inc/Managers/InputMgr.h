@@ -48,6 +48,7 @@ private:
     void UpdatePlayer(float dt);
 
     std::pair<bool, Ogre::Vector3> GetClickedPosition(const OIS::MouseEvent& me);
+    std::pair<bool, Ogre::Vector3> GetClickedPosition(Ogre::Vector2 mousePosition);
 
     float shipAngleIncrement = 45;
     float shipSpeedIncrement = 10;
@@ -57,6 +58,7 @@ private:
     float selectionDistanceThreshold = 30;
 
     bool leftMouseHeld;
+    Ogre::Vector2 lastMousePos;
 };
 
 #endif /* INC_INPUTMGR_H_ */

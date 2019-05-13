@@ -17,8 +17,10 @@ public:
     virtual ~Enemy();
 
     void OnDeath();
+    void InitAspects();
     int hitDamage;
 private:
+    void ResetAspects();
     Animation * anim;
 };
 
