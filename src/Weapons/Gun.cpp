@@ -58,6 +58,7 @@ void Gun::Use(){
                 Enemy * enemy = static_cast<Enemy *>(enemyCollider->entity381);
                 if(!enemy->GetAspect<Health>()->TakeDamage(DamageAmount)){
                     enemy->OnDeath();
+                    return;
                 }
             }
 

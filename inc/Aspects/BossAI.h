@@ -32,7 +32,7 @@ private:
     bool CheckTimer(float target);
 
     const int changeStateFromTrackAfter = 5;
-    const int trackingSpeed = 50;
+    const int trackingSpeed = 150;
     const int heliCloseDistance = 300;
 
     const int clapDistance = 575;

@@ -34,4 +34,5 @@ void FirstBoss::OnDeath() {
     //TODO: do what happens when boss dies
     position = Ogre::Vector3(1e6, 0, 0);
     GetAspect<BossAI>()->currentState = NoState;
+    engine->gameMgr->LoadLevelTwo();
 }

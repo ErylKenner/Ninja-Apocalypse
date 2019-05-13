@@ -11,6 +11,7 @@
 #include "FirstBoss.h"
 #include "Engine.h"
 #include "GfxMgr.h"
+#include "WaveMgr.h"
 
 EntityMgr::EntityMgr(Engine *eng) :
         Mgr(eng),
@@ -79,6 +80,20 @@ Entity381* EntityMgr::CreateEntity(EntityType type, Ogre::Vector3 pos,
             return NULL;
             break;
     }
+}
+
+void EntityMgr::RemoveAllEnemies(){
+    engine->waveMgr->disabledSpawning = true;
+    for(unsigned int i = 0; i < entities.size(); ++i){
+        Enemy *enemy = dynamic_cast<Enemy *>(entities[i]);
+        if(enemy != NULL){
+            enemy->OnDeath();
+        }
+    }
+}
+
+void EntityMgr::RemoveEntity(Entity381 *entity){
+    entities.erase(std::remove(entities.begin(), entities.end(), entity), entities.end());
 }
 
 void EntityMgr::LoadLevel(){

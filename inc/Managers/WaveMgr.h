@@ -15,7 +15,7 @@
 class WaveMgr : public Mgr{
 
 public:
-
+    bool disabledSpawning;
     int enemiesPerWave;
     int enemiesRemaining;
     int waveNumber;
@@ -41,6 +41,10 @@ private:
 
     int deltaValue(int minimum, int radius);
     std::vector<Enemy *> deadList;
+
+    const int bossWave = 4;
+
+    bool bossSpawned = false;
 };
 
 #endif /* INC_MANAGERS_WAVEMGR_H_ */

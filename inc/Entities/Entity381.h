@@ -61,7 +61,6 @@ protected:
 class BasicSphereEntity381 : public Entity381{
 public:
     BasicSphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng);
-    ~BasicSphereEntity381();
 private:
     int radius;
 };
@@ -69,7 +68,6 @@ private:
 class SphereEntity381 : public Entity381{
 public:
     SphereEntity381(int id, Ogre::Vector3 pos, int r, Engine * eng);
-    ~SphereEntity381();
 private:
     int radius;
 };
@@ -77,7 +75,6 @@ private:
 class RectangleEntity381 : public Entity381{
 public:
     RectangleEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 sc, Engine * eng);
-    ~RectangleEntity381();
 protected:
     int width;
     int height;
@@ -87,7 +84,6 @@ protected:
 class RectangleBorderEntity381 : public RectangleEntity381{
 public:
     RectangleBorderEntity381(int id, Ogre::Vector3 pos, Ogre::Vector3 sc, Engine * eng);
-    ~RectangleBorderEntity381();
 private:
 };
 

@@ -285,8 +285,14 @@ bool InputMgr::keyPressed(const OIS::KeyEvent& ke){
             //engine->gameMgr->MainPlayer->GetAspect<WeaponHolder>()->ReloadWeapon();
             std::cout << engine->gameMgr->MainPlayer->position << std::endl;
             break;
+        case OIS::KC_1:
+            engine->gameMgr->LoadLevelOne();
+            break;
+        case OIS::KC_2:
+            engine->gameMgr->LoadLevelTwo();
+            break;
         case OIS::KC_P:
-            engine->gameMgr->ResetLevel();
+            engine->entityMgr->RemoveAllEnemies();
             break;
         default:
             break;

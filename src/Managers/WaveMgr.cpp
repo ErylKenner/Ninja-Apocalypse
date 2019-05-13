@@ -15,9 +15,10 @@
 
 WaveMgr::WaveMgr(Engine *eng) :
         Mgr(eng),
+        disabledSpawning(false),
         enemiesPerWave(20),
         waveNumber(1),
-        spawnDelay(2000),
+        spawnDelay(1),
         timeElapsed(0),
         timeSinceLastSpawn(0){
     enemiesRemaining = enemiesPerWave;
@@ -38,14 +39,26 @@ void WaveMgr::Tick(float dt){
         // reset timeSinceSpawn
         timeSinceLastSpawn = 0;
         // SpawnEnemy
-        SpawnEnemy();
-        std::cout << "# of spawned enemies: " << spawnedEnemyList.size() << std::endl;
+        if(!disabledSpawning){
+            SpawnEnemy();
+        }
     }
-    /*std::cout << " # enemies: " << spawnedEnemyList.size() << ", fps: " << (int)(1 / dt)
-     << std::endl;*/
+
+    if(waveNumber == bossWave && !bossSpawned){
+        engine->gameMgr->ResetLevel();
+        engine->entityMgr->RemoveAllEnemies();
+        engine->gameMgr->LevelBoss = static_cast<Boss *>(engine->entityMgr->CreateEntity(
+                EntityType::FirstBossType,
+                Ogre::Vector3(-1000, engine->gameMgr->surfaceHeight + 100, -400)));
+        bossSpawned = true;
+
+    }
+
 }
+
 void WaveMgr::LoadLevel(){
 }
+
 void WaveMgr::Stop(){
 }
 
@@ -61,6 +74,7 @@ int WaveMgr::deltaValue(int minimum, int radius){
 void WaveMgr::SpawnEnemy(){
     Ogre::Vector3 spawnPosition;
     bool continueTrying;
+    int numTries = 0;
     do{
         // Figures out where to spawn the enemy
         int deltaX = deltaValue(800, 500);
@@ -72,14 +86,17 @@ void WaveMgr::SpawnEnemy(){
                 || spawnPosition.x <= -0.5 * engine->gameMgr->mapWidth
                 || spawnPosition.z >= 0.5 * engine->gameMgr->mapHeight
                 || spawnPosition.z <= -0.5 * engine->gameMgr->mapHeight;
-        for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
-            if(Collider::colliders[i] != NULL
-                    && Collider::colliders[i]->Contains(spawnPosition)){
-                continueTrying = true;
-                break;
+        if(!continueTrying){
+            for(unsigned int i = 0; i < Collider::colliders.size(); ++i){
+                if(Collider::colliders[i] != NULL
+                        && Collider::colliders[i]->Contains(spawnPosition)){
+                    continueTrying = true;
+                    break;
+                }
             }
         }
-    } while(continueTrying);
+        numTries++;
+    } while(continueTrying && numTries < 20);
 
     if(deadList.empty()){
         Enemy * newEnemy = static_cast<Enemy *>(engine->entityMgr->CreateEntity(
