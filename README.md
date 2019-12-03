@@ -1,6 +1,6 @@
 # Ninja-Apocalypse
 ## Gameplay
-Styalized top-down survival shooter. Survive increasingly stronger waves of ninjas using guns found throughout the map. Each gun starts with a limited amount of ammo. When a gun runs out of ammo it cannot be used anymore, however it can be thrown at an emeny for a 1-shot as its final attack.
+Stylized top-down survival shooter. Survive increasingly stronger waves of ninjas using guns found throughout the map. Each gun starts with a limited amount of ammo. When a gun runs out of ammo it cannot be used anymore, however it can be thrown at an emeny for a 1-shot as its final attack.
 
 If the player survives enough waves, they will be transported to a boss arena where a powerful boss will try to defeat them. If they manage to survive the terrible monster, they will teleport to the final map. The game is then infinite as the player tries to survive as long for as possible.
 
